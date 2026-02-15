@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Halaman Tidak Ditemukan{% endblock %}
+
+{% block content %}
+<section class="min-h-screen flex items-center justify-center animated-gradient">
+    <div class="absolute inset-0 mesh-gradient"></div>
+    <div class="relative text-center px-4">
+        <div class="font-display text-9xl font-black gradient-text mb-6">404</div>
+        <h1 class="font-display text-3xl font-bold text-white mb-4">Halaman Tidak Ditemukan</h1>
+        <p class="text-gray-400 text-lg mb-8 max-w-md mx-auto">
+            Maaf, halaman yang Anda cari tidak tersedia atau telah dipindahkan.
+        </p>
+        <a href="{{ url_for('index') }}" class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-red-600 via-purple-600 to-yellow-500 rounded-2xl font-semibold text-white shadow-2xl hover:scale-105 transition-all duration-300">
+            <i class='bx bx-home mr-2'></i>
+            Kembali ke Beranda
+        </a>
+    </div>
+</section>
+{% endblock %}

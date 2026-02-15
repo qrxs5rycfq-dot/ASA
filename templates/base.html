@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ASA Group{% endblock %} — General Supplier & Kontraktor</title>
+    <meta name="description" content="{% block meta_description %}ASA Group - Kumpulan perusahaan General Supplier & Kontraktor terkemuka di Indonesia{% endblock %}">
+
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        display: ['Poppins', 'system-ui', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.8s ease-out forwards',
+                        'slide-up': 'slideUp 0.8s ease-out forwards',
+                        'slide-left': 'slideLeft 0.8s ease-out forwards',
+                        'slide-right': 'slideRight 0.8s ease-out forwards',
+                        'scale-in': 'scaleIn 0.6s ease-out forwards',
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'gradient': 'gradient 8s ease infinite',
+                        'counter': 'counter 2s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
+                        slideUp: { '0%': { opacity: '0', transform: 'translateY(40px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+                        slideLeft: { '0%': { opacity: '0', transform: 'translateX(40px)' }, '100%': { opacity: '1', transform: 'translateX(0)' } },
+                        slideRight: { '0%': { opacity: '0', transform: 'translateX(-40px)' }, '100%': { opacity: '1', transform: 'translateX(0)' } },
+                        scaleIn: { '0%': { opacity: '0', transform: 'scale(0.9)' }, '100%': { opacity: '1', transform: 'scale(1)' } },
+                        float: { '0%, 100%': { transform: 'translateY(0px)' }, '50%': { transform: 'translateY(-20px)' } },
+                        gradient: { '0%, 100%': { backgroundPosition: '0% 50%' }, '50%': { backgroundPosition: '100% 50%' } },
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Boxicons -->
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #DC2626, #7C3AED, #F59E0B); border-radius: 4px; }
+
+        /* Glassmorphism */
+        .glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); }
+        .glass-light { background: rgba(255,255,255,0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.3); }
+
+        /* Gradient text */
+        .gradient-text { background: linear-gradient(135deg, #DC2626, #7C3AED, #F59E0B); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .gradient-text-npm { background: linear-gradient(135deg, #DC2626, #16A34A); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .gradient-text-psj { background: linear-gradient(135deg, #7C3AED, #2563EB); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .gradient-text-abm { background: linear-gradient(135deg, #DC2626, #F59E0B); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+        /* Animated gradient background */
+        .animated-gradient { background: linear-gradient(-45deg, #0f172a, #1e1b4b, #172554, #0f172a); background-size: 400% 400%; animation: gradient 15s ease infinite; }
+
+        /* Card hover effects */
+        .card-hover { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .card-hover:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
+
+        /* Smooth reveal */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* Particle container */
+        .particles { position: absolute; width: 100%; height: 100%; overflow: hidden; pointer-events: none; }
+        .particle { position: absolute; width: 4px; height: 4px; background: rgba(255,255,255,0.3); border-radius: 50%; animation: float 8s infinite; }
+
+        /* Hero mesh gradient */
+        .mesh-gradient { background:
+            radial-gradient(at 40% 20%, rgba(220,38,38,0.15) 0px, transparent 50%),
+            radial-gradient(at 80% 0%, rgba(124,58,237,0.15) 0px, transparent 50%),
+            radial-gradient(at 0% 50%, rgba(245,158,11,0.1) 0px, transparent 50%),
+            radial-gradient(at 80% 50%, rgba(37,99,235,0.1) 0px, transparent 50%),
+            radial-gradient(at 0% 100%, rgba(22,163,74,0.1) 0px, transparent 50%);
+        }
+
+        /* Navbar blur */
+        .nav-blur { background: rgba(15,23,42,0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+
+        /* Logo pulse */
+        .logo-glow { filter: drop-shadow(0 0 20px rgba(124,58,237,0.3)); transition: filter 0.3s; }
+        .logo-glow:hover { filter: drop-shadow(0 0 30px rgba(124,58,237,0.6)); }
+
+        /* Counter animation */
+        .count-up { display: inline-block; }
+
+        /* Marquee */
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .marquee { animation: marquee 30s linear infinite; }
+        .marquee:hover { animation-play-state: paused; }
+
+        /* Ripple effect */
+        .ripple { position: relative; overflow: hidden; }
+        .ripple::after { content: ''; position: absolute; inset: 0; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%); opacity: 0; transition: opacity 0.3s; }
+        .ripple:hover::after { opacity: 1; }
+
+        /* Section divider */
+        .section-divider { background: linear-gradient(90deg, transparent, rgba(124,58,237,0.3), transparent); height: 1px; }
+    </style>
+
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-slate-950 text-white font-sans antialiased overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 nav-blur transition-all duration-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <a href="{{ url_for('index') }}" class="flex items-center space-x-3 logo-glow">
+                    <div class="relative w-12 h-12">
+                        <div class="absolute inset-0 bg-gradient-to-br from-red-500 via-purple-500 to-yellow-500 rounded-xl rotate-6 opacity-80"></div>
+                        <div class="absolute inset-0 bg-slate-950 rounded-xl flex items-center justify-center">
+                            <span class="font-display font-black text-lg gradient-text">ASA</span>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="font-display font-bold text-xl text-white">ASA</span>
+                        <span class="font-display font-light text-xl text-gray-300">GROUP</span>
+                        <p class="text-[10px] text-gray-500 tracking-[0.2em] uppercase">General Supplier & Kontraktor</p>
+                    </div>
+                </a>
+
+                <!-- Desktop Nav -->
+                <div class="hidden lg:flex items-center space-x-1">
+                    <a href="{{ url_for('index') }}#home" class="nav-link px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all">Beranda</a>
+                    <a href="{{ url_for('index') }}#about" class="nav-link px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all">Tentang</a>
+                    <a href="{{ url_for('index') }}#companies" class="nav-link px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all">Perusahaan</a>
+                    <a href="{{ url_for('index') }}#services" class="nav-link px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all">Layanan</a>
+                    <a href="{{ url_for('index') }}#gallery" class="nav-link px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all">Galeri</a>
+                    <a href="{{ url_for('index') }}#testimonials" class="nav-link px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all">Testimoni</a>
+                    <a href="{{ url_for('index') }}#csr" class="nav-link px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all">CSR</a>
+                    <a href="{{ url_for('index') }}#contact" class="ml-4 px-6 py-2.5 bg-gradient-to-r from-red-600 via-purple-600 to-yellow-500 rounded-full text-sm font-semibold text-white hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300 hover:scale-105">Hubungi Kami</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-all">
+                    <i class='bx bx-menu text-2xl'></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="lg:hidden hidden border-t border-white/10">
+            <div class="px-4 py-4 space-y-1">
+                <a href="{{ url_for('index') }}#home" class="mobile-link block px-4 py-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-all">Beranda</a>
+                <a href="{{ url_for('index') }}#about" class="mobile-link block px-4 py-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-all">Tentang</a>
+                <a href="{{ url_for('index') }}#companies" class="mobile-link block px-4 py-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-all">Perusahaan</a>
+                <a href="{{ url_for('index') }}#services" class="mobile-link block px-4 py-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-all">Layanan</a>
+                <a href="{{ url_for('index') }}#gallery" class="mobile-link block px-4 py-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-all">Galeri</a>
+                <a href="{{ url_for('index') }}#testimonials" class="mobile-link block px-4 py-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-all">Testimoni</a>
+                <a href="{{ url_for('index') }}#csr" class="mobile-link block px-4 py-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-all">CSR</a>
+                <a href="{{ url_for('index') }}#contact" class="block px-4 py-3 mt-2 bg-gradient-to-r from-red-600 via-purple-600 to-yellow-500 rounded-lg text-white text-center font-semibold">Hubungi Kami</a>
+            </div>
+        </div>
+    </nav>
+
+    {% block content %}{% endblock %}
+
+    <!-- Footer -->
+    <footer class="relative bg-slate-950 border-t border-white/5">
+        <div class="absolute inset-0 mesh-gradient opacity-30"></div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+                <!-- Brand -->
+                <div class="lg:col-span-1">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="relative w-10 h-10">
+                            <div class="absolute inset-0 bg-gradient-to-br from-red-500 via-purple-500 to-yellow-500 rounded-lg rotate-6 opacity-80"></div>
+                            <div class="absolute inset-0 bg-slate-950 rounded-lg flex items-center justify-center">
+                                <span class="font-display font-black text-sm gradient-text">ASA</span>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="font-display font-bold text-lg">ASA GROUP</span>
+                            <p class="text-[9px] text-gray-500 tracking-widest uppercase">General Supplier & Kontraktor</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        Kumpulan perusahaan General Supplier & Kontraktor terkemuka yang berkomitmen pada kualitas, inovasi, dan profesionalitas.
+                    </p>
+                    <div class="flex space-x-3">
+                        <a href="#" class="w-10 h-10 rounded-lg glass flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-all"><i class='bx bxl-facebook'></i></a>
+                        <a href="#" class="w-10 h-10 rounded-lg glass flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-all"><i class='bx bxl-instagram'></i></a>
+                        <a href="#" class="w-10 h-10 rounded-lg glass flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-all"><i class='bx bxl-linkedin'></i></a>
+                        <a href="#" class="w-10 h-10 rounded-lg glass flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-all"><i class='bx bxl-whatsapp'></i></a>
+                    </div>
+                </div>
+
+                <!-- Companies -->
+                <div>
+                    <h4 class="font-display font-semibold text-white mb-6 flex items-center">
+                        <i class='bx bx-buildings mr-2 text-purple-400'></i>Perusahaan Kami
+                    </h4>
+                    <ul class="space-y-3">
+                        <li><a href="{{ url_for('company', slug='nur-putra-mandiri') }}" class="text-gray-400 hover:text-red-400 transition-colors text-sm flex items-center"><i class='bx bx-chevron-right mr-1'></i>PT. Nur Putra Mandiri</a></li>
+                        <li><a href="{{ url_for('company', slug='putra-syam-jaya') }}" class="text-gray-400 hover:text-violet-400 transition-colors text-sm flex items-center"><i class='bx bx-chevron-right mr-1'></i>PT. Putra Syam Jaya</a></li>
+                        <li><a href="{{ url_for('company', slug='asa-bangun-mandiri') }}" class="text-gray-400 hover:text-yellow-400 transition-colors text-sm flex items-center"><i class='bx bx-chevron-right mr-1'></i>CV. Asa Bangun Mandiri</a></li>
+                    </ul>
+                </div>
+
+                <!-- Services -->
+                <div>
+                    <h4 class="font-display font-semibold text-white mb-6 flex items-center">
+                        <i class='bx bx-cog mr-2 text-purple-400'></i>Layanan
+                    </h4>
+                    <ul class="space-y-3">
+                        <li class="text-gray-400 text-sm flex items-center"><i class='bx bx-check-circle mr-2 text-green-400 text-xs'></i>General Supplier</li>
+                        <li class="text-gray-400 text-sm flex items-center"><i class='bx bx-check-circle mr-2 text-green-400 text-xs'></i>Kontraktor</li>
+                        <li class="text-gray-400 text-sm flex items-center"><i class='bx bx-check-circle mr-2 text-green-400 text-xs'></i>Pengadaan Material</li>
+                        <li class="text-gray-400 text-sm flex items-center"><i class='bx bx-check-circle mr-2 text-green-400 text-xs'></i>Konsultasi Proyek</li>
+                        <li class="text-gray-400 text-sm flex items-center"><i class='bx bx-check-circle mr-2 text-green-400 text-xs'></i>Manajemen Konstruksi</li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h4 class="font-display font-semibold text-white mb-6 flex items-center">
+                        <i class='bx bx-phone mr-2 text-purple-400'></i>Kontak
+                    </h4>
+                    <ul class="space-y-4">
+                        <li class="flex items-start space-x-3">
+                            <i class='bx bx-map text-purple-400 mt-0.5'></i>
+                            <span class="text-gray-400 text-sm">Indonesia</span>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <i class='bx bx-envelope text-purple-400 mt-0.5'></i>
+                            <span class="text-gray-400 text-sm">info@asagroup.co.id</span>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <i class='bx bx-phone text-purple-400 mt-0.5'></i>
+                            <span class="text-gray-400 text-sm">+62 xxx-xxxx-xxxx</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section-divider my-10"></div>
+
+            <div class="flex flex-col md:flex-row items-center justify-between text-gray-500 text-sm">
+                <p>&copy; 2024 ASA Group. All rights reserved.</p>
+                <p class="mt-2 md:mt-0">General Supplier & Kontraktor Terpercaya</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top -->
+    <button id="back-to-top" class="fixed bottom-8 right-8 w-12 h-12 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full shadow-lg shadow-purple-500/25 flex items-center justify-center text-white opacity-0 invisible transition-all duration-300 hover:scale-110 z-50">
+        <i class='bx bx-chevron-up text-2xl'></i>
+    </button>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                const icon = mobileMenuBtn.querySelector('i');
+                icon.classList.toggle('bx-menu');
+                icon.classList.toggle('bx-x');
+            });
+        }
+
+        // Close mobile menu on link click
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                const icon = mobileMenuBtn.querySelector('i');
+                icon.classList.add('bx-menu');
+                icon.classList.remove('bx-x');
+            });
+        });
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-lg', 'shadow-black/20');
+            } else {
+                navbar.classList.remove('shadow-lg', 'shadow-black/20');
+            }
+        });
+
+        // Back to top button
+        const backToTop = document.getElementById('back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                backToTop.classList.remove('opacity-0', 'invisible');
+                backToTop.classList.add('opacity-100', 'visible');
+            } else {
+                backToTop.classList.add('opacity-0', 'invisible');
+                backToTop.classList.remove('opacity-100', 'visible');
+            }
+        });
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Scroll reveal animation
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // Counter animation
+        function animateCounter(el) {
+            const target = parseInt(el.getAttribute('data-target'));
+            const suffix = el.getAttribute('data-suffix') || '';
+            const duration = 2000;
+            const start = 0;
+            const startTime = performance.now();
+
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                const current = Math.floor(eased * target);
+                el.textContent = current + suffix;
+                if (progress < 1) requestAnimationFrame(update);
+            }
+            requestAnimationFrame(update);
+        }
+
+        const counters = document.querySelectorAll('.count-up');
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
+                    entry.target.classList.add('counted');
+                    animateCounter(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+        counters.forEach(el => counterObserver.observe(el));
+    </script>
+
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>
