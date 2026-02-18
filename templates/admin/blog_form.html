@@ -4,147 +4,271 @@
 {% block admin_title_header %}{{ 'Edit Blog' if post else 'Buat Blog Baru' }}{% endblock %}
 
 {% block admin_content %}
-<div class="max-w-4xl">
+<div class="w-full">
     <div class="mb-6">
         <a href="{{ url_for('admin.blog_list') }}" class="text-gray-400 hover:text-white text-sm transition-colors">
             <i class='bx bx-arrow-back mr-1'></i> Kembali ke Daftar Blog
         </a>
     </div>
 
-    <div class="bg-gray-800 rounded-xl border border-gray-700 p-6">
-        <form method="POST" action="{{ url_for('admin.blog_edit', post_id=post.id) if post else url_for('admin.blog_create') }}" enctype="multipart/form-data" class="space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <label for="title" class="block text-sm font-medium text-gray-300 mb-2">Judul</label>
+    <form method="POST" action="{{ url_for('admin.blog_edit', post_id=post.id) if post else url_for('admin.blog_create') }}" enctype="multipart/form-data" id="blogForm">
+        <!-- Top bar: title + meta -->
+        <div class="bg-gray-800 rounded-xl border border-gray-700 p-6 mb-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+                <div class="lg:col-span-2">
+                    <label for="title" class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Judul Artikel</label>
                     <input type="text" id="title" name="title" value="{{ post.title if post else '' }}" required
-                           class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                           placeholder="Masukkan judul artikel..."
+                           class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white text-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
                 </div>
                 <div>
-                    <label for="slug" class="block text-sm font-medium text-gray-300 mb-2">Slug</label>
+                    <label for="slug" class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Slug URL</label>
                     <input type="text" id="slug" name="slug" value="{{ post.slug if post else '' }}" required
-                           class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                           placeholder="judul-artikel"
+                           class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
                 </div>
             </div>
+        </div>
 
-            <div>
-                <label for="excerpt" class="block text-sm font-medium text-gray-300 mb-2">Excerpt</label>
-                <textarea id="excerpt" name="excerpt" rows="3"
-                          class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">{{ post.excerpt if post else '' }}</textarea>
+        <!-- Main content editor — full width -->
+        <div class="bg-gray-800 rounded-xl border border-gray-700 mb-6 overflow-hidden">
+            <div class="px-6 py-3 border-b border-gray-700 flex items-center justify-between">
+                <label class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Konten Artikel</label>
+                <div class="flex items-center gap-3">
+                    <button type="button" onclick="toggleFullscreen()" class="text-xs text-gray-400 hover:text-purple-400 transition-colors" title="Fullscreen Editor">
+                        <i class='bx bx-expand text-base'></i> Fullscreen
+                    </button>
+                    <span class="text-xs text-gray-500" id="wordCount">0 kata</span>
+                </div>
             </div>
-
-            <div>
-                <label class="block text-sm font-medium text-gray-300 mb-2">Konten</label>
-                <div id="editor" style="height: 400px; background: #374151; color: white; border-radius: 0 0 0.5rem 0.5rem;"></div>
-                <textarea id="content" name="content" class="hidden">{{ post.content if post else '' }}</textarea>
+            <div id="editor-wrapper">
+                <div id="editor"></div>
             </div>
+            <textarea id="content" name="content" class="hidden">{{ post.content if post else '' }}</textarea>
+        </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Bottom: excerpt + meta -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+            <div class="lg:col-span-2 bg-gray-800 rounded-xl border border-gray-700 p-6">
+                <label for="excerpt" class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Ringkasan / Excerpt</label>
+                <textarea id="excerpt" name="excerpt" rows="4" placeholder="Ringkasan singkat artikel untuk tampilan di daftar blog..."
+                          class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">{{ post.excerpt if post else '' }}</textarea>
+            </div>
+            <div class="bg-gray-800 rounded-xl border border-gray-700 p-6 space-y-5">
                 <div>
-                    <label for="category" class="block text-sm font-medium text-gray-300 mb-2">Kategori</label>
-                    <input type="text" id="category" name="category" value="{{ post.category if post else '' }}"
-                           class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                    <label for="category" class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Kategori</label>
+                    <input type="text" id="category" name="category" value="{{ post.category if post else '' }}" placeholder="Berita, Tutorial, dll."
+                           class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
                 </div>
                 <div>
-                    <label for="status" class="block text-sm font-medium text-gray-300 mb-2">Status</label>
+                    <label for="status" class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Status</label>
                     <select id="status" name="status"
                             class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
                         <option value="published" {{ 'selected' if post and post.status == 'published' }}>Published</option>
                         <option value="draft" {{ 'selected' if post and post.status == 'draft' }}>Draft</option>
                     </select>
                 </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                    <label for="cover_icon" class="block text-sm font-medium text-gray-300 mb-2">Cover Icon</label>
-                    <input type="text" id="cover_icon" name="cover_icon" value="{{ post.cover_icon if post else 'bx-news' }}"
-                           class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                    <label for="cover_icon" class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Cover Icon</label>
+                    <input type="text" id="cover_icon" name="cover_icon" value="{{ post.cover_icon if post else 'bx-news' }}" placeholder="bx-news"
+                           class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
                 </div>
                 <div>
-                    <label for="cover_gradient" class="block text-sm font-medium text-gray-300 mb-2">Cover Gradient</label>
+                    <label for="cover_gradient" class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Cover Gradient</label>
                     <input type="text" id="cover_gradient" name="cover_gradient" value="{{ post.cover_gradient if post else 'from-purple-600 to-blue-600' }}"
-                           class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                           class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
                 </div>
             </div>
+        </div>
 
-            <div class="flex items-center space-x-4 pt-4">
-                <button type="submit" class="px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 rounded-lg text-sm font-semibold transition-all">
-                    <i class='bx bx-save mr-1'></i> {{ 'Simpan Perubahan' if post else 'Buat Blog' }}
-                </button>
-                <a href="{{ url_for('admin.blog_list') }}" class="px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm font-medium transition-colors">
-                    Batal
-                </a>
-            </div>
-        </form>
-    </div>
+        <!-- Action buttons -->
+        <div class="flex items-center space-x-4">
+            <button type="submit" class="px-8 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 rounded-lg text-sm font-semibold transition-all shadow-lg shadow-purple-600/25">
+                <i class='bx bx-save mr-1'></i> {{ 'Simpan Perubahan' if post else 'Publikasikan' }}
+            </button>
+            <a href="{{ url_for('admin.blog_list') }}" class="px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm font-medium transition-colors">
+                Batal
+            </a>
+        </div>
+    </form>
 </div>
+
+<!-- Quill CSS -->
 <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai-sublime.min.css">
+
 <style>
-    .ql-toolbar.ql-snow { background: #1f2937; border-color: #4b5563 !important; border-radius: 0.5rem 0.5rem 0 0; }
-    .ql-toolbar .ql-stroke { stroke: #d1d5db !important; }
-    .ql-toolbar .ql-fill { fill: #d1d5db !important; }
-    .ql-toolbar .ql-picker-label { color: #d1d5db !important; }
-    .ql-toolbar .ql-picker-options { background: #374151 !important; border-color: #4b5563 !important; }
-    .ql-toolbar .ql-picker-item { color: #d1d5db !important; }
-    .ql-toolbar button:hover .ql-stroke, .ql-toolbar button.ql-active .ql-stroke { stroke: #a78bfa !important; }
-    .ql-toolbar button:hover .ql-fill, .ql-toolbar button.ql-active .ql-fill { fill: #a78bfa !important; }
-    #editor .ql-editor { min-height: 400px; font-size: 15px; line-height: 1.8; color: #e5e7eb; }
-    #editor .ql-editor h1 { font-size: 2em; font-weight: 700; margin-bottom: 0.5em; }
-    #editor .ql-editor h2 { font-size: 1.5em; font-weight: 700; margin-bottom: 0.5em; }
-    #editor .ql-editor h3 { font-size: 1.17em; font-weight: 600; margin-bottom: 0.5em; }
-    #editor .ql-editor pre.ql-syntax { background: #1a1a2e; border-radius: 0.5rem; padding: 1em; overflow-x: auto; }
-    #editor .ql-editor blockquote { border-left: 4px solid #a78bfa; padding-left: 1em; color: #9ca3af; }
-    #editor .ql-editor img { max-width: 100%; border-radius: 0.5rem; margin: 1em 0; cursor: pointer; transition: outline 0.15s; }
-    #editor .ql-editor img.img-selected { outline: 3px solid #a78bfa; outline-offset: 2px; }
-    /* Image resize UI — rendered outside Quill, fixed to viewport */
+    /* ---- Toolbar ---- */
+    .ql-toolbar.ql-snow {
+        background: #1e293b; border-color: #334155 !important;
+        border-radius: 0; padding: 8px 12px !important;
+        position: sticky; top: 0; z-index: 10;
+    }
+    .ql-toolbar .ql-formats { margin-right: 12px !important; }
+    .ql-toolbar .ql-stroke { stroke: #94a3b8 !important; }
+    .ql-toolbar .ql-fill { fill: #94a3b8 !important; }
+    .ql-toolbar .ql-picker-label { color: #94a3b8 !important; }
+    .ql-toolbar .ql-picker-options { background: #1e293b !important; border-color: #334155 !important; }
+    .ql-toolbar .ql-picker-item { color: #cbd5e1 !important; }
+    .ql-toolbar button:hover .ql-stroke,
+    .ql-toolbar button.ql-active .ql-stroke { stroke: #a78bfa !important; }
+    .ql-toolbar button:hover .ql-fill,
+    .ql-toolbar button.ql-active .ql-fill { fill: #a78bfa !important; }
+    .ql-toolbar .ql-picker-label:hover,
+    .ql-toolbar .ql-picker-label.ql-active { color: #a78bfa !important; }
+
+    /* Header picker labels */
+    .ql-snow .ql-picker.ql-header .ql-picker-label[data-value="1"]::before,
+    .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="1"]::before { content: 'Heading 1' !important; }
+    .ql-snow .ql-picker.ql-header .ql-picker-label[data-value="2"]::before,
+    .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="2"]::before { content: 'Heading 2' !important; }
+    .ql-snow .ql-picker.ql-header .ql-picker-label[data-value="3"]::before,
+    .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="3"]::before { content: 'Heading 3' !important; }
+    .ql-snow .ql-picker.ql-header .ql-picker-label[data-value="4"]::before,
+    .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="4"]::before { content: 'Heading 4' !important; }
+    .ql-snow .ql-picker.ql-header .ql-picker-label[data-value="5"]::before,
+    .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="5"]::before { content: 'Heading 5' !important; }
+    .ql-snow .ql-picker.ql-header .ql-picker-label[data-value="6"]::before,
+    .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="6"]::before { content: 'Heading 6' !important; }
+    .ql-snow .ql-picker.ql-header .ql-picker-label::before,
+    .ql-snow .ql-picker.ql-header .ql-picker-item::before { content: 'Paragraf' !important; }
+    .ql-snow .ql-picker.ql-header { width: 130px !important; }
+
+    /* Size picker labels */
+    .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="small"]::before,
+    .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="small"]::before { content: 'Kecil' !important; }
+    .ql-snow .ql-picker.ql-size .ql-picker-label::before,
+    .ql-snow .ql-picker.ql-size .ql-picker-item::before { content: 'Normal' !important; }
+    .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="large"]::before,
+    .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="large"]::before { content: 'Besar' !important; }
+    .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="huge"]::before,
+    .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="huge"]::before { content: 'Sangat Besar' !important; }
+    .ql-snow .ql-picker.ql-size { width: 120px !important; }
+
+    /* ---- Editor area ---- */
+    #editor .ql-editor {
+        min-height: 600px; font-size: 16px; line-height: 1.9;
+        color: #e2e8f0; padding: 2rem 2.5rem;
+        background: #0f172a;
+    }
+    #editor .ql-container.ql-snow { border-color: #334155 !important; }
+    #editor .ql-editor h1 { font-size: 2.25em; font-weight: 800; margin: 1em 0 0.5em; color: #f1f5f9; }
+    #editor .ql-editor h2 { font-size: 1.75em; font-weight: 700; margin: 0.8em 0 0.4em; color: #f1f5f9; }
+    #editor .ql-editor h3 { font-size: 1.4em; font-weight: 600; margin: 0.7em 0 0.35em; color: #e2e8f0; }
+    #editor .ql-editor h4 { font-size: 1.2em; font-weight: 600; margin: 0.6em 0 0.3em; color: #e2e8f0; }
+    #editor .ql-editor h5 { font-size: 1.05em; font-weight: 600; margin: 0.5em 0 0.25em; color: #cbd5e1; }
+    #editor .ql-editor h6 { font-size: 0.95em; font-weight: 600; margin: 0.5em 0 0.25em; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; }
+    #editor .ql-editor p { margin-bottom: 0.8em; }
+    #editor .ql-editor pre.ql-syntax {
+        background: #1a1a2e; border-radius: 0.75rem; padding: 1.25em;
+        overflow-x: auto; font-size: 0.9em; line-height: 1.6;
+        border: 1px solid #2d2d4a;
+    }
+    #editor .ql-editor blockquote {
+        border-left: 4px solid #a78bfa; padding: 0.75em 1.25em;
+        color: #94a3b8; background: rgba(167,139,250,0.05);
+        border-radius: 0 0.5rem 0.5rem 0; margin: 1em 0;
+        font-style: italic;
+    }
+    #editor .ql-editor ol, #editor .ql-editor ul { padding-left: 1.5em; margin-bottom: 0.8em; }
+    #editor .ql-editor li { margin-bottom: 0.3em; }
+    #editor .ql-editor a { color: #818cf8; text-decoration: underline; }
+    #editor .ql-editor hr { border: none; border-top: 2px solid #334155; margin: 1.5em 0; }
+    #editor .ql-editor img {
+        max-width: 100%; border-radius: 0.5rem; margin: 1em 0;
+        cursor: pointer; transition: outline 0.15s;
+    }
+    #editor .ql-editor img.img-selected { outline: 3px solid #a78bfa; outline-offset: 3px; }
+    #editor .ql-editor .ql-video {
+        width: 100%; min-height: 360px; border-radius: 0.5rem;
+        margin: 1em 0; border: 1px solid #334155;
+    }
+    #editor .ql-editor sub { font-size: 0.75em; }
+    #editor .ql-editor sup { font-size: 0.75em; }
+
+    /* Fullscreen mode */
+    #editor-wrapper.fullscreen {
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+        z-index: 9999; background: #0f172a;
+    }
+    #editor-wrapper.fullscreen #editor .ql-editor { min-height: calc(100vh - 50px); }
+    #editor-wrapper.fullscreen .ql-toolbar { position: sticky; top: 0; z-index: 10000; }
+    .fullscreen-exit-btn {
+        position: fixed; top: 12px; right: 20px; z-index: 10001;
+        background: #7c3aed; color: #fff; border: none; border-radius: 8px;
+        padding: 8px 16px; font-size: 13px; cursor: pointer;
+        display: none; align-items: center; gap: 6px;
+    }
+    #editor-wrapper.fullscreen ~ .fullscreen-exit-btn { display: flex; }
+
+    /* Custom toolbar button for HR */
+    .ql-hr::before { content: '―'; font-weight: bold; }
+    .ql-toolbar .ql-hr { width: auto !important; padding: 0 6px !important; }
+
+    /* ---- Image resize UI ---- */
     #img-resize-toolbar {
-        position: fixed; z-index: 9999; display: none;
-        background: #1f2937; border: 1px solid #4b5563; border-radius: 8px;
-        padding: 4px 6px; gap: 4px; align-items: center; white-space: nowrap;
-        box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+        position: absolute; z-index: 9999; display: none;
+        background: #1e293b; border: 1px solid #334155; border-radius: 10px;
+        padding: 5px 8px; gap: 4px; align-items: center; white-space: nowrap;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.4);
     }
     #img-resize-toolbar button {
-        background: #374151; color: #d1d5db; border: none; border-radius: 4px;
-        padding: 4px 10px; font-size: 12px; cursor: pointer; transition: background 0.15s;
+        background: #334155; color: #cbd5e1; border: none; border-radius: 6px;
+        padding: 5px 12px; font-size: 12px; cursor: pointer; transition: all 0.15s;
     }
     #img-resize-toolbar button:hover { background: #a78bfa; color: #fff; }
     #img-resize-toolbar button.active { background: #7c3aed; color: #fff; }
-    #img-resize-toolbar .separator { border-left: 1px solid #4b5563; height: 20px; margin: 0 4px; }
+    #img-resize-toolbar .separator { border-left: 1px solid #475569; height: 22px; margin: 0 6px; }
     #img-resize-info {
-        position: fixed; z-index: 9999; display: none;
-        background: rgba(0,0,0,0.8); color: #e5e7eb; font-size: 11px; padding: 3px 10px;
-        border-radius: 4px; white-space: nowrap; pointer-events: none;
+        position: absolute; z-index: 9999; display: none;
+        background: rgba(0,0,0,0.85); color: #e2e8f0; font-size: 11px; padding: 4px 12px;
+        border-radius: 6px; white-space: nowrap; pointer-events: none;
     }
     #img-resize-handle {
-        position: fixed; z-index: 9998; display: none;
-        width: 12px; height: 12px; background: #a78bfa; border: 2px solid #fff;
-        border-radius: 2px; cursor: nwse-resize; box-shadow: 0 0 4px rgba(0,0,0,0.5);
+        position: absolute; z-index: 9998; display: none;
+        width: 14px; height: 14px; background: #a78bfa; border: 2px solid #fff;
+        border-radius: 3px; cursor: nwse-resize; box-shadow: 0 0 6px rgba(0,0,0,0.4);
     }
 </style>
-<!-- Image resize UI elements (outside Quill editor, in document body) -->
+
+<!-- Image resize UI elements (outside Quill editor) -->
 <div id="img-resize-toolbar"></div>
 <div id="img-resize-info"></div>
 <div id="img-resize-handle"></div>
+<button type="button" class="fullscreen-exit-btn" onclick="toggleFullscreen()"><i class='bx bx-exit-fullscreen'></i> Keluar Fullscreen</button>
 
 <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>
+    // ---- Custom Blots ----
+    var BlockEmbed = Quill.import('blots/block/embed');
+    // Horizontal rule blot
+    var DividerBlot = function() {};
+    DividerBlot = function() { return Reflect.construct(BlockEmbed, arguments, DividerBlot); };
+    Object.setPrototypeOf(DividerBlot.prototype, BlockEmbed.prototype);
+    Object.setPrototypeOf(DividerBlot, BlockEmbed);
+    DividerBlot.blotName = 'divider';
+    DividerBlot.tagName = 'hr';
+    Quill.register(DividerBlot);
+
+    // ---- Quill Editor ----
     var quill = new Quill('#editor', {
         theme: 'snow',
+        placeholder: 'Mulai menulis artikel Anda di sini...',
         modules: {
             syntax: { hljs: hljs },
             toolbar: {
                 container: [
-                    [{ 'header': [1, 2, 3, 4, false] }],
-                    [{ 'font': [] }],
+                    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
                     [{ 'size': ['small', false, 'large', 'huge'] }],
+                    [{ 'font': [] }],
                     ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'script': 'sub' }, { 'script': 'super' }],
                     [{ 'color': [] }, { 'background': [] }],
                     [{ 'align': [] }],
-                    [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
                     ['blockquote', 'code-block'],
-                    ['link', 'image', 'video'],
+                    ['link', 'image', 'video', 'hr'],
                     [{ 'direction': 'rtl' }],
                     ['clean']
                 ],
@@ -157,37 +281,58 @@
                         input.click();
                         input.onchange = async function() {
                             var file = input.files[0];
-                            if (file) {
-                                var formData = new FormData();
-                                formData.append('image', file);
-                                try {
-                                    var res = await fetch('{{ url_for("admin.upload_image") }}', {
-                                        method: 'POST',
-                                        body: formData
-                                    });
-                                    var data = await res.json();
-                                    if (data.success) {
-                                        var range = editor.getSelection(true);
-                                        if (!range) {
-                                            range = { index: editor.getLength() - 1, length: 0 };
-                                        }
-                                        editor.insertEmbed(range.index, 'image', data.url);
-                                        editor.setSelection(range.index + 1);
-                                    } else {
-                                        alert(data.error || 'Upload gagal');
-                                    }
-                                } catch (e) {
-                                    alert('Upload gagal: ' + e.message);
+                            if (!file) return;
+                            var formData = new FormData();
+                            formData.append('image', file);
+                            try {
+                                var res = await fetch('{{ url_for("admin.upload_image") }}', {
+                                    method: 'POST', body: formData
+                                });
+                                var data = await res.json();
+                                if (data.success) {
+                                    var range = editor.getSelection(true);
+                                    if (!range) range = { index: editor.getLength() - 1, length: 0 };
+                                    editor.insertEmbed(range.index, 'image', data.url);
+                                    editor.setSelection(range.index + 1);
+                                } else {
+                                    alert(data.error || 'Upload gagal');
                                 }
+                            } catch (e) {
+                                alert('Upload gagal: ' + e.message);
                             }
                         };
+                    },
+                    hr: function() {
+                        var range = this.quill.getSelection(true);
+                        if (!range) range = { index: this.quill.getLength() - 1, length: 0 };
+                        this.quill.insertEmbed(range.index, 'divider', true, Quill.sources.USER);
+                        this.quill.setSelection(range.index + 1, Quill.sources.SILENT);
                     }
                 }
             }
         }
     });
 
-    // ---- Image Resize Feature (toolbar rendered in document.body) ----
+    // ---- Word count ----
+    function updateWordCount() {
+        var text = quill.getText().trim();
+        var count = text ? text.split(/\s+/).length : 0;
+        document.getElementById('wordCount').textContent = count + ' kata';
+    }
+    quill.on('text-change', updateWordCount);
+    updateWordCount();
+
+    // ---- Fullscreen toggle ----
+    function toggleFullscreen() {
+        document.getElementById('editor-wrapper').classList.toggle('fullscreen');
+    }
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            document.getElementById('editor-wrapper').classList.remove('fullscreen');
+        }
+    });
+
+    // ---- Image Resize Feature ----
     (function() {
         var selectedImg = null;
         var toolbarEl = document.getElementById('img-resize-toolbar');
@@ -205,22 +350,19 @@
         function positionUI() {
             if (!selectedImg) return;
             var r = selectedImg.getBoundingClientRect();
-            // Toolbar above image, centered
             toolbarEl.style.display = 'flex';
             toolbarEl.style.position = 'absolute';
             toolbarEl.style.left = Math.max(0, r.left + r.width / 2 - toolbarEl.offsetWidth / 2 + window.scrollX) + 'px';
             toolbarEl.style.top = Math.max(0, r.top - toolbarEl.offsetHeight - 8 + window.scrollY) + 'px';
-            // Handle at bottom-right of image
             handleEl.style.display = 'block';
             handleEl.style.position = 'absolute';
-            handleEl.style.left = (r.right - 6 + window.scrollX) + 'px';
-            handleEl.style.top = (r.bottom - 6 + window.scrollY) + 'px';
-            // Info below image
+            handleEl.style.left = (r.right - 7 + window.scrollX) + 'px';
+            handleEl.style.top = (r.bottom - 7 + window.scrollY) + 'px';
             infoEl.style.display = 'block';
             infoEl.style.position = 'absolute';
             infoEl.textContent = Math.round(r.width) + ' × ' + Math.round(r.height) + ' px';
             infoEl.style.left = (r.left + r.width / 2 - infoEl.offsetWidth / 2 + window.scrollX) + 'px';
-            infoEl.style.top = (r.bottom + 6 + window.scrollY) + 'px';
+            infoEl.style.top = (r.bottom + 8 + window.scrollY) + 'px';
         }
 
         function selectImage(img) {
@@ -233,21 +375,16 @@
 
         function buildToolbarButtons() {
             toolbarEl.innerHTML = '';
-            var sizes = [
-                { label: '25%', w: '25%' },
-                { label: '50%', w: '50%' },
-                { label: '75%', w: '75%' },
-                { label: '100%', w: '100%' },
+            [
+                { label: '25%', w: '25%' }, { label: '50%', w: '50%' },
+                { label: '75%', w: '75%' }, { label: '100%', w: '100%' },
                 { label: 'Auto', w: '' }
-            ];
-            sizes.forEach(function(s) {
+            ].forEach(function(s) {
                 var btn = document.createElement('button');
-                btn.type = 'button';
-                btn.textContent = s.label;
+                btn.type = 'button'; btn.textContent = s.label;
                 if (selectedImg && selectedImg.style.width === s.w) btn.classList.add('active');
                 btn.onmousedown = function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
+                    e.preventDefault(); e.stopPropagation();
                     if (!selectedImg) return;
                     selectedImg.style.width = s.w;
                     selectedImg.style.height = '';
@@ -258,23 +395,17 @@
                 };
                 toolbarEl.appendChild(btn);
             });
-            // Separator
-            var sep = document.createElement('span');
-            sep.className = 'separator';
+            var sep = document.createElement('span'); sep.className = 'separator';
             toolbarEl.appendChild(sep);
-            // Alignment
             [
-                { icon: '◀', title: 'Left',   fn: function(img) { img.style.display = 'block'; img.style.margin = '1em 0'; img.style.float = ''; }},
-                { icon: '◆', title: 'Center', fn: function(img) { img.style.display = 'block'; img.style.margin = '1em auto'; img.style.float = ''; }},
-                { icon: '▶', title: 'Right',  fn: function(img) { img.style.display = 'block'; img.style.margin = '1em 0 1em auto'; img.style.float = ''; }}
+                { icon: '◀', title: 'Kiri',   fn: function(img) { img.style.display = 'block'; img.style.margin = '1em 0'; } },
+                { icon: '◆', title: 'Tengah', fn: function(img) { img.style.display = 'block'; img.style.margin = '1em auto'; } },
+                { icon: '▶', title: 'Kanan',  fn: function(img) { img.style.display = 'block'; img.style.margin = '1em 0 1em auto'; } }
             ].forEach(function(a) {
                 var btn = document.createElement('button');
-                btn.type = 'button';
-                btn.textContent = a.icon;
-                btn.title = a.title;
+                btn.type = 'button'; btn.textContent = a.icon; btn.title = a.title;
                 btn.onmousedown = function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
+                    e.preventDefault(); e.stopPropagation();
                     if (selectedImg) a.fn(selectedImg);
                     setTimeout(positionUI, 10);
                 };
@@ -282,67 +413,59 @@
             });
         }
 
-        // Drag handle for manual resizing
         handleEl.addEventListener('mousedown', function(e) {
             if (!selectedImg) return;
-            e.preventDefault();
-            e.stopPropagation();
-            var startX = e.clientX;
-            var startY = e.clientY;
-            var startW = selectedImg.clientWidth;
-            var startH = selectedImg.clientHeight;
+            e.preventDefault(); e.stopPropagation();
+            var startX = e.clientX, startW = selectedImg.clientWidth, startH = selectedImg.clientHeight;
             var ratio = startH / startW;
             function onMove(ev) {
-                var dx = ev.clientX - startX;
-                var newW = Math.max(30, startW + dx);
+                var newW = Math.max(30, startW + (ev.clientX - startX));
                 selectedImg.style.width = newW + 'px';
                 selectedImg.style.height = Math.round(newW * ratio) + 'px';
-                selectedImg.removeAttribute('width');
-                selectedImg.removeAttribute('height');
+                selectedImg.removeAttribute('width'); selectedImg.removeAttribute('height');
                 positionUI();
             }
             function onUp() {
                 document.removeEventListener('mousemove', onMove);
                 document.removeEventListener('mouseup', onUp);
-                buildToolbarButtons();
-                positionUI();
+                buildToolbarButtons(); positionUI();
             }
             document.addEventListener('mousemove', onMove);
             document.addEventListener('mouseup', onUp);
         });
 
-        // Click on image in editor
         quill.root.addEventListener('click', function(e) {
             if (e.target && e.target.tagName === 'IMG') {
-                e.preventDefault();
-                e.stopPropagation();
+                e.preventDefault(); e.stopPropagation();
                 selectImage(e.target);
-            } else {
-                hideUI();
-            }
+            } else { hideUI(); }
         });
 
-        // Click outside editor hides UI (but not if clicking toolbar itself)
         document.addEventListener('mousedown', function(e) {
             if (selectedImg && !quill.root.contains(e.target) &&
-                !toolbarEl.contains(e.target) && e.target !== handleEl) {
-                hideUI();
-            }
+                !toolbarEl.contains(e.target) && e.target !== handleEl) { hideUI(); }
         });
 
-        // Reposition on window scroll / resize
         window.addEventListener('scroll', function() { if (selectedImg) positionUI(); }, true);
         window.addEventListener('resize', function() { if (selectedImg) positionUI(); });
     })();
 
-    // Load existing content
+    // ---- Load existing content ----
     var existingContent = document.getElementById('content').value;
-    if (existingContent) {
-        quill.root.innerHTML = existingContent;
-    }
-    // Sync on submit
-    document.querySelector('form').addEventListener('submit', function() {
+    if (existingContent) quill.root.innerHTML = existingContent;
+    // ---- Sync on submit ----
+    document.getElementById('blogForm').addEventListener('submit', function() {
         document.getElementById('content').value = quill.root.innerHTML;
     });
+    // ---- Auto-generate slug ----
+    document.getElementById('title').addEventListener('input', function() {
+        var slugField = document.getElementById('slug');
+        if (!slugField.dataset.manual) {
+            slugField.value = this.value.toLowerCase()
+                .replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-')
+                .replace(/^-|-$/g, '');
+        }
+    });
+    document.getElementById('slug').addEventListener('input', function() { this.dataset.manual = '1'; });
 </script>
 {% endblock %}
