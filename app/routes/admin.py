@@ -40,7 +40,10 @@ def _save_upload(file_field="image_file"):
     safe_name = f"{uuid.uuid4().hex}.{ext}"
     upload_dir = current_app.config["UPLOAD_FOLDER"]
     os.makedirs(upload_dir, exist_ok=True)
-    f.save(os.path.join(upload_dir, safe_name))
+    try:
+        f.save(os.path.join(upload_dir, safe_name))
+    except OSError:
+        return ""
     return f"/static/uploads/{safe_name}"
 
 
