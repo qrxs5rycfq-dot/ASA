@@ -16,6 +16,7 @@ class Config:
     DB_USER = os.environ.get("DB_USER", "root")
     DB_PASSWORD = os.environ.get("DB_PASSWORD", "")
     DB_NAME = os.environ.get("DB_NAME", "asa_group")
+    DB_UNIX_SOCKET = os.environ.get("DB_UNIX_SOCKET", "")
 
     # App
     APP_NAME = os.environ.get("APP_NAME", "ASA Group")

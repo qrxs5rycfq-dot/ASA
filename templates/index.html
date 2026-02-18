@@ -3,118 +3,117 @@
 
 {% block content %}
 
-<!-- ===== HERO SECTION — Dynamic & Alive ===== -->
+<!-- ===== HERO SECTION — Modern & Smooth ===== -->
 <section id="home" class="relative min-h-screen flex items-center overflow-hidden">
-    <!-- Animated background particles -->
-    <div class="absolute inset-0 bg-gradient-to-br from-gray-50 via-white to-gray-50">
-        <!-- Floating gradient orbs -->
-        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-red-200/30 rounded-full blur-3xl animate-float"></div>
-        <div class="absolute top-1/3 right-1/4 w-80 h-80 bg-violet-200/30 rounded-full blur-3xl animate-float" style="animation-delay: -2s;"></div>
-        <div class="absolute bottom-1/4 left-1/3 w-72 h-72 bg-yellow-200/20 rounded-full blur-3xl animate-float" style="animation-delay: -4s;"></div>
-        <div class="absolute top-1/2 right-1/3 w-64 h-64 bg-blue-200/20 rounded-full blur-3xl animate-float" style="animation-delay: -3s;"></div>
-
-        <!-- Grid pattern overlay -->
-        <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(circle, #000 1px, transparent 1px); background-size: 30px 30px;"></div>
+    <!-- Soft animated background -->
+    <div class="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-gray-50">
+        <div class="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-red-100/40 rounded-full blur-[100px] animate-float"></div>
+        <div class="absolute top-1/3 right-1/4 w-[400px] h-[400px] bg-violet-100/40 rounded-full blur-[100px] animate-float" style="animation-delay:-2s"></div>
+        <div class="absolute bottom-1/4 left-1/3 w-[350px] h-[350px] bg-amber-100/30 rounded-full blur-[100px] animate-float" style="animation-delay:-4s"></div>
+        <div class="absolute inset-0 opacity-[0.02]" style="background-image:radial-gradient(circle,#64748b 1px,transparent 1px);background-size:32px 32px"></div>
     </div>
 
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
-        <div class="grid lg:grid-cols-2 gap-12 items-center">
-            <!-- Left: Text Content -->
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 w-full">
+        <div class="grid lg:grid-cols-2 gap-16 items-center">
+            <!-- Left: Refined Text Content -->
             <div class="order-2 lg:order-1">
-                <div class="inline-flex items-center px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-sm text-sm mb-8 animate-fade-in">
-                    <span class="relative flex h-2.5 w-2.5 mr-2.5">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+                <!-- Subtle badge -->
+                <div class="animate-fade-in mb-6">
+                    <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide uppercase bg-gradient-to-r from-red-50 to-violet-50 border border-red-100/60 text-red-600">
+                        <span class="relative flex h-2 w-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
+                        General Supplier & Kontraktor
                     </span>
-                    <span class="text-gray-600 font-medium">General Supplier & Kontraktor Terpercaya</span>
                 </div>
 
-                <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.1] text-gray-900 mb-6 animate-slide-up">
-                    Solusi Terbaik untuk
-                    <span class="relative inline-block">
+                <!-- Refined heading — lighter, smoother -->
+                <div class="animate-slide-up">
+                    <p class="text-sm sm:text-base font-medium text-gray-400 tracking-wide mb-3">{{ site.app_name or 'ASA Group' }} — Tiga Perusahaan, Satu Visi</p>
+                    <h1 class="font-display text-3xl sm:text-4xl lg:text-[2.75rem] font-bold leading-snug text-gray-800 mb-2">
+                        Mitra Terpercaya untuk
+                    </h1>
+                    <h1 class="font-display text-3xl sm:text-4xl lg:text-[2.75rem] font-bold leading-snug mb-6">
                         <span class="gradient-text">Industri & Konstruksi</span>
-                        <svg class="absolute -bottom-2 left-0 w-full" height="8" viewBox="0 0 200 8" fill="none">
-                            <path d="M1 5.5C47 2 153 2 199 5.5" stroke="url(#underline-grad)" stroke-width="3" stroke-linecap="round"/>
-                            <defs><linearGradient id="underline-grad" x1="0" y1="0" x2="200" y2="0"><stop stop-color="#ef4444"/><stop offset="0.5" stop-color="#8b5cf6"/><stop offset="1" stop-color="#f59e0b"/></linearGradient></defs>
-                        </svg>
-                    </span>
-                </h1>
+                    </h1>
+                </div>
 
-                <p class="text-gray-500 text-lg leading-relaxed mb-10 max-w-lg animate-slide-up" style="animation-delay: 0.15s;">
-                    Tiga perusahaan, satu visi — menjadi mitra unggul dalam perdagangan dan konstruksi yang mampu menghadapi persaingan global.
+                <p class="text-gray-500 text-base sm:text-lg leading-relaxed mb-8 max-w-md animate-slide-up" style="animation-delay:.12s">
+                    Kami hadir sebagai solusi terdepan dalam perdagangan bahan industri dan pembangunan — profesional, berkualitas, dan tepat waktu.
                 </p>
 
-                <div class="flex flex-col sm:flex-row gap-4 animate-slide-up" style="animation-delay: 0.3s;">
-                    <a href="{{ url_for('public.services_page') }}" class="group px-7 py-4 bg-gradient-to-r from-red-600 to-red-500 rounded-2xl font-semibold text-white shadow-lg shadow-red-500/20 hover:shadow-red-500/40 transition-all duration-300 hover:-translate-y-0.5 flex items-center justify-center gap-2">
-                        <i class="bx bx-briefcase text-lg"></i> Jelajahi Layanan
-                        <i class="bx bx-right-arrow-alt text-lg group-hover:translate-x-1 transition-transform"></i>
+                <!-- CTA buttons — refined -->
+                <div class="flex flex-wrap gap-3 animate-slide-up" style="animation-delay:.24s">
+                    <a href="{{ url_for('public.services_page') }}" class="group inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-red-600 to-red-500 text-white text-sm font-semibold rounded-xl shadow-lg shadow-red-200/50 hover:shadow-red-300/60 hover:-translate-y-0.5 transition-all duration-300">
+                        <i class="bx bx-briefcase-alt-2"></i> Layanan Kami
+                        <i class="bx bx-chevron-right text-base group-hover:translate-x-0.5 transition-transform"></i>
                     </a>
-                    <a href="{{ url_for('public.contact_page') }}" class="px-7 py-4 bg-white border-2 border-gray-200 rounded-2xl font-semibold text-gray-700 hover:border-red-300 hover:text-red-600 hover:bg-red-50/50 transition-all duration-300 hover:-translate-y-0.5 flex items-center justify-center gap-2 shadow-sm">
-                        <i class="bx bx-phone text-lg"></i> Hubungi Kami
+                    <a href="{{ url_for('public.contact_page') }}" class="inline-flex items-center gap-2 px-6 py-3 bg-white text-sm font-semibold text-gray-700 rounded-xl border border-gray-200 shadow-sm hover:border-red-200 hover:text-red-600 hover:bg-red-50/40 hover:-translate-y-0.5 transition-all duration-300">
+                        <i class="bx bx-phone"></i> Hubungi Kami
                     </a>
                 </div>
 
-                <!-- Mini company logos -->
-                <div class="mt-12 animate-slide-up" style="animation-delay: 0.45s;">
-                    <p class="text-xs text-gray-400 uppercase tracking-widest mb-4 font-medium">Perusahaan Kami</p>
-                    <div class="flex items-center gap-4">
-                        <a href="{{ url_for('public.company', slug='nur-putra-mandiri') }}" class="group flex items-center gap-2.5 px-4 py-2.5 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:border-red-200 transition-all duration-300">
-                            <div class="w-8 h-8 bg-gradient-to-br from-red-500 via-gray-800 to-green-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                                <i class="bx bx-buildings text-white text-xs"></i>
+                <!-- Company pills — compact -->
+                <div class="mt-10 animate-slide-up" style="animation-delay:.36s">
+                    <p class="text-[11px] text-gray-400 uppercase tracking-[0.15em] font-semibold mb-3">Perusahaan Kami</p>
+                    <div class="flex items-center gap-2.5 flex-wrap">
+                        <a href="{{ url_for('public.company', slug='nur-putra-mandiri') }}" class="flex items-center gap-2 px-3 py-2 bg-white rounded-lg border border-gray-100 shadow-sm hover:shadow-md hover:border-red-200 transition-all duration-300 group">
+                            <div class="w-7 h-7 bg-gradient-to-br from-red-500 via-gray-800 to-green-500 rounded-md flex items-center justify-center">
+                                <i class="bx bx-buildings text-white text-[10px]"></i>
                             </div>
-                            <span class="text-xs font-semibold text-gray-700 hidden sm:inline">NPM</span>
+                            <span class="text-xs font-semibold text-gray-600 group-hover:text-red-600 transition-colors">NPM</span>
                         </a>
-                        <a href="{{ url_for('public.company', slug='putra-syam-jaya') }}" class="group flex items-center gap-2.5 px-4 py-2.5 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:border-violet-200 transition-all duration-300">
-                            <div class="w-8 h-8 bg-gradient-to-br from-violet-500 to-blue-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                                <i class="bx bx-cube-alt text-white text-xs"></i>
+                        <a href="{{ url_for('public.company', slug='putra-syam-jaya') }}" class="flex items-center gap-2 px-3 py-2 bg-white rounded-lg border border-gray-100 shadow-sm hover:shadow-md hover:border-violet-200 transition-all duration-300 group">
+                            <div class="w-7 h-7 bg-gradient-to-br from-violet-500 to-blue-500 rounded-md flex items-center justify-center">
+                                <i class="bx bx-cube-alt text-white text-[10px]"></i>
                             </div>
-                            <span class="text-xs font-semibold text-gray-700 hidden sm:inline">PSJ</span>
+                            <span class="text-xs font-semibold text-gray-600 group-hover:text-violet-600 transition-colors">PSJ</span>
                         </a>
-                        <a href="{{ url_for('public.company', slug='asa-bangun-mandiri') }}" class="group flex items-center gap-2.5 px-4 py-2.5 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:border-yellow-200 transition-all duration-300">
-                            <div class="w-8 h-8 bg-gradient-to-br from-yellow-500 to-red-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                                <i class="bx bx-hard-hat text-white text-xs"></i>
+                        <a href="{{ url_for('public.company', slug='asa-bangun-mandiri') }}" class="flex items-center gap-2 px-3 py-2 bg-white rounded-lg border border-gray-100 shadow-sm hover:shadow-md hover:border-amber-200 transition-all duration-300 group">
+                            <div class="w-7 h-7 bg-gradient-to-br from-amber-400 to-red-500 rounded-md flex items-center justify-center">
+                                <i class="bx bx-hard-hat text-white text-[10px]"></i>
                             </div>
-                            <span class="text-xs font-semibold text-gray-700 hidden sm:inline">ABM</span>
+                            <span class="text-xs font-semibold text-gray-600 group-hover:text-amber-600 transition-colors">ABM</span>
                         </a>
                     </div>
                 </div>
             </div>
 
             <!-- Right: Visual Element -->
-            <div class="order-1 lg:order-2 animate-fade-in" style="animation-delay: 0.2s;">
+            <div class="order-1 lg:order-2 animate-fade-in" style="animation-delay:.15s">
                 <div class="relative">
-                    <!-- Main image card -->
-                    <div class="relative rounded-3xl overflow-hidden shadow-2xl shadow-gray-300/40">
+                    <!-- Main image -->
+                    <div class="relative rounded-2xl overflow-hidden shadow-2xl shadow-gray-200/60 ring-1 ring-gray-100">
                         <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80" alt="Proyek Konstruksi" class="w-full aspect-[4/3] object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900/60 via-transparent to-transparent"></div>
-                        <div class="absolute bottom-6 left-6 right-6">
-                            <p class="text-white/80 text-sm mb-1">Portfolio Terbaru</p>
-                            <p class="text-white font-display font-bold text-lg">Proyek Konstruksi & Supply</p>
+                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900/50 via-gray-900/10 to-transparent"></div>
+                        <div class="absolute bottom-5 left-5 right-5">
+                            <p class="text-white/70 text-xs tracking-wide uppercase mb-1">Portfolio Terbaru</p>
+                            <p class="text-white font-display font-semibold">Proyek Konstruksi & Supply</p>
                         </div>
                     </div>
 
-                    <!-- Floating stat card 1 -->
-                    <div class="absolute -top-4 -right-4 bg-white rounded-2xl p-4 shadow-xl shadow-gray-200/50 border border-gray-100 animate-float" style="animation-delay: -1s;">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 bg-gradient-to-br from-green-400 to-emerald-500 rounded-xl flex items-center justify-center">
-                                <i class="bx bx-check-shield text-white text-lg"></i>
+                    <!-- Floating cards -->
+                    <div class="absolute -top-3 -right-3 bg-white/90 backdrop-blur-sm rounded-xl px-4 py-3 shadow-lg shadow-gray-200/40 border border-gray-100/80 animate-float" style="animation-delay:-1s">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-9 h-9 bg-gradient-to-br from-emerald-400 to-green-500 rounded-lg flex items-center justify-center">
+                                <i class="bx bx-check-shield text-white text-sm"></i>
                             </div>
                             <div>
-                                <p class="font-display font-bold text-gray-900 text-lg leading-none">100+</p>
-                                <p class="text-[11px] text-gray-400">Proyek Selesai</p>
+                                <p class="font-display font-bold text-gray-900 text-sm leading-none">100+</p>
+                                <p class="text-[10px] text-gray-400 mt-0.5">Proyek Selesai</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Floating stat card 2 -->
-                    <div class="absolute -bottom-4 -left-4 bg-white rounded-2xl p-4 shadow-xl shadow-gray-200/50 border border-gray-100 animate-float" style="animation-delay: -3s;">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 bg-gradient-to-br from-violet-400 to-purple-500 rounded-xl flex items-center justify-center">
-                                <i class="bx bx-happy-heart-eyes text-white text-lg"></i>
+                    <div class="absolute -bottom-3 -left-3 bg-white/90 backdrop-blur-sm rounded-xl px-4 py-3 shadow-lg shadow-gray-200/40 border border-gray-100/80 animate-float" style="animation-delay:-3s">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-9 h-9 bg-gradient-to-br from-violet-400 to-purple-500 rounded-lg flex items-center justify-center">
+                                <i class="bx bx-happy-heart-eyes text-white text-sm"></i>
                             </div>
                             <div>
-                                <p class="font-display font-bold text-gray-900 text-lg leading-none">50+</p>
-                                <p class="text-[11px] text-gray-400">Klien Puas</p>
+                                <p class="font-display font-bold text-gray-900 text-sm leading-none">50+</p>
+                                <p class="text-[10px] text-gray-400 mt-0.5">Klien Puas</p>
                             </div>
                         </div>
                     </div>
