@@ -95,35 +95,38 @@
     #editor .ql-editor h3 { font-size: 1.17em; font-weight: 600; margin-bottom: 0.5em; }
     #editor .ql-editor pre.ql-syntax { background: #1a1a2e; border-radius: 0.5rem; padding: 1em; overflow-x: auto; }
     #editor .ql-editor blockquote { border-left: 4px solid #a78bfa; padding-left: 1em; color: #9ca3af; }
-    #editor .ql-editor img { max-width: 100%; border-radius: 0.5rem; margin: 1em 0; cursor: pointer; }
-    /* Image resize overlay */
-    .img-resize-container { position: relative; display: inline-block; }
-    .img-resize-container img { display: block; }
-    .img-resize-handle {
-        position: absolute; width: 10px; height: 10px; background: #a78bfa;
-        border: 2px solid #fff; border-radius: 2px; z-index: 10; cursor: nwse-resize;
+    #editor .ql-editor img { max-width: 100%; border-radius: 0.5rem; margin: 1em 0; cursor: pointer; transition: outline 0.15s; }
+    #editor .ql-editor img.img-selected { outline: 3px solid #a78bfa; outline-offset: 2px; }
+    /* Image resize UI — rendered outside Quill, fixed to viewport */
+    #img-resize-toolbar {
+        position: fixed; z-index: 9999; display: none;
+        background: #1f2937; border: 1px solid #4b5563; border-radius: 8px;
+        padding: 4px 6px; gap: 4px; align-items: center; white-space: nowrap;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.4);
     }
-    .img-resize-handle.tl { top: -5px; left: -5px; cursor: nwse-resize; }
-    .img-resize-handle.tr { top: -5px; right: -5px; cursor: nesw-resize; }
-    .img-resize-handle.bl { bottom: -5px; left: -5px; cursor: nesw-resize; }
-    .img-resize-handle.br { bottom: -5px; right: -5px; cursor: nwse-resize; }
-    .img-resize-toolbar {
-        position: absolute; top: -40px; left: 50%; transform: translateX(-50%);
-        background: #1f2937; border: 1px solid #4b5563; border-radius: 6px;
-        padding: 4px 6px; display: flex; gap: 4px; z-index: 20; white-space: nowrap;
-    }
-    .img-resize-toolbar button {
+    #img-resize-toolbar button {
         background: #374151; color: #d1d5db; border: none; border-radius: 4px;
-        padding: 3px 8px; font-size: 11px; cursor: pointer; transition: background 0.15s;
+        padding: 4px 10px; font-size: 12px; cursor: pointer; transition: background 0.15s;
     }
-    .img-resize-toolbar button:hover { background: #a78bfa; color: #fff; }
-    .img-resize-toolbar button.active { background: #7c3aed; color: #fff; }
-    .img-resize-info {
-        position: absolute; bottom: -28px; left: 50%; transform: translateX(-50%);
-        background: rgba(0,0,0,0.75); color: #e5e7eb; font-size: 11px; padding: 2px 8px;
-        border-radius: 4px; white-space: nowrap; z-index: 20;
+    #img-resize-toolbar button:hover { background: #a78bfa; color: #fff; }
+    #img-resize-toolbar button.active { background: #7c3aed; color: #fff; }
+    #img-resize-toolbar .separator { border-left: 1px solid #4b5563; height: 20px; margin: 0 4px; }
+    #img-resize-info {
+        position: fixed; z-index: 9999; display: none;
+        background: rgba(0,0,0,0.8); color: #e5e7eb; font-size: 11px; padding: 3px 10px;
+        border-radius: 4px; white-space: nowrap; pointer-events: none;
+    }
+    #img-resize-handle {
+        position: fixed; z-index: 9998; display: none;
+        width: 12px; height: 12px; background: #a78bfa; border: 2px solid #fff;
+        border-radius: 2px; cursor: nwse-resize; box-shadow: 0 0 4px rgba(0,0,0,0.5);
     }
 </style>
+<!-- Image resize UI elements (outside Quill editor, in document body) -->
+<div id="img-resize-toolbar"></div>
+<div id="img-resize-info"></div>
+<div id="img-resize-handle"></div>
+
 <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>
@@ -184,150 +187,152 @@
         }
     });
 
-    // ---- Image Resize Feature ----
+    // ---- Image Resize Feature (toolbar rendered in document.body) ----
     (function() {
-        var overlay = null;
-        var currentImg = null;
+        var selectedImg = null;
+        var toolbarEl = document.getElementById('img-resize-toolbar');
+        var infoEl = document.getElementById('img-resize-info');
+        var handleEl = document.getElementById('img-resize-handle');
 
-        function removeOverlay() {
-            if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
-            overlay = null;
-            currentImg = null;
+        function hideUI() {
+            toolbarEl.style.display = 'none';
+            infoEl.style.display = 'none';
+            handleEl.style.display = 'none';
+            if (selectedImg) selectedImg.classList.remove('img-selected');
+            selectedImg = null;
         }
 
-        function createOverlay(img) {
-            removeOverlay();
-            currentImg = img;
-            overlay = document.createElement('div');
-            overlay.className = 'img-resize-container';
-            overlay.style.position = 'absolute';
-            overlay.style.pointerEvents = 'auto';
+        function positionUI() {
+            if (!selectedImg) return;
+            var r = selectedImg.getBoundingClientRect();
+            // Toolbar above image, centered
+            toolbarEl.style.display = 'flex';
+            toolbarEl.style.position = 'absolute';
+            toolbarEl.style.left = Math.max(0, r.left + r.width / 2 - toolbarEl.offsetWidth / 2 + window.scrollX) + 'px';
+            toolbarEl.style.top = Math.max(0, r.top - toolbarEl.offsetHeight - 8 + window.scrollY) + 'px';
+            // Handle at bottom-right of image
+            handleEl.style.display = 'block';
+            handleEl.style.position = 'absolute';
+            handleEl.style.left = (r.right - 6 + window.scrollX) + 'px';
+            handleEl.style.top = (r.bottom - 6 + window.scrollY) + 'px';
+            // Info below image
+            infoEl.style.display = 'block';
+            infoEl.style.position = 'absolute';
+            infoEl.textContent = Math.round(r.width) + ' × ' + Math.round(r.height) + ' px';
+            infoEl.style.left = (r.left + r.width / 2 - infoEl.offsetWidth / 2 + window.scrollX) + 'px';
+            infoEl.style.top = (r.bottom + 6 + window.scrollY) + 'px';
+        }
 
-            // Position overlay on top of the image
-            var editorEl = quill.root;
-            var editorRect = editorEl.getBoundingClientRect();
-            var imgRect = img.getBoundingClientRect();
-            overlay.style.left = (imgRect.left - editorRect.left + editorEl.scrollLeft) + 'px';
-            overlay.style.top = (imgRect.top - editorRect.top + editorEl.scrollTop) + 'px';
-            overlay.style.width = imgRect.width + 'px';
-            overlay.style.height = imgRect.height + 'px';
+        function selectImage(img) {
+            if (selectedImg) selectedImg.classList.remove('img-selected');
+            selectedImg = img;
+            img.classList.add('img-selected');
+            buildToolbarButtons();
+            positionUI();
+        }
 
-            // Toolbar with size presets and alignment
-            var toolbar = document.createElement('div');
-            toolbar.className = 'img-resize-toolbar';
+        function buildToolbarButtons() {
+            toolbarEl.innerHTML = '';
             var sizes = [
-                { label: '25%', width: '25%' },
-                { label: '50%', width: '50%' },
-                { label: '75%', width: '75%' },
-                { label: '100%', width: '100%' },
-                { label: 'Auto', width: '' }
+                { label: '25%', w: '25%' },
+                { label: '50%', w: '50%' },
+                { label: '75%', w: '75%' },
+                { label: '100%', w: '100%' },
+                { label: 'Auto', w: '' }
             ];
             sizes.forEach(function(s) {
                 var btn = document.createElement('button');
                 btn.type = 'button';
                 btn.textContent = s.label;
-                if (img.style.width === s.width) btn.classList.add('active');
-                btn.addEventListener('mousedown', function(e) {
+                if (selectedImg && selectedImg.style.width === s.w) btn.classList.add('active');
+                btn.onmousedown = function(e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    img.style.width = s.width;
-                    img.style.height = '';
-                    img.removeAttribute('width');
-                    img.removeAttribute('height');
-                    if (s.width) {
-                        img.setAttribute('width', s.width);
-                    }
-                    createOverlay(img);
-                });
-                toolbar.appendChild(btn);
+                    if (!selectedImg) return;
+                    selectedImg.style.width = s.w;
+                    selectedImg.style.height = '';
+                    selectedImg.removeAttribute('width');
+                    selectedImg.removeAttribute('height');
+                    buildToolbarButtons();
+                    setTimeout(positionUI, 10);
+                };
+                toolbarEl.appendChild(btn);
             });
-
-            // Alignment buttons
+            // Separator
             var sep = document.createElement('span');
-            sep.style.borderLeft = '1px solid #4b5563';
-            sep.style.margin = '0 2px';
-            toolbar.appendChild(sep);
-
-            var aligns = [
-                { icon: '⬅', style: '', display: 'block', margin: '' },
-                { icon: '⬌', style: 'center', display: 'block', margin: '0 auto' },
-                { icon: '➡', style: 'right', display: 'block', margin: '0 0 0 auto' }
-            ];
-            aligns.forEach(function(a) {
+            sep.className = 'separator';
+            toolbarEl.appendChild(sep);
+            // Alignment
+            [
+                { icon: '◀', title: 'Left',   fn: function(img) { img.style.display = 'block'; img.style.margin = '1em 0'; img.style.float = ''; }},
+                { icon: '◆', title: 'Center', fn: function(img) { img.style.display = 'block'; img.style.margin = '1em auto'; img.style.float = ''; }},
+                { icon: '▶', title: 'Right',  fn: function(img) { img.style.display = 'block'; img.style.margin = '1em 0 1em auto'; img.style.float = ''; }}
+            ].forEach(function(a) {
                 var btn = document.createElement('button');
                 btn.type = 'button';
                 btn.textContent = a.icon;
-                btn.title = a.style || 'left';
-                btn.addEventListener('mousedown', function(e) {
+                btn.title = a.title;
+                btn.onmousedown = function(e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    img.style.display = a.display;
-                    img.style.margin = a.margin;
-                    img.style.float = '';
-                    createOverlay(img);
-                });
-                toolbar.appendChild(btn);
+                    if (selectedImg) a.fn(selectedImg);
+                    setTimeout(positionUI, 10);
+                };
+                toolbarEl.appendChild(btn);
             });
-
-            overlay.appendChild(toolbar);
-
-            // Drag handles for manual resize (bottom-right)
-            var brHandle = document.createElement('div');
-            brHandle.className = 'img-resize-handle br';
-            brHandle.addEventListener('mousedown', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                var startX = e.clientX;
-                var startW = img.clientWidth;
-                var startH = img.clientHeight;
-                var ratio = startH / startW;
-                function onMove(ev) {
-                    var dx = ev.clientX - startX;
-                    var newW = Math.max(50, startW + dx);
-                    img.style.width = newW + 'px';
-                    img.style.height = (newW * ratio) + 'px';
-                    img.removeAttribute('width');
-                    img.removeAttribute('height');
-                }
-                function onUp() {
-                    document.removeEventListener('mousemove', onMove);
-                    document.removeEventListener('mouseup', onUp);
-                    createOverlay(img);
-                }
-                document.addEventListener('mousemove', onMove);
-                document.addEventListener('mouseup', onUp);
-            });
-            overlay.appendChild(brHandle);
-
-            // Size info
-            var info = document.createElement('div');
-            info.className = 'img-resize-info';
-            info.textContent = Math.round(imgRect.width) + ' × ' + Math.round(imgRect.height) + ' px';
-            overlay.appendChild(info);
-
-            editorEl.appendChild(overlay);
         }
 
-        // Listen for clicks on images inside the editor
+        // Drag handle for manual resizing
+        handleEl.addEventListener('mousedown', function(e) {
+            if (!selectedImg) return;
+            e.preventDefault();
+            e.stopPropagation();
+            var startX = e.clientX;
+            var startY = e.clientY;
+            var startW = selectedImg.clientWidth;
+            var startH = selectedImg.clientHeight;
+            var ratio = startH / startW;
+            function onMove(ev) {
+                var dx = ev.clientX - startX;
+                var newW = Math.max(30, startW + dx);
+                selectedImg.style.width = newW + 'px';
+                selectedImg.style.height = Math.round(newW * ratio) + 'px';
+                selectedImg.removeAttribute('width');
+                selectedImg.removeAttribute('height');
+                positionUI();
+            }
+            function onUp() {
+                document.removeEventListener('mousemove', onMove);
+                document.removeEventListener('mouseup', onUp);
+                buildToolbarButtons();
+                positionUI();
+            }
+            document.addEventListener('mousemove', onMove);
+            document.addEventListener('mouseup', onUp);
+        });
+
+        // Click on image in editor
         quill.root.addEventListener('click', function(e) {
             if (e.target && e.target.tagName === 'IMG') {
-                createOverlay(e.target);
-            } else if (overlay && !overlay.contains(e.target)) {
-                removeOverlay();
+                e.preventDefault();
+                e.stopPropagation();
+                selectImage(e.target);
+            } else {
+                hideUI();
             }
         });
 
-        // Remove overlay on outside click
-        document.addEventListener('click', function(e) {
-            if (overlay && !quill.root.contains(e.target)) {
-                removeOverlay();
+        // Click outside editor hides UI (but not if clicking toolbar itself)
+        document.addEventListener('mousedown', function(e) {
+            if (selectedImg && !quill.root.contains(e.target) &&
+                !toolbarEl.contains(e.target) && e.target !== handleEl) {
+                hideUI();
             }
         });
 
-        // Remove overlay on scroll to avoid misalignment
-        quill.root.addEventListener('scroll', function() {
-            if (overlay && currentImg) createOverlay(currentImg);
-        });
+        // Reposition on window scroll / resize
+        window.addEventListener('scroll', function() { if (selectedImg) positionUI(); }, true);
+        window.addEventListener('resize', function() { if (selectedImg) positionUI(); });
     })();
 
     // Load existing content
