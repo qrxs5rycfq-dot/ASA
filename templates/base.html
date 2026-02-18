@@ -6,6 +6,12 @@
     <title>{% block title %}{{ site.app_name or 'ASA Group' }}{% endblock %} — {{ site.tagline or 'General Supplier & Kontraktor' }}</title>
     <meta name="description" content="{% block meta_description %}{{ site.app_name or 'ASA Group' }} - Kumpulan perusahaan General Supplier & Kontraktor terkemuka di Indonesia{% endblock %}">
 
+    <!-- Favicon -->
+    {% if site.favicon_url %}
+    <link rel="icon" type="image/x-icon" href="{{ site.favicon_url }}">
+    <link rel="shortcut icon" href="{{ site.favicon_url }}">
+    {% endif %}
+
     <!-- Tailwind CSS via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -156,33 +162,21 @@
                             <i class='bx bx-chevron-down ml-1 text-xs transition-transform'></i>
                         </button>
                         <div class="dropdown-menu absolute top-full left-0 mt-1 w-64 bg-white rounded-xl overflow-hidden shadow-xl shadow-gray-200/50 border border-gray-100">
-                            <a href="{{ url_for('public.company', slug='nur-putra-mandiri') }}" class="flex items-center space-x-3 px-4 py-3 hover:bg-gray-50 transition-colors">
-                                <div class="w-8 h-8 bg-gradient-to-br from-red-500 to-green-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                                    <i class='bx bx-buildings text-white text-sm'></i>
+                            {% for co in all_companies %}
+                            <a href="{{ url_for('public.company', slug=co.slug) }}" class="flex items-center space-x-3 px-4 py-3 hover:bg-gray-50 transition-colors">
+                                <div class="w-8 h-8 bg-gradient-to-br {{ co.gradient_short }} rounded-lg flex items-center justify-center flex-shrink-0">
+                                    {% if co.logo_url %}
+                                    <img src="{{ co.logo_url }}" alt="{{ co.name }}" class="w-6 h-6 object-contain rounded">
+                                    {% else %}
+                                    <i class='bx {{ co.icon }} text-white text-sm'></i>
+                                    {% endif %}
                                 </div>
                                 <div>
-                                    <p class="text-sm font-medium text-gray-900">PT. Nur Putra Mandiri</p>
-                                    <p class="text-[10px] text-gray-400">General Supplier</p>
+                                    <p class="text-sm font-medium text-gray-900">{{ co.name }}</p>
+                                    <p class="text-[10px] text-gray-400">{{ co.tagline }}</p>
                                 </div>
                             </a>
-                            <a href="{{ url_for('public.company', slug='putra-syam-jaya') }}" class="flex items-center space-x-3 px-4 py-3 hover:bg-gray-50 transition-colors">
-                                <div class="w-8 h-8 bg-gradient-to-br from-violet-500 to-blue-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                                    <i class='bx bx-cube-alt text-white text-sm'></i>
-                                </div>
-                                <div>
-                                    <p class="text-sm font-medium text-gray-900">PT. Putra Syam Jaya</p>
-                                    <p class="text-[10px] text-gray-400">Supplier & Kontraktor</p>
-                                </div>
-                            </a>
-                            <a href="{{ url_for('public.company', slug='asa-bangun-mandiri') }}" class="flex items-center space-x-3 px-4 py-3 hover:bg-gray-50 transition-colors">
-                                <div class="w-8 h-8 bg-gradient-to-br from-red-500 to-yellow-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                                    <i class='bx bx-hard-hat text-white text-sm'></i>
-                                </div>
-                                <div>
-                                    <p class="text-sm font-medium text-gray-900">CV. Asa Bangun Mandiri</p>
-                                    <p class="text-[10px] text-gray-400">Kontraktor Handal</p>
-                                </div>
-                            </a>
+                            {% endfor %}
                         </div>
                     </div>
 
@@ -209,9 +203,9 @@
                 <!-- Mobile Perusahaan sub-links -->
                 <div class="px-4 py-2">
                     <p class="text-xs text-gray-400 uppercase tracking-wider mb-2">Perusahaan</p>
-                    <a href="{{ url_for('public.company', slug='nur-putra-mandiri') }}" class="mobile-link block px-4 py-2 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition-all text-sm">PT. Nur Putra Mandiri</a>
-                    <a href="{{ url_for('public.company', slug='putra-syam-jaya') }}" class="mobile-link block px-4 py-2 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition-all text-sm">PT. Putra Syam Jaya</a>
-                    <a href="{{ url_for('public.company', slug='asa-bangun-mandiri') }}" class="mobile-link block px-4 py-2 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition-all text-sm">CV. Asa Bangun Mandiri</a>
+                    {% for co in all_companies %}
+                    <a href="{{ url_for('public.company', slug=co.slug) }}" class="mobile-link block px-4 py-2 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition-all text-sm">{{ co.name }}</a>
+                    {% endfor %}
                 </div>
 
                 <a href="{{ url_for('public.gallery_page') }}" class="mobile-link block px-4 py-3 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-all">Galeri</a>
@@ -263,9 +257,9 @@
                         <i class='bx bx-buildings mr-2 text-purple-400'></i>Perusahaan Kami
                     </h4>
                     <ul class="space-y-3">
-                        <li><a href="{{ url_for('public.company', slug='nur-putra-mandiri') }}" class="text-gray-400 hover:text-red-400 transition-colors text-sm flex items-center"><i class='bx bx-chevron-right mr-1'></i>PT. Nur Putra Mandiri</a></li>
-                        <li><a href="{{ url_for('public.company', slug='putra-syam-jaya') }}" class="text-gray-400 hover:text-violet-400 transition-colors text-sm flex items-center"><i class='bx bx-chevron-right mr-1'></i>PT. Putra Syam Jaya</a></li>
-                        <li><a href="{{ url_for('public.company', slug='asa-bangun-mandiri') }}" class="text-gray-400 hover:text-yellow-400 transition-colors text-sm flex items-center"><i class='bx bx-chevron-right mr-1'></i>CV. Asa Bangun Mandiri</a></li>
+                        {% for co in all_companies %}
+                        <li><a href="{{ url_for('public.company', slug=co.slug) }}" class="text-gray-400 hover:text-white transition-colors text-sm flex items-center"><i class='bx bx-chevron-right mr-1'></i>{{ co.name }}</a></li>
+                        {% endfor %}
                     </ul>
                 </div>
 

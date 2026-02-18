@@ -3,15 +3,58 @@
 from flask import Blueprint, render_template, request
 
 from app.extensions import get_db
-from app.data import COMPANIES, COMPANY_LIST
 
 public_bp = Blueprint("public", __name__)
+
+
+def _get_companies_from_db(cur):
+    """Fetch companies from database and format for templates."""
+    cur.execute("SELECT * FROM companies ORDER BY sort_order")
+    rows = cur.fetchall()
+    result = []
+    for row in rows:
+        c = dict(row)
+        c["colors"] = {
+            "primary": c.get("color_primary", "#7C3AED"),
+            "secondary": c.get("color_secondary", "#2563EB"),
+            "gradient": c.get("gradient_short", "from-purple-600 to-blue-600"),
+        }
+        specs = c.get("specialties", "") or ""
+        c["specialties_list"] = [s.strip() for s in specs.split("|") if s.strip()]
+        result.append(c)
+    return result
+
+
+def _get_company_detail(cur, slug):
+    """Fetch a single company by slug and format for company detail template."""
+    cur.execute("SELECT * FROM companies WHERE slug=%s", (slug,))
+    row = cur.fetchone()
+    if not row:
+        return None
+    c = dict(row)
+    c["colors"] = {
+        "primary": c.get("color_primary", "#7C3AED"),
+        "secondary": c.get("color_secondary", "#2563EB"),
+        "tertiary": c.get("color_tertiary", "#1e1b4b"),
+        "gradient": c.get("gradient", "from-purple-600 to-blue-600"),
+        "gradient_short": c.get("gradient_short", "from-purple-600 to-blue-600"),
+        "bg": c.get("bg_class", "bg-purple-600"),
+        "bg_secondary": c.get("bg_secondary_class", "bg-blue-600"),
+        "text": c.get("text_class", "text-purple-600"),
+        "text_secondary": c.get("text_secondary_class", "text-blue-600"),
+        "border": c.get("border_class", "border-purple-600"),
+        "ring": c.get("ring_class", "ring-purple-600"),
+    }
+    specs = c.get("specialties", "") or ""
+    c["specialties"] = [s.strip() for s in specs.split("|") if s.strip()]
+    return c
 
 
 @public_bp.route("/")
 def index():
     db = get_db()
     cur = db.cursor()
+    companies = _get_companies_from_db(cur)
     cur.execute("SELECT * FROM services ORDER BY sort_order")
     services = cur.fetchall()
     cur.execute("SELECT * FROM testimonials ORDER BY sort_order")
@@ -25,7 +68,7 @@ def index():
     cur.close()
     return render_template(
         "index.html",
-        companies=COMPANY_LIST,
+        companies=companies,
         services=services,
         testimonials=testimonials,
         clients=clients,
@@ -68,7 +111,10 @@ def gallery_page():
 
 @public_bp.route("/company/<slug>")
 def company(slug):
-    company_data = COMPANIES.get(slug)
+    db = get_db()
+    cur = db.cursor()
+    company_data = _get_company_detail(cur, slug)
+    cur.close()
     if not company_data:
         return render_template("404.html"), 404
     return render_template("company.html", company=company_data)

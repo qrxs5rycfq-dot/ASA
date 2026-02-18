@@ -25,11 +25,20 @@ def seed_all():
         for k, v in [
             ("app_name", "ASA Group"),
             ("logo_url", ""),
+            ("favicon_url", ""),
             ("tagline", "General Supplier & Kontraktor"),
         ]:
             cursor.execute(
                 "INSERT INTO site_settings (setting_key, setting_value) VALUES (%s, %s)",
                 (k, v),
+            )
+    else:
+        # Ensure favicon_url exists for existing installations
+        cursor.execute("SELECT COUNT(*) AS c FROM site_settings WHERE setting_key='favicon_url'")
+        if cursor.fetchone()["c"] == 0:
+            cursor.execute(
+                "INSERT INTO site_settings (setting_key, setting_value) VALUES (%s, %s)",
+                ("favicon_url", ""),
             )
 
     # Services
@@ -126,6 +135,47 @@ def seed_all():
         ]:
             cursor.execute(
                 "INSERT INTO blog_posts (title, slug, excerpt, content, image_url, cover_icon, cover_gradient, category, author) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)", p
+            )
+
+    # Companies
+    cursor.execute("SELECT COUNT(*) AS c FROM companies")
+    if cursor.fetchone()["c"] == 0:
+        companies_seed = [
+            (
+                "PT. Nur Putra Mandiri", "nur-putra-mandiri", "Keunggulan dalam Setiap Solusi",
+                "PT. Nur Putra Mandiri merupakan perusahaan swasta yang bergerak dalam bidang perdagangan umum dan jasa sebagai General Supplier & Kontraktor. Kami selalu menekankan pada aspek profesionalitas, berorientasi pada kualitas dan ketepatan waktu dalam melayani kebutuhan pelanggan.",
+                "", "bx-buildings",
+                "#DC2626", "#16A34A", "#111827",
+                "from-red-600 via-gray-900 to-green-600", "from-red-600 to-green-600",
+                "bg-red-600", "bg-green-600", "text-red-600", "text-green-600", "border-red-600", "ring-red-600",
+                "2018", "Pengadaan Material Konstruksi|Supplier Peralatan Industri|Jasa Konstruksi Bangunan|Renovasi & Pemeliharaan", 1
+            ),
+            (
+                "PT. Putra Syam Jaya", "putra-syam-jaya", "Inovasi Tanpa Batas",
+                "PT. Putra Syam Jaya merupakan perusahaan swasta yang bergerak dalam bidang perdagangan umum dan jasa sebagai General Supplier & Kontraktor. Kami menjadi mitra terpercaya dalam pengadaan bahan dan peralatan industri dengan standar kualitas internasional.",
+                "", "bx-cube-alt",
+                "#7C3AED", "#2563EB", "#1e1b4b",
+                "from-violet-600 to-blue-600", "from-violet-600 to-blue-600",
+                "bg-violet-600", "bg-blue-600", "text-violet-600", "text-blue-600", "border-violet-600", "ring-violet-600",
+                "2019", "Supplier Peralatan Berat|Pengadaan Bahan Bangunan|Konsultasi Proyek|Manajemen Konstruksi", 2
+            ),
+            (
+                "CV. Asa Bangun Mandiri", "asa-bangun-mandiri", "Membangun Masa Depan",
+                "CV. Asa Bangun Mandiri merupakan perusahaan swasta yang bergerak dalam bidang perdagangan umum dan jasa sebagai General Supplier & Kontraktor. Kami hadir sebagai kontraktor handal dengan dedikasi tinggi dalam pembangunan infrastruktur dan proyek konstruksi.",
+                "", "bx-hard-hat",
+                "#F59E0B", "#DC2626", "#78350f",
+                "from-yellow-500 to-red-600", "from-yellow-500 to-red-600",
+                "bg-yellow-500", "bg-red-600", "text-yellow-500", "text-red-600", "border-yellow-500", "ring-yellow-500",
+                "2020", "Konstruksi Infrastruktur|Pembangunan Gedung|Supplier Material Premium|Jasa Perawatan Fasilitas", 3
+            ),
+        ]
+        for c in companies_seed:
+            cursor.execute(
+                "INSERT INTO companies (name, slug, tagline, description, logo_url, icon, "
+                "color_primary, color_secondary, color_tertiary, gradient, gradient_short, "
+                "bg_class, bg_secondary_class, text_class, text_secondary_class, border_class, ring_class, "
+                "founded, specialties, sort_order) "
+                "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", c
             )
 
     db.commit()

@@ -43,11 +43,26 @@ def create_app():
             cur = db.cursor()
             cur.execute("SELECT setting_key, setting_value FROM site_settings")
             rows = cur.fetchall()
-            cur.close()
             settings = {r["setting_key"]: r["setting_value"] for r in rows}
-            return {"site": settings}
+            cur.execute("SELECT * FROM companies ORDER BY sort_order")
+            companies_rows = cur.fetchall()
+            cur.close()
+            # Convert specialties from pipe-separated to list
+            company_list = []
+            for c in companies_rows:
+                c_copy = dict(c)
+                c_copy["colors"] = {
+                    "primary": c["color_primary"],
+                    "secondary": c["color_secondary"],
+                    "gradient": c["gradient_short"],
+                }
+                company_list.append(c_copy)
+            return {"site": settings, "all_companies": company_list}
         except Exception:
-            return {"site": {"app_name": "ASA Group", "logo_url": "", "tagline": "General Supplier & Kontraktor"}}
+            return {
+                "site": {"app_name": "ASA Group", "logo_url": "", "favicon_url": "", "tagline": "General Supplier & Kontraktor"},
+                "all_companies": [],
+            }
 
     # Register blueprints
     from app.routes.public import public_bp

@@ -23,7 +23,7 @@ from app.extensions import get_db
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 
 
-ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "webp", "svg"}
+ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "webp", "svg", "ico"}
 
 
 def _allowed_file(filename):
@@ -83,8 +83,8 @@ def login_required(f):
 def dashboard():
     db = get_db()
     cur = db.cursor()
-    tables = ["blog_posts", "services", "gallery_items", "testimonials", "clients", "team_members", "faqs"]
-    keys = ["posts", "services", "gallery", "testimonials", "clients", "team", "faqs"]
+    tables = ["blog_posts", "services", "gallery_items", "testimonials", "clients", "team_members", "faqs", "companies"]
+    keys = ["posts", "services", "gallery", "testimonials", "clients", "team", "faqs", "companies"]
     stats = {}
     for key, table in zip(keys, tables):
         cur.execute(f"SELECT COUNT(*) AS c FROM {table}")
@@ -682,6 +682,14 @@ def settings():
             "ON DUPLICATE KEY UPDATE setting_value=%s",
             ("logo_url", logo_url, logo_url),
         )
+        # Handle favicon: upload or URL
+        favicon_uploaded = _save_upload("favicon_file")
+        favicon_url = favicon_uploaded if favicon_uploaded else request.form.get("favicon_url", "").strip()
+        cur.execute(
+            "INSERT INTO site_settings (setting_key, setting_value) VALUES (%s, %s) "
+            "ON DUPLICATE KEY UPDATE setting_value=%s",
+            ("favicon_url", favicon_url, favicon_url),
+        )
         db.commit()
         flash("Pengaturan berhasil disimpan!", "success")
         return redirect(url_for("admin.settings"))
@@ -690,6 +698,140 @@ def settings():
     cur.close()
     current = {r["setting_key"]: r["setting_value"] for r in rows}
     return render_template("admin/settings.html", current=current)
+
+
+# ---------------------------------------------------------------------------
+# Company CRUD
+# ---------------------------------------------------------------------------
+
+@admin_bp.route("/companies")
+@login_required
+def companies():
+    db = get_db()
+    cur = db.cursor()
+    cur.execute("SELECT * FROM companies ORDER BY sort_order")
+    items = cur.fetchall()
+    cur.close()
+    return render_template("admin/company_list.html", items=items)
+
+
+@admin_bp.route("/companies/create", methods=["GET", "POST"])
+@login_required
+def company_create():
+    if request.method == "POST":
+        db = get_db()
+        cur = db.cursor()
+        logo_url = _resolve_image()
+        specialties = request.form.get("specialties", "").strip()
+        try:
+            cur.execute(
+                "INSERT INTO companies (name, slug, tagline, description, logo_url, icon, "
+                "color_primary, color_secondary, color_tertiary, gradient, gradient_short, "
+                "bg_class, bg_secondary_class, text_class, text_secondary_class, border_class, ring_class, "
+                "founded, specialties, sort_order) "
+                "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+                (
+                    request.form["name"].strip(),
+                    request.form["slug"].strip(),
+                    request.form.get("tagline", "").strip(),
+                    request.form.get("description", "").strip(),
+                    logo_url,
+                    request.form.get("icon", "bx-buildings").strip(),
+                    request.form.get("color_primary", "#7C3AED").strip(),
+                    request.form.get("color_secondary", "#2563EB").strip(),
+                    request.form.get("color_tertiary", "#1e1b4b").strip(),
+                    request.form.get("gradient", "from-purple-600 to-blue-600").strip(),
+                    request.form.get("gradient_short", "from-purple-600 to-blue-600").strip(),
+                    request.form.get("bg_class", "bg-purple-600").strip(),
+                    request.form.get("bg_secondary_class", "bg-blue-600").strip(),
+                    request.form.get("text_class", "text-purple-600").strip(),
+                    request.form.get("text_secondary_class", "text-blue-600").strip(),
+                    request.form.get("border_class", "border-purple-600").strip(),
+                    request.form.get("ring_class", "ring-purple-600").strip(),
+                    request.form.get("founded", "").strip(),
+                    specialties,
+                    request.form.get("sort_order", 0, type=int),
+                ),
+            )
+            db.commit()
+            flash("Perusahaan berhasil ditambahkan!", "success")
+            return redirect(url_for("admin.companies"))
+        except Exception:
+            db.rollback()
+            flash("Slug sudah digunakan.", "error")
+        finally:
+            cur.close()
+    return render_template("admin/company_form.html", item=None)
+
+
+@admin_bp.route("/companies/<int:cid>/edit", methods=["GET", "POST"])
+@login_required
+def company_edit(cid):
+    db = get_db()
+    cur = db.cursor()
+    cur.execute("SELECT * FROM companies WHERE id=%s", (cid,))
+    item = cur.fetchone()
+    if not item:
+        cur.close()
+        flash("Perusahaan tidak ditemukan.", "error")
+        return redirect(url_for("admin.companies"))
+    if request.method == "POST":
+        new_logo = _resolve_image()
+        logo_url = new_logo if new_logo else item.get("logo_url", "")
+        specialties = request.form.get("specialties", "").strip()
+        try:
+            cur.execute(
+                "UPDATE companies SET name=%s, slug=%s, tagline=%s, description=%s, logo_url=%s, icon=%s, "
+                "color_primary=%s, color_secondary=%s, color_tertiary=%s, gradient=%s, gradient_short=%s, "
+                "bg_class=%s, bg_secondary_class=%s, text_class=%s, text_secondary_class=%s, border_class=%s, ring_class=%s, "
+                "founded=%s, specialties=%s, sort_order=%s WHERE id=%s",
+                (
+                    request.form["name"].strip(),
+                    request.form["slug"].strip(),
+                    request.form.get("tagline", "").strip(),
+                    request.form.get("description", "").strip(),
+                    logo_url,
+                    request.form.get("icon", "bx-buildings").strip(),
+                    request.form.get("color_primary", "#7C3AED").strip(),
+                    request.form.get("color_secondary", "#2563EB").strip(),
+                    request.form.get("color_tertiary", "#1e1b4b").strip(),
+                    request.form.get("gradient", "from-purple-600 to-blue-600").strip(),
+                    request.form.get("gradient_short", "from-purple-600 to-blue-600").strip(),
+                    request.form.get("bg_class", "bg-purple-600").strip(),
+                    request.form.get("bg_secondary_class", "bg-blue-600").strip(),
+                    request.form.get("text_class", "text-purple-600").strip(),
+                    request.form.get("text_secondary_class", "text-blue-600").strip(),
+                    request.form.get("border_class", "border-purple-600").strip(),
+                    request.form.get("ring_class", "ring-purple-600").strip(),
+                    request.form.get("founded", "").strip(),
+                    specialties,
+                    request.form.get("sort_order", 0, type=int),
+                    cid,
+                ),
+            )
+            db.commit()
+            flash("Perusahaan berhasil diperbarui!", "success")
+            return redirect(url_for("admin.companies"))
+        except Exception:
+            db.rollback()
+            flash("Slug sudah digunakan.", "error")
+        finally:
+            cur.close()
+    else:
+        cur.close()
+    return render_template("admin/company_form.html", item=item)
+
+
+@admin_bp.route("/companies/<int:cid>/delete", methods=["POST"])
+@login_required
+def company_delete(cid):
+    db = get_db()
+    cur = db.cursor()
+    cur.execute("DELETE FROM companies WHERE id=%s", (cid,))
+    db.commit()
+    cur.close()
+    flash("Perusahaan berhasil dihapus.", "success")
+    return redirect(url_for("admin.companies"))
 
 
 # ---------------------------------------------------------------------------

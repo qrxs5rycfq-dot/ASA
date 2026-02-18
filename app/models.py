@@ -114,6 +114,32 @@ def init_tables():
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
     """)
 
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS companies (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        slug VARCHAR(255) UNIQUE NOT NULL,
+        tagline VARCHAR(255) DEFAULT '',
+        description TEXT,
+        logo_url VARCHAR(500) DEFAULT '',
+        icon VARCHAR(100) DEFAULT 'bx-buildings',
+        color_primary VARCHAR(50) DEFAULT '#7C3AED',
+        color_secondary VARCHAR(50) DEFAULT '#2563EB',
+        color_tertiary VARCHAR(50) DEFAULT '#1e1b4b',
+        gradient VARCHAR(200) DEFAULT 'from-purple-600 to-blue-600',
+        gradient_short VARCHAR(200) DEFAULT 'from-purple-600 to-blue-600',
+        bg_class VARCHAR(100) DEFAULT 'bg-purple-600',
+        bg_secondary_class VARCHAR(100) DEFAULT 'bg-blue-600',
+        text_class VARCHAR(100) DEFAULT 'text-purple-600',
+        text_secondary_class VARCHAR(100) DEFAULT 'text-blue-600',
+        border_class VARCHAR(100) DEFAULT 'border-purple-600',
+        ring_class VARCHAR(100) DEFAULT 'ring-purple-600',
+        founded VARCHAR(20) DEFAULT '',
+        specialties TEXT,
+        sort_order INT DEFAULT 0
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+    """)
+
     # Add image_url columns if they don't exist (migration for existing DBs)
     _add_column_if_missing(cursor, "blog_posts", "image_url", "VARCHAR(500) DEFAULT ''")
     _add_column_if_missing(cursor, "services", "image_url", "VARCHAR(500) DEFAULT ''")

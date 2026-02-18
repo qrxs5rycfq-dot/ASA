@@ -47,6 +47,9 @@
             <a href="{{ url_for('admin.clients') }}" class="flex items-center px-4 py-3 text-sm rounded-lg {{ 'bg-purple-600 text-white' if active_path.startswith('/admin/clients') else 'text-gray-400 hover:bg-gray-700 hover:text-white' }} transition-all">
                 <i class='bx bxs-building mr-3 text-lg'></i> Klien
             </a>
+            <a href="{{ url_for('admin.companies') }}" class="flex items-center px-4 py-3 text-sm rounded-lg {{ 'bg-purple-600 text-white' if active_path.startswith('/admin/companies') else 'text-gray-400 hover:bg-gray-700 hover:text-white' }} transition-all">
+                <i class='bx bxs-business mr-3 text-lg'></i> Perusahaan
+            </a>
 
             <div class="border-t border-gray-700 my-4"></div>
 
