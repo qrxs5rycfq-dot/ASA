@@ -1,0 +1,81 @@
+{% extends "admin/base_admin.html" %}
+
+{% block admin_title %}{{ 'Edit Blog' if post else 'Buat Blog Baru' }}{% endblock %}
+{% block admin_title_header %}{{ 'Edit Blog' if post else 'Buat Blog Baru' }}{% endblock %}
+
+{% block admin_content %}
+<div class="max-w-4xl">
+    <div class="mb-6">
+        <a href="{{ url_for('admin_blog_list') }}" class="text-gray-400 hover:text-white text-sm transition-colors">
+            <i class='bx bx-arrow-back mr-1'></i> Kembali ke Daftar Blog
+        </a>
+    </div>
+
+    <div class="bg-gray-800 rounded-xl border border-gray-700 p-6">
+        <form method="POST" action="{{ url_for('admin_blog_edit', post_id=post.id) if post else url_for('admin_blog_create') }}" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="title" class="block text-sm font-medium text-gray-300 mb-2">Judul</label>
+                    <input type="text" id="title" name="title" value="{{ post.title if post else '' }}" required
+                           class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+                <div>
+                    <label for="slug" class="block text-sm font-medium text-gray-300 mb-2">Slug</label>
+                    <input type="text" id="slug" name="slug" value="{{ post.slug if post else '' }}" required
+                           class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+            </div>
+
+            <div>
+                <label for="excerpt" class="block text-sm font-medium text-gray-300 mb-2">Excerpt</label>
+                <textarea id="excerpt" name="excerpt" rows="3"
+                          class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">{{ post.excerpt if post else '' }}</textarea>
+            </div>
+
+            <div>
+                <label for="content" class="block text-sm font-medium text-gray-300 mb-2">Konten</label>
+                <textarea id="content" name="content" rows="15"
+                          class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">{{ post.content if post else '' }}</textarea>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="category" class="block text-sm font-medium text-gray-300 mb-2">Kategori</label>
+                    <input type="text" id="category" name="category" value="{{ post.category if post else '' }}"
+                           class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+                <div>
+                    <label for="status" class="block text-sm font-medium text-gray-300 mb-2">Status</label>
+                    <select id="status" name="status"
+                            class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                        <option value="published" {{ 'selected' if post and post.status == 'published' }}>Published</option>
+                        <option value="draft" {{ 'selected' if post and post.status == 'draft' }}>Draft</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="cover_icon" class="block text-sm font-medium text-gray-300 mb-2">Cover Icon</label>
+                    <input type="text" id="cover_icon" name="cover_icon" value="{{ post.cover_icon if post else 'bx-news' }}"
+                           class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+                <div>
+                    <label for="cover_gradient" class="block text-sm font-medium text-gray-300 mb-2">Cover Gradient</label>
+                    <input type="text" id="cover_gradient" name="cover_gradient" value="{{ post.cover_gradient if post else 'from-purple-600 to-blue-600' }}"
+                           class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-4 pt-4">
+                <button type="submit" class="px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 rounded-lg text-sm font-semibold transition-all">
+                    <i class='bx bx-save mr-1'></i> {{ 'Simpan Perubahan' if post else 'Buat Blog' }}
+                </button>
+                <a href="{{ url_for('admin_blog_list') }}" class="px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm font-medium transition-colors">
+                    Batal
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

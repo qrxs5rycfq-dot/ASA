@@ -1,0 +1,71 @@
+{% extends "admin/base_admin.html" %}
+
+{% block admin_title %}{{ 'Edit Testimoni' if item else 'Tambah Testimoni' }}{% endblock %}
+{% block admin_title_header %}{{ 'Edit Testimoni' if item else 'Tambah Testimoni' }}{% endblock %}
+
+{% block admin_content %}
+<div class="max-w-4xl">
+    <div class="mb-6">
+        <a href="{{ url_for('admin_testimonials') }}" class="text-gray-400 hover:text-white text-sm transition-colors">
+            <i class='bx bx-arrow-back mr-1'></i> Kembali ke Daftar Testimoni
+        </a>
+    </div>
+
+    <div class="bg-gray-800 rounded-xl border border-gray-700 p-6">
+        <form method="POST" action="{{ url_for('admin_testimonial_edit', tid=item.id) if item else url_for('admin_testimonial_create') }}" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Nama</label>
+                    <input type="text" id="name" name="name" value="{{ item.name if item else '' }}" required
+                           class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+                <div>
+                    <label for="position" class="block text-sm font-medium text-gray-300 mb-2">Jabatan</label>
+                    <input type="text" id="position" name="position" value="{{ item.position if item else '' }}"
+                           class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+            </div>
+
+            <div>
+                <label for="company" class="block text-sm font-medium text-gray-300 mb-2">Perusahaan</label>
+                <input type="text" id="company" name="company" value="{{ item.company if item else '' }}"
+                       class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+            </div>
+
+            <div>
+                <label for="content" class="block text-sm font-medium text-gray-300 mb-2">Konten Testimoni</label>
+                <textarea id="content" name="content" rows="4" required
+                          class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">{{ item.content if item else '' }}</textarea>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <label for="rating" class="block text-sm font-medium text-gray-300 mb-2">Rating (1-5)</label>
+                    <input type="number" id="rating" name="rating" min="1" max="5" value="{{ item.rating if item else 5 }}"
+                           class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+                <div>
+                    <label for="avatar_gradient" class="block text-sm font-medium text-gray-300 mb-2">Avatar Gradient</label>
+                    <input type="text" id="avatar_gradient" name="avatar_gradient" value="{{ item.avatar_gradient if item else '' }}"
+                           class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                           placeholder="from-purple-600 to-blue-600">
+                </div>
+                <div>
+                    <label for="sort_order" class="block text-sm font-medium text-gray-300 mb-2">Urutan</label>
+                    <input type="number" id="sort_order" name="sort_order" value="{{ item.sort_order if item else 0 }}"
+                           class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-4 pt-4">
+                <button type="submit" class="px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 rounded-lg text-sm font-semibold transition-all">
+                    <i class='bx bx-save mr-1'></i> {{ 'Simpan Perubahan' if item else 'Tambah Testimoni' }}
+                </button>
+                <a href="{{ url_for('admin_testimonials') }}" class="px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm font-medium transition-colors">
+                    Batal
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
