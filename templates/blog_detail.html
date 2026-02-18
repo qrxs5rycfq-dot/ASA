@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }}{% endblock %}
+{% block meta_description %}{{ post.excerpt }}{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+<style>
+    .prose h1 { font-size: 2.25em; font-weight: 800; margin: 1em 0 0.5em; color: #0f172a; line-height: 1.2; }
+    .prose h2 { font-size: 1.75em; font-weight: 700; margin: 0.8em 0 0.4em; color: #1e293b; position: relative; line-height: 1.3; }
+    .prose h2::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 40px; height: 3px; background: linear-gradient(90deg, #ef4444, #8b5cf6); border-radius: 2px; }
+    .prose h3 { font-size: 1.4em; font-weight: 600; margin: 0.7em 0 0.35em; color: #1e293b; }
+    .prose h4 { font-size: 1.2em; font-weight: 600; margin: 0.6em 0 0.3em; color: #334155; }
+    .prose h5 { font-size: 1.05em; font-weight: 600; margin: 0.5em 0 0.25em; color: #475569; }
+    .prose h6 { font-size: 0.9em; font-weight: 600; margin: 0.5em 0 0.25em; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; }
+    .prose p { margin-bottom: 1em; line-height: 1.8; }
+    .prose pre { background: #f8fafc !important; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.25em; overflow-x: auto; }
+    .prose pre code { font-size: 0.875em; line-height: 1.7; color: #334155; }
+    .prose code:not(pre code) { background: #eef2ff; color: #4338ca; padding: 0.15em 0.4em; border-radius: 0.25rem; font-size: 0.9em; }
+    .prose img { border-radius: 0.75rem; box-shadow: 0 4px 12px rgba(0,0,0,0.08); max-width: 100%; height: auto; }
+    .prose blockquote { border-left: 4px solid #8b5cf6; background: #f5f3ff; padding: 1em 1.25em; border-radius: 0 0.5rem 0.5rem 0; font-style: italic; color: #475569; }
+    .prose hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
+    .prose ul, .prose ol { padding-left: 1.5em; margin-bottom: 1em; }
+    .prose li { margin-bottom: 0.4em; }
+    .prose a { color: #6366f1; text-decoration: underline; }
+    .prose iframe { width: 100%; min-height: 400px; border-radius: 0.75rem; border: 1px solid #e2e8f0; margin: 1em 0; }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- ===== HERO BANNER ===== -->
+<section class="relative overflow-hidden">
+    {% if post.image_url %}
+    <div class="absolute inset-0">
+        <img src="{{ post.image_url }}" alt="{{ post.title }}" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/60 to-gray-900/40"></div>
+    </div>
+    {% else %}
+    <div class="absolute inset-0 bg-gradient-to-br {{ post.cover_gradient }} opacity-80"></div>
+    <div class="absolute inset-0 bg-gray-900/60"></div>
+    {% endif %}
+    <div class="absolute top-20 right-20 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-pulse-slow"></div>
+    <div class="absolute bottom-10 left-10 w-72 h-72 bg-white/5 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 2s;"></div>
+
+    <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-32 w-full">
+        <nav class="flex items-center space-x-2 text-sm text-gray-300 mb-8 animate-fade-in">
+            <a href="{{ url_for('public.index') }}" class="hover:text-white transition-colors"><i class='bx bx-home'></i> Beranda</a>
+            <i class='bx bx-chevron-right text-gray-500'></i>
+            <a href="{{ url_for('public.blog_list') }}" class="hover:text-white transition-colors">Blog</a>
+            <i class='bx bx-chevron-right text-gray-500'></i>
+            <span class="text-white line-clamp-1">{{ post.title }}</span>
+        </nav>
+
+        <div class="animate-fade-in" style="animation-delay: 0.1s;">
+            <span class="inline-flex items-center px-3 py-1 rounded-full bg-white/15 backdrop-blur-sm border border-white/20 text-white text-xs font-medium mb-4">
+                {{ post.category }}
+            </span>
+        </div>
+
+        <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-black text-white mb-6 animate-slide-up" style="animation-delay: 0.2s;">
+            {{ post.title }}
+        </h1>
+
+        <div class="flex flex-wrap items-center gap-4 text-sm text-gray-300 animate-slide-up" style="animation-delay: 0.3s;">
+            <span class="flex items-center">
+                <i class='bx bx-user mr-2 text-indigo-300'></i>{{ post.author }}
+            </span>
+            <span class="flex items-center">
+                <i class='bx bx-calendar mr-2 text-indigo-300'></i>{{ post.created_at }}
+            </span>
+            {% if post.updated_at %}
+            <span class="flex items-center">
+                <i class='bx bx-edit mr-2 text-indigo-300'></i>Diperbarui: {{ post.updated_at }}
+            </span>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+
+<!-- ===== POST CONTENT ===== -->
+<section class="relative py-16 bg-gray-50">
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-3 gap-12">
+            <!-- Main Content -->
+            <div class="lg:col-span-2 reveal">
+                <div class="bg-white rounded-2xl p-8 sm:p-10 shadow-sm border border-gray-100">
+                    <div class="prose prose-gray max-w-none
+                        prose-headings:font-display prose-headings:font-bold prose-headings:text-gray-900
+                        prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4
+                        prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3
+                        prose-p:text-gray-600 prose-p:leading-relaxed prose-p:mb-4
+                        prose-a:text-indigo-600 prose-a:no-underline hover:prose-a:text-indigo-500
+                        prose-strong:text-gray-900
+                        prose-ul:text-gray-600 prose-ol:text-gray-600
+                        prose-li:mb-1
+                        prose-img:rounded-xl prose-img:shadow-md
+                        prose-blockquote:border-indigo-500 prose-blockquote:text-gray-500
+                        prose-code:text-indigo-600 prose-code:bg-indigo-50 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded
+                        prose-pre:bg-gray-900 prose-pre:border prose-pre:border-gray-200 prose-pre:rounded-xl">
+                        {{ post.content | safe }}
+                    </div>
+                </div>
+
+                <!-- Back to blog -->
+                <div class="mt-8">
+                    <a href="{{ url_for('public.blog_list') }}" class="inline-flex items-center px-6 py-3 bg-white rounded-xl text-gray-700 text-sm font-semibold hover:bg-gray-50 transition-all duration-300 border border-gray-200 hover:border-gray-300 shadow-sm">
+                        <i class='bx bx-arrow-back mr-2'></i>
+                        Kembali ke Blog
+                    </a>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="lg:col-span-1">
+                <div class="sticky top-28 space-y-8">
+                    <!-- Artikel Lainnya -->
+                    {% if recent_posts %}
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 reveal" style="animation-delay: 0.2s;">
+                        <h3 class="font-display font-bold text-lg text-gray-900 mb-6 flex items-center">
+                            <i class='bx bx-news mr-2 text-indigo-500'></i>Artikel Lainnya
+                        </h3>
+                        <div class="space-y-4">
+                            {% for rpost in recent_posts %}
+                            <a href="{{ url_for('public.blog_detail', slug=rpost.slug) }}" class="flex items-start space-x-4 group p-3 rounded-xl hover:bg-gray-50 transition-all">
+                                {% if rpost.image_url %}
+                                <img src="{{ rpost.image_url }}" alt="{{ rpost.title }}" class="w-16 h-16 rounded-xl object-cover flex-shrink-0">
+                                {% else %}
+                                <div class="w-16 h-16 bg-gradient-to-br {{ rpost.cover_gradient }} rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <i class='bx {{ rpost.cover_icon }} text-white/50 text-2xl group-hover:scale-110 transition-transform'></i>
+                                </div>
+                                {% endif %}
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="text-sm font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors line-clamp-2">{{ rpost.title }}</h4>
+                                    <p class="text-xs text-gray-400 mt-1">
+                                        <i class='bx bx-calendar mr-1'></i>{{ rpost.created_at }}
+                                    </p>
+                                </div>
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- CTA Card -->
+                    <div class="relative overflow-hidden rounded-2xl reveal" style="animation-delay: 0.3s;">
+                        <div class="absolute inset-0 bg-gradient-to-br from-purple-600 to-blue-600"></div>
+                        <div class="relative p-6 text-center">
+                            <div class="w-14 h-14 mx-auto bg-white/15 rounded-2xl flex items-center justify-center mb-4">
+                                <i class='bx bx-phone text-white text-2xl'></i>
+                            </div>
+                            <h4 class="font-display font-bold text-white mb-2">Butuh Bantuan?</h4>
+                            <p class="text-white/70 text-sm mb-4">Hubungi kami untuk informasi lebih lanjut</p>
+                            <a href="{{ url_for('public.contact_page') }}" class="inline-flex items-center px-5 py-2.5 bg-white text-purple-700 rounded-xl text-sm font-bold hover:bg-gray-100 transition-all">
+                                <i class='bx bx-phone mr-2'></i>Kontak Kami
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+    document.querySelectorAll('pre code, pre.ql-syntax').forEach((el) => {
+        hljs.highlightElement(el);
+    });
+</script>
+{% endblock %}

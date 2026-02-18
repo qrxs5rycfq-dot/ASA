@@ -1,0 +1,148 @@
+{% extends "admin/base_admin.html" %}
+
+{% block admin_title %}Dashboard{% endblock %}
+{% block admin_title_header %}Dashboard{% endblock %}
+
+{% block admin_content %}
+<!-- Stats Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div class="bg-gray-800 rounded-xl border border-gray-700 p-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-gray-400 text-sm">Blog Posts</p>
+                <p class="text-3xl font-bold mt-1">{{ stats.posts }}</p>
+            </div>
+            <div class="w-12 h-12 bg-purple-600/20 rounded-lg flex items-center justify-center">
+                <i class='bx bxs-edit text-purple-400 text-2xl'></i>
+            </div>
+        </div>
+    </div>
+    <div class="bg-gray-800 rounded-xl border border-gray-700 p-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-gray-400 text-sm">Layanan</p>
+                <p class="text-3xl font-bold mt-1">{{ stats.services }}</p>
+            </div>
+            <div class="w-12 h-12 bg-blue-600/20 rounded-lg flex items-center justify-center">
+                <i class='bx bxs-briefcase text-blue-400 text-2xl'></i>
+            </div>
+        </div>
+    </div>
+    <div class="bg-gray-800 rounded-xl border border-gray-700 p-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-gray-400 text-sm">Galeri</p>
+                <p class="text-3xl font-bold mt-1">{{ stats.gallery }}</p>
+            </div>
+            <div class="w-12 h-12 bg-green-600/20 rounded-lg flex items-center justify-center">
+                <i class='bx bxs-image text-green-400 text-2xl'></i>
+            </div>
+        </div>
+    </div>
+    <div class="bg-gray-800 rounded-xl border border-gray-700 p-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-gray-400 text-sm">Testimoni</p>
+                <p class="text-3xl font-bold mt-1">{{ stats.testimonials }}</p>
+            </div>
+            <div class="w-12 h-12 bg-yellow-600/20 rounded-lg flex items-center justify-center">
+                <i class='bx bxs-star text-yellow-400 text-2xl'></i>
+            </div>
+        </div>
+    </div>
+    <div class="bg-gray-800 rounded-xl border border-gray-700 p-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-gray-400 text-sm">Klien</p>
+                <p class="text-3xl font-bold mt-1">{{ stats.clients }}</p>
+            </div>
+            <div class="w-12 h-12 bg-pink-600/20 rounded-lg flex items-center justify-center">
+                <i class='bx bxs-building text-pink-400 text-2xl'></i>
+            </div>
+        </div>
+    </div>
+    <div class="bg-gray-800 rounded-xl border border-gray-700 p-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-gray-400 text-sm">Tim</p>
+                <p class="text-3xl font-bold mt-1">{{ stats.team }}</p>
+            </div>
+            <div class="w-12 h-12 bg-indigo-600/20 rounded-lg flex items-center justify-center">
+                <i class='bx bxs-group text-indigo-400 text-2xl'></i>
+            </div>
+        </div>
+    </div>
+    <div class="bg-gray-800 rounded-xl border border-gray-700 p-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-gray-400 text-sm">FAQ</p>
+                <p class="text-3xl font-bold mt-1">{{ stats.faqs }}</p>
+            </div>
+            <div class="w-12 h-12 bg-cyan-600/20 rounded-lg flex items-center justify-center">
+                <i class='bx bxs-help-circle text-cyan-400 text-2xl'></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="mb-8">
+    <h3 class="text-lg font-semibold font-['Poppins'] mb-4">Aksi Cepat</h3>
+    <div class="flex flex-wrap gap-3">
+        <a href="{{ url_for('admin.blog_create') }}" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg text-sm font-medium transition-colors">
+            <i class='bx bx-plus mr-1'></i> Buat Blog
+        </a>
+        <a href="{{ url_for('admin.service_create') }}" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm font-medium transition-colors">
+            <i class='bx bx-plus mr-1'></i> Tambah Layanan
+        </a>
+        <a href="{{ url_for('admin.gallery_create') }}" class="px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg text-sm font-medium transition-colors">
+            <i class='bx bx-plus mr-1'></i> Tambah Galeri
+        </a>
+        <a href="{{ url_for('admin.testimonial_create') }}" class="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 rounded-lg text-sm font-medium transition-colors">
+            <i class='bx bx-plus mr-1'></i> Tambah Testimoni
+        </a>
+        <a href="{{ url_for('admin.team_create') }}" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium transition-colors">
+            <i class='bx bx-plus mr-1'></i> Tambah Tim
+        </a>
+    </div>
+</div>
+
+<!-- Recent Blog Posts -->
+<div class="bg-gray-800 rounded-xl border border-gray-700">
+    <div class="p-6 border-b border-gray-700">
+        <h3 class="text-lg font-semibold font-['Poppins']">Blog Terbaru</h3>
+    </div>
+    <div class="overflow-x-auto">
+        <table class="w-full">
+            <thead>
+                <tr class="border-b border-gray-700">
+                    <th class="text-left px-6 py-3 text-xs font-medium text-gray-400 uppercase tracking-wider">Judul</th>
+                    <th class="text-left px-6 py-3 text-xs font-medium text-gray-400 uppercase tracking-wider">Kategori</th>
+                    <th class="text-left px-6 py-3 text-xs font-medium text-gray-400 uppercase tracking-wider">Status</th>
+                    <th class="text-left px-6 py-3 text-xs font-medium text-gray-400 uppercase tracking-wider">Tanggal</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-700">
+                {% for post in recent_posts %}
+                <tr class="hover:bg-gray-700/50 transition-colors">
+                    <td class="px-6 py-4 text-sm">
+                        <a href="{{ url_for('admin.blog_edit', post_id=post.id) }}" class="text-purple-400 hover:text-purple-300">{{ post.title }}</a>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-400">{{ post.category }}</td>
+                    <td class="px-6 py-4 text-sm">
+                        <span class="px-2 py-1 rounded-full text-xs {{ 'bg-green-600/20 text-green-400' if post.status == 'published' else 'bg-yellow-600/20 text-yellow-400' }}">
+                            {{ post.status }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-400">{{ post.created_at }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4" class="px-6 py-8 text-center text-gray-500">Belum ada blog post.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

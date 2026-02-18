@@ -1,0 +1,209 @@
+{% extends "admin/base_admin.html" %}
+
+{% block admin_title %}{{ 'Edit' if item else 'Tambah' }} Perusahaan{% endblock %}
+{% block admin_title_header %}{{ 'Edit' if item else 'Tambah' }} Perusahaan{% endblock %}
+
+{% block admin_content %}
+<div class="max-w-3xl">
+    <div class="bg-gray-800 rounded-xl border border-gray-700 p-6">
+        <form method="POST" action="{{ url_for('admin.company_edit', cid=item.id) if item else url_for('admin.company_create') }}" enctype="multipart/form-data" class="space-y-6">
+
+            <!-- Basic Info -->
+            <div class="border-b border-gray-700 pb-4 mb-4">
+                <h3 class="text-sm font-semibold text-purple-400 uppercase tracking-wide">Informasi Dasar</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Nama Perusahaan <span class="text-red-400">*</span></label>
+                    <input type="text" name="name" value="{{ item.name if item else '' }}" required
+                           class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Slug <span class="text-red-400">*</span></label>
+                    <input type="text" name="slug" value="{{ item.slug if item else '' }}" required placeholder="contoh: nur-putra-mandiri"
+                           class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Tagline</label>
+                <input type="text" name="tagline" value="{{ item.tagline if item else '' }}" placeholder="Slogan perusahaan"
+                       class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Deskripsi</label>
+                <textarea name="description" rows="4" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">{{ item.description if item else '' }}</textarea>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Tahun Berdiri</label>
+                    <input type="text" name="founded" value="{{ item.founded if item else '' }}" placeholder="2020"
+                           class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Icon (Boxicons)</label>
+                    <input type="text" name="icon" value="{{ item.icon if item else 'bx-buildings' }}" placeholder="bx-buildings"
+                           class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Urutan</label>
+                    <input type="number" name="sort_order" value="{{ item.sort_order if item else 0 }}"
+                           class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Spesialisasi (pisahkan dengan |)</label>
+                <input type="text" name="specialties" value="{{ item.specialties if item else '' }}" placeholder="Konstruksi|Supplier|Renovasi"
+                       class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                <p class="text-xs text-gray-500 mt-1">Contoh: Pengadaan Material|Jasa Konstruksi|Renovasi</p>
+            </div>
+
+            <!-- Logo -->
+            <div class="border-b border-gray-700 pb-4 mb-4 mt-8">
+                <h3 class="text-sm font-semibold text-purple-400 uppercase tracking-wide">Logo Perusahaan</h3>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">URL Logo</label>
+                <input type="url" name="image_url" value="{{ item.logo_url if item else '' }}" placeholder="https://example.com/logo.png"
+                       class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                <p class="text-xs text-gray-500 mt-1">Atau upload logo:</p>
+                <input type="file" name="image_file" accept="image/*"
+                       class="mt-2 w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-purple-600 file:text-white hover:file:bg-purple-700 file:cursor-pointer">
+                {% if item and item.logo_url %}
+                <div class="mt-3 p-3 bg-gray-700 rounded-lg">
+                    <p class="text-xs text-gray-400 mb-2">Logo saat ini:</p>
+                    <img src="{{ item.logo_url }}" alt="Logo" class="h-12 object-contain">
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Colors -->
+            <div class="border-b border-gray-700 pb-4 mb-4 mt-8">
+                <h3 class="text-sm font-semibold text-purple-400 uppercase tracking-wide">Warna & Style</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Warna Primer</label>
+                    <div class="flex items-center space-x-2">
+                        <input type="color" name="color_primary" value="{{ item.color_primary if item else '#7C3AED' }}" class="w-10 h-10 rounded cursor-pointer border-0 bg-transparent">
+                        <input type="text" value="{{ item.color_primary if item else '#7C3AED' }}" readonly class="flex-1 px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white text-sm" id="cp_display">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Warna Sekunder</label>
+                    <div class="flex items-center space-x-2">
+                        <input type="color" name="color_secondary" value="{{ item.color_secondary if item else '#2563EB' }}" class="w-10 h-10 rounded cursor-pointer border-0 bg-transparent">
+                        <input type="text" value="{{ item.color_secondary if item else '#2563EB' }}" readonly class="flex-1 px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white text-sm" id="cs_display">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Warna Tersier</label>
+                    <div class="flex items-center space-x-2">
+                        <input type="color" name="color_tertiary" value="{{ item.color_tertiary if item else '#1e1b4b' }}" class="w-10 h-10 rounded cursor-pointer border-0 bg-transparent">
+                        <input type="text" value="{{ item.color_tertiary if item else '#1e1b4b' }}" readonly class="flex-1 px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white text-sm" id="ct_display">
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Gradient (panjang)</label>
+                    <input type="text" name="gradient" value="{{ item.gradient if item else 'from-purple-600 to-blue-600' }}" placeholder="from-purple-600 to-blue-600"
+                           class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Gradient (pendek)</label>
+                    <input type="text" name="gradient_short" value="{{ item.gradient_short if item else 'from-purple-600 to-blue-600' }}" placeholder="from-purple-600 to-blue-600"
+                           class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+            </div>
+
+            <!-- Tailwind Classes -->
+            <div class="border-b border-gray-700 pb-4 mb-4 mt-8">
+                <h3 class="text-sm font-semibold text-purple-400 uppercase tracking-wide">Tailwind CSS Classes</h3>
+                <p class="text-xs text-gray-500 mt-1">Class Tailwind untuk styling di template</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">BG Class (primary)</label>
+                    <input type="text" name="bg_class" value="{{ item.bg_class if item else 'bg-purple-600' }}"
+                           class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">BG Class (secondary)</label>
+                    <input type="text" name="bg_secondary_class" value="{{ item.bg_secondary_class if item else 'bg-blue-600' }}"
+                           class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Text Class (primary)</label>
+                    <input type="text" name="text_class" value="{{ item.text_class if item else 'text-purple-600' }}"
+                           class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Text Class (secondary)</label>
+                    <input type="text" name="text_secondary_class" value="{{ item.text_secondary_class if item else 'text-blue-600' }}"
+                           class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Border Class</label>
+                    <input type="text" name="border_class" value="{{ item.border_class if item else 'border-purple-600' }}"
+                           class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Ring Class</label>
+                    <input type="text" name="ring_class" value="{{ item.ring_class if item else 'ring-purple-600' }}"
+                           class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+            </div>
+
+            <!-- Preview -->
+            {% if item %}
+            <div class="border-b border-gray-700 pb-4 mb-4 mt-8">
+                <h3 class="text-sm font-semibold text-purple-400 uppercase tracking-wide">Preview</h3>
+            </div>
+            <div class="p-4 bg-gray-700 rounded-lg">
+                <div class="flex items-center space-x-4">
+                    <div class="w-14 h-14 rounded-xl flex items-center justify-center" style="background: linear-gradient(135deg, {{ item.color_primary }}, {{ item.color_secondary }});">
+                        {% if item.logo_url %}
+                        <img src="{{ item.logo_url }}" alt="{{ item.name }}" class="w-10 h-10 object-contain rounded">
+                        {% else %}
+                        <i class='bx {{ item.icon }} text-white text-2xl'></i>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <p class="font-semibold text-white">{{ item.name }}</p>
+                        <p class="text-sm text-gray-400">{{ item.tagline }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="flex items-center space-x-4 pt-4">
+                <button type="submit" class="px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 rounded-lg text-sm font-semibold transition-all">
+                    <i class='bx bx-save mr-1'></i> {{ 'Perbarui' if item else 'Simpan' }}
+                </button>
+                <a href="{{ url_for('admin.companies') }}" class="px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm font-medium transition-all text-gray-300">
+                    Batal
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// Sync color pickers with text display
+document.querySelectorAll('input[type="color"]').forEach(function(picker) {
+    const display = picker.nextElementSibling;
+    picker.addEventListener('input', function() {
+        display.value = picker.value;
+    });
+});
+</script>
+{% endblock %}

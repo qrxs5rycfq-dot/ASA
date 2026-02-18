@@ -1,0 +1,61 @@
+{% extends "admin/base_admin.html" %}
+
+{% block admin_title %}Pengaturan Situs{% endblock %}
+{% block admin_title_header %}Pengaturan Situs{% endblock %}
+
+{% block admin_content %}
+<div class="max-w-2xl">
+    <div class="bg-gray-800 rounded-xl border border-gray-700 p-6">
+        <form method="POST" action="{{ url_for('admin.settings') }}" enctype="multipart/form-data" class="space-y-6">
+            <div>
+                <label for="app_name" class="block text-sm font-medium text-gray-300 mb-2">Nama Aplikasi / Group</label>
+                <input type="text" id="app_name" name="app_name" value="{{ current.get('app_name', 'ASA Group') }}"
+                       class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+            </div>
+
+            <div>
+                <label for="tagline" class="block text-sm font-medium text-gray-300 mb-2">Tagline</label>
+                <input type="text" id="tagline" name="tagline" value="{{ current.get('tagline', 'General Supplier & Kontraktor') }}"
+                       class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+            </div>
+
+            <div>
+                <label for="logo_url" class="block text-sm font-medium text-gray-300 mb-2">Logo</label>
+                <input type="url" id="logo_url" name="logo_url" value="{{ current.get('logo_url', '') }}" placeholder="https://example.com/logo.png"
+                       class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                <p class="text-xs text-gray-500 mt-1">Atau upload logo:</p>
+                <input type="file" name="logo_file" accept="image/*"
+                       class="mt-2 w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-purple-600 file:text-white hover:file:bg-purple-700 file:cursor-pointer">
+                {% if current.get('logo_url') %}
+                <div class="mt-3 p-3 bg-gray-700 rounded-lg">
+                    <p class="text-xs text-gray-400 mb-2">Preview Logo:</p>
+                    <img src="{{ current.get('logo_url') }}" alt="Logo Preview" class="h-12 object-contain">
+                </div>
+                {% endif %}
+            </div>
+
+            <div>
+                <label for="favicon_url" class="block text-sm font-medium text-gray-300 mb-2">Favicon</label>
+                <input type="url" id="favicon_url" name="favicon_url" value="{{ current.get('favicon_url', '') }}" placeholder="https://example.com/favicon.ico"
+                       class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                <p class="text-xs text-gray-500 mt-1">Atau upload favicon (ico, png, svg):</p>
+                <input type="file" name="favicon_file" accept=".ico,.png,.svg,image/x-icon,image/png,image/svg+xml"
+                       class="mt-2 w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-purple-600 file:text-white hover:file:bg-purple-700 file:cursor-pointer">
+                <p class="text-xs text-gray-500 mt-1">Kosongkan keduanya untuk menggunakan favicon default browser.</p>
+                {% if current.get('favicon_url') %}
+                <div class="mt-3 p-3 bg-gray-700 rounded-lg flex items-center space-x-3">
+                    <p class="text-xs text-gray-400">Preview Favicon:</p>
+                    <img src="{{ current.get('favicon_url') }}" alt="Favicon Preview" class="h-8 w-8 object-contain">
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="flex items-center space-x-4 pt-4">
+                <button type="submit" class="px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 rounded-lg text-sm font-semibold transition-all">
+                    <i class='bx bx-save mr-1'></i> Simpan Pengaturan
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

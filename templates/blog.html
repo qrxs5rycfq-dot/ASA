@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}Blog & Artikel{% endblock %}
+{% block meta_description %}Blog ASA Group - Informasi terkini seputar industri konstruksi, supply chain, dan perkembangan ASA Group{% endblock %}
+
+{% block content %}
+
+<!-- ===== HERO BANNER ===== -->
+<section class="relative bg-gray-50 overflow-hidden">
+    <div class="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-purple-100 to-blue-100 rounded-full blur-3xl opacity-60 -translate-y-1/2 translate-x-1/3"></div>
+    <div class="absolute bottom-0 left-0 w-72 h-72 bg-gradient-to-tr from-indigo-100 to-purple-100 rounded-full blur-3xl opacity-50 translate-y-1/3 -translate-x-1/4"></div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
+        <nav class="flex items-center space-x-2 text-sm text-gray-500 mb-8 animate-fade-in">
+            <a href="{{ url_for('public.index') }}" class="hover:text-gray-900 transition-colors"><i class='bx bx-home'></i> Beranda</a>
+            <i class='bx bx-chevron-right text-gray-400'></i>
+            <span class="text-gray-900 font-medium">Blog</span>
+        </nav>
+        <div class="inline-flex items-center px-4 py-2 rounded-full bg-white shadow-sm text-sm mb-6 animate-fade-in" style="animation-delay: 0.1s;">
+            <span class="w-2 h-2 bg-indigo-500 rounded-full mr-2 animate-pulse"></span>
+            <span class="text-gray-600">Artikel & Informasi Terkini</span>
+        </div>
+        <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 mb-6 animate-slide-up" style="animation-delay: 0.2s;">
+            Blog & <span class="gradient-text">Artikel</span>
+        </h1>
+        <p class="text-gray-500 text-lg max-w-2xl leading-relaxed animate-slide-up" style="animation-delay: 0.3s;">
+            Informasi terkini seputar industri konstruksi, supply chain, dan perkembangan ASA Group
+        </p>
+    </div>
+</section>
+
+
+<!-- ===== BLOG GRID ===== -->
+<section class="relative py-24 bg-white">
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        {% if posts %}
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for post in posts %}
+            <div class="reveal" style="animation-delay: {{ loop.index0 * 0.1 }}s;">
+                <a href="{{ url_for('public.blog_detail', slug=post.slug) }}" class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 group block h-full border border-gray-100">
+                    <div class="relative">
+                        {% if post.image_url %}
+                        <img src="{{ post.image_url }}" alt="{{ post.title }}" class="w-full h-48 object-cover">
+                        {% else %}
+                        <div class="w-full h-48 bg-gradient-to-br {{ post.cover_gradient }} flex items-center justify-center">
+                            <i class='bx {{ post.cover_icon }} text-white/30 text-6xl group-hover:scale-110 transition-transform duration-500'></i>
+                        </div>
+                        {% endif %}
+                        <div class="absolute top-4 left-4">
+                            <span class="text-xs font-medium text-white bg-black/40 backdrop-blur-sm px-3 py-1 rounded-full">{{ post.category }}</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-display font-bold text-lg text-gray-900 mb-2 group-hover:text-indigo-600 transition-colors line-clamp-2">{{ post.title }}</h3>
+                        <p class="text-gray-500 text-sm line-clamp-2 mb-4">{{ post.excerpt }}</p>
+                        <div class="flex items-center text-xs text-gray-400">
+                            <i class='bx bx-user mr-1'></i>{{ post.author }}
+                            <span class="mx-2">•</span>
+                            <i class='bx bx-calendar mr-1'></i>{{ post.created_at }}
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if total_pages > 1 %}
+        <div class="flex items-center justify-center space-x-4 mt-16 reveal">
+            {% if page > 1 %}
+            <a href="{{ url_for('public.blog_list', page=page-1) }}" class="inline-flex items-center px-6 py-3 bg-white rounded-xl text-gray-700 text-sm font-semibold hover:bg-gray-50 transition-all duration-300 border border-gray-200 hover:border-gray-300 shadow-sm">
+                <i class='bx bx-chevron-left mr-2'></i>
+                Previous
+            </a>
+            {% endif %}
+
+            <span class="text-gray-500 text-sm">Halaman {{ page }} dari {{ total_pages }}</span>
+
+            {% if page < total_pages %}
+            <a href="{{ url_for('public.blog_list', page=page+1) }}" class="inline-flex items-center px-6 py-3 bg-white rounded-xl text-gray-700 text-sm font-semibold hover:bg-gray-50 transition-all duration-300 border border-gray-200 hover:border-gray-300 shadow-sm">
+                Next
+                <i class='bx bx-chevron-right ml-2'></i>
+            </a>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% else %}
+        <!-- No Posts -->
+        <div class="text-center py-20 reveal">
+            <div class="w-20 h-20 mx-auto bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl flex items-center justify-center mb-6 shadow-sm">
+                <i class='bx bx-news text-indigo-500 text-3xl'></i>
+            </div>
+            <h3 class="font-display font-bold text-xl text-gray-900 mb-2">Belum ada artikel.</h3>
+            <p class="text-gray-500 mb-8">Artikel dan berita terbaru akan segera hadir.</p>
+            <a href="{{ url_for('public.index') }}" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl text-white text-sm font-semibold hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300 hover:scale-105">
+                <i class='bx bx-home mr-2'></i>Kembali ke Beranda
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock %}

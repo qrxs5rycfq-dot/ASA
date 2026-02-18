@@ -1,0 +1,59 @@
+{% extends "admin/base_admin.html" %}
+
+{% block admin_title %}Daftar Blog{% endblock %}
+{% block admin_title_header %}Daftar Blog{% endblock %}
+
+{% block admin_content %}
+<div class="flex items-center justify-between mb-6">
+    <h3 class="text-xl font-semibold font-['Poppins']">Daftar Blog</h3>
+    <a href="{{ url_for('admin.blog_create') }}" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg text-sm font-medium transition-colors">
+        <i class='bx bx-plus mr-1'></i> Tambah Blog
+    </a>
+</div>
+
+<div class="bg-gray-800 rounded-xl border border-gray-700 overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="w-full">
+            <thead>
+                <tr class="border-b border-gray-700">
+                    <th class="text-left px-6 py-3 text-xs font-medium text-gray-400 uppercase tracking-wider">Judul</th>
+                    <th class="text-left px-6 py-3 text-xs font-medium text-gray-400 uppercase tracking-wider">Kategori</th>
+                    <th class="text-left px-6 py-3 text-xs font-medium text-gray-400 uppercase tracking-wider">Status</th>
+                    <th class="text-left px-6 py-3 text-xs font-medium text-gray-400 uppercase tracking-wider">Tanggal</th>
+                    <th class="text-left px-6 py-3 text-xs font-medium text-gray-400 uppercase tracking-wider">Aksi</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-700">
+                {% for post in posts %}
+                <tr class="hover:bg-gray-700/50 transition-colors">
+                    <td class="px-6 py-4 text-sm font-medium">{{ post.title }}</td>
+                    <td class="px-6 py-4 text-sm text-gray-400">{{ post.category }}</td>
+                    <td class="px-6 py-4 text-sm">
+                        <span class="px-2 py-1 rounded-full text-xs {{ 'bg-green-600/20 text-green-400' if post.status == 'published' else 'bg-yellow-600/20 text-yellow-400' }}">
+                            {{ post.status }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-400">{{ post.created_at }}</td>
+                    <td class="px-6 py-4 text-sm">
+                        <div class="flex items-center space-x-3">
+                            <a href="{{ url_for('admin.blog_edit', post_id=post.id) }}" class="text-blue-400 hover:text-blue-300 transition-colors">
+                                <i class='bx bx-edit'></i> Edit
+                            </a>
+                            <form method="POST" action="{{ url_for('admin.blog_delete', post_id=post.id) }}" onsubmit="return confirm('Yakin ingin menghapus?')" class="inline">
+                                <button type="submit" class="text-red-400 hover:text-red-300 transition-colors">
+                                    <i class='bx bx-trash'></i> Hapus
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" class="px-6 py-8 text-center text-gray-500">Belum ada blog post.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
