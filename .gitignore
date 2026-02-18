@@ -17,3 +17,5 @@ dist/
 instance/
 .webassets-cache
 node_modules/
+static/uploads/*
+!static/uploads/.gitkeep

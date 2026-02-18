@@ -18,6 +18,8 @@ def index():
     testimonials = cur.fetchall()
     cur.execute("SELECT * FROM clients ORDER BY sort_order")
     clients = cur.fetchall()
+    cur.execute("SELECT * FROM gallery_items ORDER BY sort_order LIMIT 6")
+    gallery = cur.fetchall()
     cur.execute("SELECT * FROM blog_posts WHERE status='published' ORDER BY created_at DESC LIMIT 3")
     latest_posts = cur.fetchall()
     cur.close()
@@ -27,6 +29,7 @@ def index():
         services=services,
         testimonials=testimonials,
         clients=clients,
+        gallery=gallery,
         latest_posts=latest_posts,
     )
 

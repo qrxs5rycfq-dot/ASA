@@ -1,5 +1,7 @@
 """ASA Group — Flask application factory."""
 
+import os
+
 from flask import Flask, render_template
 
 from config import Config
@@ -7,8 +9,16 @@ from config import Config
 
 def create_app():
     """Create and configure the Flask application."""
-    app = Flask(__name__, template_folder="../templates")
+    app = Flask(
+        __name__,
+        template_folder="../templates",
+        static_folder="../static",
+        static_url_path="/static",
+    )
     app.config.from_object(Config)
+
+    # Ensure upload folder exists
+    os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
     # Database
     from app import extensions

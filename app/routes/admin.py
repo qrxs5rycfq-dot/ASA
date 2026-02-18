@@ -1,6 +1,8 @@
 """Admin dashboard routes."""
 
 import hashlib
+import os
+import uuid
 from functools import wraps
 
 from flask import (
@@ -11,11 +13,43 @@ from flask import (
     url_for,
     flash,
     session,
+    current_app,
+    jsonify,
 )
 
 from app.extensions import get_db
 
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
+
+
+ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "webp", "svg"}
+
+
+def _allowed_file(filename):
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+def _save_upload(file_field="image_file"):
+    """Save an uploaded file and return its URL path, or empty string."""
+    f = request.files.get(file_field)
+    if not f or f.filename == "":
+        return ""
+    if not _allowed_file(f.filename):
+        return ""
+    ext = f.filename.rsplit(".", 1)[1].lower()
+    safe_name = f"{uuid.uuid4().hex}.{ext}"
+    upload_dir = current_app.config["UPLOAD_FOLDER"]
+    os.makedirs(upload_dir, exist_ok=True)
+    f.save(os.path.join(upload_dir, safe_name))
+    return f"/static/uploads/{safe_name}"
+
+
+def _resolve_image():
+    """Return image URL: prioritise uploaded file, then URL field, then empty."""
+    uploaded = _save_upload("image_file")
+    if uploaded:
+        return uploaded
+    return request.form.get("image_url", "").strip()
 
 
 def login_required(f):
@@ -74,7 +108,7 @@ def blog_create():
         excerpt = request.form.get("excerpt", "").strip()
         content = request.form.get("content", "").strip()
         category = request.form.get("category", "Umum").strip()
-        image_url = request.form.get("image_url", "").strip()
+        image_url = _resolve_image()
         cover_icon = request.form.get("cover_icon", "bx-news").strip()
         cover_gradient = request.form.get("cover_gradient", "from-purple-600 to-blue-600").strip()
         status = request.form.get("status", "published")
@@ -109,6 +143,8 @@ def blog_edit(post_id):
         flash("Post tidak ditemukan.", "error")
         return redirect(url_for("admin.blog_list"))
     if request.method == "POST":
+        new_image = _resolve_image()
+        image_url = new_image if new_image else post.get("image_url", "")
         try:
             cur.execute(
                 "UPDATE blog_posts SET title=%s, slug=%s, excerpt=%s, content=%s, image_url=%s, cover_icon=%s, cover_gradient=%s, category=%s, status=%s WHERE id=%s",
@@ -117,7 +153,7 @@ def blog_edit(post_id):
                     request.form["slug"].strip(),
                     request.form.get("excerpt", "").strip(),
                     request.form["content"].strip(),
-                    request.form.get("image_url", "").strip(),
+                    image_url,
                     request.form.get("cover_icon", "bx-news").strip(),
                     request.form.get("cover_gradient", "from-purple-600 to-blue-600").strip(),
                     request.form.get("category", "Umum").strip(),
@@ -168,9 +204,10 @@ def service_create():
     if request.method == "POST":
         db = get_db()
         cur = db.cursor()
+        image_url = _resolve_image()
         cur.execute(
             "INSERT INTO services (icon, title, description, image_url, gradient, sort_order) VALUES (%s,%s,%s,%s,%s,%s)",
-            (request.form["icon"], request.form["title"], request.form["description"], request.form.get("image_url", ""), request.form["gradient"], request.form.get("sort_order", 0, type=int)),
+            (request.form["icon"], request.form["title"], request.form["description"], image_url, request.form["gradient"], request.form.get("sort_order", 0, type=int)),
         )
         db.commit()
         cur.close()
@@ -191,9 +228,11 @@ def service_edit(sid):
         flash("Layanan tidak ditemukan.", "error")
         return redirect(url_for("admin.services_list"))
     if request.method == "POST":
+        new_image = _resolve_image()
+        image_url = new_image if new_image else service.get("image_url", "")
         cur.execute(
             "UPDATE services SET icon=%s, title=%s, description=%s, image_url=%s, gradient=%s, sort_order=%s WHERE id=%s",
-            (request.form["icon"], request.form["title"], request.form["description"], request.form.get("image_url", ""), request.form["gradient"], request.form.get("sort_order", 0, type=int), sid),
+            (request.form["icon"], request.form["title"], request.form["description"], image_url, request.form["gradient"], request.form.get("sort_order", 0, type=int), sid),
         )
         db.commit()
         flash("Layanan berhasil diperbarui!", "success")
@@ -236,10 +275,11 @@ def testimonial_create():
     if request.method == "POST":
         db = get_db()
         cur = db.cursor()
+        image_url = _resolve_image()
         cur.execute(
-            "INSERT INTO testimonials (name, position, company, content, rating, avatar_gradient, sort_order) VALUES (%s,%s,%s,%s,%s,%s,%s)",
+            "INSERT INTO testimonials (name, position, company, content, image_url, rating, avatar_gradient, sort_order) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",
             (request.form["name"], request.form["position"], request.form["company"], request.form["content"],
-             request.form.get("rating", 5, type=int), request.form.get("avatar_gradient", "from-purple-500 to-blue-500"), request.form.get("sort_order", 0, type=int)),
+             image_url, request.form.get("rating", 5, type=int), request.form.get("avatar_gradient", "from-purple-500 to-blue-500"), request.form.get("sort_order", 0, type=int)),
         )
         db.commit()
         cur.close()
@@ -260,10 +300,12 @@ def testimonial_edit(tid):
         flash("Testimoni tidak ditemukan.", "error")
         return redirect(url_for("admin.testimonials"))
     if request.method == "POST":
+        new_image = _resolve_image()
+        image_url = new_image if new_image else item.get("image_url", "")
         cur.execute(
-            "UPDATE testimonials SET name=%s, position=%s, company=%s, content=%s, rating=%s, avatar_gradient=%s, sort_order=%s WHERE id=%s",
+            "UPDATE testimonials SET name=%s, position=%s, company=%s, content=%s, image_url=%s, rating=%s, avatar_gradient=%s, sort_order=%s WHERE id=%s",
             (request.form["name"], request.form["position"], request.form["company"], request.form["content"],
-             request.form.get("rating", 5, type=int), request.form.get("avatar_gradient", "from-purple-500 to-blue-500"), request.form.get("sort_order", 0, type=int), tid),
+             image_url, request.form.get("rating", 5, type=int), request.form.get("avatar_gradient", "from-purple-500 to-blue-500"), request.form.get("sort_order", 0, type=int), tid),
         )
         db.commit()
         flash("Testimoni berhasil diperbarui!", "success")
@@ -306,9 +348,10 @@ def gallery_create():
     if request.method == "POST":
         db = get_db()
         cur = db.cursor()
+        image_url = _resolve_image()
         cur.execute(
             "INSERT INTO gallery_items (title, company, category, image_url, icon, gradient, sort_order) VALUES (%s,%s,%s,%s,%s,%s,%s)",
-            (request.form["title"], request.form["company"], request.form["category"], request.form.get("image_url", ""), request.form.get("icon", "bx-building"), request.form.get("gradient", "from-purple-600 to-blue-600"), request.form.get("sort_order", 0, type=int)),
+            (request.form["title"], request.form["company"], request.form["category"], image_url, request.form.get("icon", "bx-building"), request.form.get("gradient", "from-purple-600 to-blue-600"), request.form.get("sort_order", 0, type=int)),
         )
         db.commit()
         cur.close()
@@ -329,9 +372,11 @@ def gallery_edit(gid):
         flash("Item tidak ditemukan.", "error")
         return redirect(url_for("admin.gallery"))
     if request.method == "POST":
+        new_image = _resolve_image()
+        image_url = new_image if new_image else item.get("image_url", "")
         cur.execute(
             "UPDATE gallery_items SET title=%s, company=%s, category=%s, image_url=%s, icon=%s, gradient=%s, sort_order=%s WHERE id=%s",
-            (request.form["title"], request.form["company"], request.form["category"], request.form.get("image_url", ""), request.form.get("icon", "bx-building"), request.form.get("gradient", "from-purple-600 to-blue-600"), request.form.get("sort_order", 0, type=int), gid),
+            (request.form["title"], request.form["company"], request.form["category"], image_url, request.form.get("icon", "bx-building"), request.form.get("gradient", "from-purple-600 to-blue-600"), request.form.get("sort_order", 0, type=int), gid),
         )
         db.commit()
         flash("Item galeri berhasil diperbarui!", "success")
@@ -374,9 +419,10 @@ def team_create():
     if request.method == "POST":
         db = get_db()
         cur = db.cursor()
+        image_url = _resolve_image()
         cur.execute(
             "INSERT INTO team_members (name, position, bio, image_url, icon, gradient, sort_order) VALUES (%s,%s,%s,%s,%s,%s,%s)",
-            (request.form["name"], request.form["position"], request.form["bio"], request.form.get("image_url", ""), request.form.get("icon", "bx-user-circle"), request.form.get("gradient", "from-purple-500 to-blue-500"), request.form.get("sort_order", 0, type=int)),
+            (request.form["name"], request.form["position"], request.form["bio"], image_url, request.form.get("icon", "bx-user-circle"), request.form.get("gradient", "from-purple-500 to-blue-500"), request.form.get("sort_order", 0, type=int)),
         )
         db.commit()
         cur.close()
@@ -397,9 +443,11 @@ def team_edit(tid):
         flash("Anggota tim tidak ditemukan.", "error")
         return redirect(url_for("admin.team"))
     if request.method == "POST":
+        new_image = _resolve_image()
+        image_url = new_image if new_image else item.get("image_url", "")
         cur.execute(
             "UPDATE team_members SET name=%s, position=%s, bio=%s, image_url=%s, icon=%s, gradient=%s, sort_order=%s WHERE id=%s",
-            (request.form["name"], request.form["position"], request.form["bio"], request.form.get("image_url", ""), request.form.get("icon", "bx-user-circle"), request.form.get("gradient", "from-purple-500 to-blue-500"), request.form.get("sort_order", 0, type=int), tid),
+            (request.form["name"], request.form["position"], request.form["bio"], image_url, request.form.get("icon", "bx-user-circle"), request.form.get("gradient", "from-purple-500 to-blue-500"), request.form.get("sort_order", 0, type=int), tid),
         )
         db.commit()
         flash("Anggota tim berhasil diperbarui!", "success")
@@ -510,9 +558,10 @@ def client_create():
     if request.method == "POST":
         db = get_db()
         cur = db.cursor()
+        image_url = _resolve_image()
         cur.execute(
-            "INSERT INTO clients (name, icon, sort_order) VALUES (%s,%s,%s)",
-            (request.form["name"], request.form.get("icon", "bx-building"), request.form.get("sort_order", 0, type=int)),
+            "INSERT INTO clients (name, image_url, icon, sort_order) VALUES (%s,%s,%s,%s)",
+            (request.form["name"], image_url, request.form.get("icon", "bx-building"), request.form.get("sort_order", 0, type=int)),
         )
         db.commit()
         cur.close()
@@ -533,9 +582,11 @@ def client_edit(cid):
         flash("Klien tidak ditemukan.", "error")
         return redirect(url_for("admin.clients"))
     if request.method == "POST":
+        new_image = _resolve_image()
+        image_url = new_image if new_image else item.get("image_url", "")
         cur.execute(
-            "UPDATE clients SET name=%s, icon=%s, sort_order=%s WHERE id=%s",
-            (request.form["name"], request.form.get("icon", "bx-building"), request.form.get("sort_order", 0, type=int), cid),
+            "UPDATE clients SET name=%s, image_url=%s, icon=%s, sort_order=%s WHERE id=%s",
+            (request.form["name"], image_url, request.form.get("icon", "bx-building"), request.form.get("sort_order", 0, type=int), cid),
         )
         db.commit()
         flash("Klien berhasil diperbarui!", "success")
@@ -604,13 +655,21 @@ def settings():
     db = get_db()
     cur = db.cursor()
     if request.method == "POST":
-        for key in ("app_name", "logo_url", "tagline"):
+        for key in ("app_name", "tagline"):
             val = request.form.get(key, "").strip()
             cur.execute(
                 "INSERT INTO site_settings (setting_key, setting_value) VALUES (%s, %s) "
                 "ON DUPLICATE KEY UPDATE setting_value=%s",
                 (key, val, val),
             )
+        # Handle logo: upload or URL
+        logo_uploaded = _save_upload("logo_file")
+        logo_url = logo_uploaded if logo_uploaded else request.form.get("logo_url", "").strip()
+        cur.execute(
+            "INSERT INTO site_settings (setting_key, setting_value) VALUES (%s, %s) "
+            "ON DUPLICATE KEY UPDATE setting_value=%s",
+            ("logo_url", logo_url, logo_url),
+        )
         db.commit()
         flash("Pengaturan berhasil disimpan!", "success")
         return redirect(url_for("admin.settings"))
@@ -619,3 +678,17 @@ def settings():
     cur.close()
     current = {r["setting_key"]: r["setting_value"] for r in rows}
     return render_template("admin/settings.html", current=current)
+
+
+# ---------------------------------------------------------------------------
+# Image Upload API (for Quill editor)
+# ---------------------------------------------------------------------------
+
+@admin_bp.route("/upload-image", methods=["POST"])
+@login_required
+def upload_image():
+    """API endpoint for uploading images from the Quill editor."""
+    uploaded = _save_upload("image")
+    if uploaded:
+        return jsonify({"success": True, "url": uploaded})
+    return jsonify({"success": False, "error": "Upload gagal. Format: png, jpg, jpeg, gif, webp, svg"}), 400

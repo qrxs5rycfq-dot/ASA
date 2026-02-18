@@ -2,6 +2,19 @@
 {% block title %}{{ post.title }}{% endblock %}
 {% block meta_description %}{{ post.excerpt }}{% endblock %}
 
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+<style>
+    .prose pre { background: #f8fafc !important; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.25em; overflow-x: auto; }
+    .prose pre code { font-size: 0.875em; line-height: 1.7; color: #334155; }
+    .prose code:not(pre code) { background: #eef2ff; color: #4338ca; padding: 0.15em 0.4em; border-radius: 0.25rem; font-size: 0.9em; }
+    .prose img { border-radius: 0.75rem; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .prose blockquote { border-left: 4px solid #8b5cf6; background: #f5f3ff; padding: 1em 1.25em; border-radius: 0 0.5rem 0.5rem 0; }
+    .prose h2 { position: relative; }
+    .prose h2::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 40px; height: 3px; background: linear-gradient(90deg, #ef4444, #8b5cf6); border-radius: 2px; }
+</style>
+{% endblock %}
+
 {% block content %}
 
 <!-- ===== HERO BANNER ===== -->
@@ -138,4 +151,13 @@
     </div>
 </section>
 
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+    document.querySelectorAll('pre code, pre.ql-syntax').forEach((el) => {
+        hljs.highlightElement(el);
+    });
+</script>
 {% endblock %}
