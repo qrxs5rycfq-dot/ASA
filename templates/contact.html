@@ -14,7 +14,7 @@
 
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 w-full">
         <nav class="flex items-center space-x-2 text-sm text-gray-400 mb-8 animate-fade-in">
-            <a href="{{ url_for('index') }}" class="hover:text-white transition-colors"><i class='bx bx-home'></i> Beranda</a>
+            <a href="{{ url_for('public.index') }}" class="hover:text-white transition-colors"><i class='bx bx-home'></i> Beranda</a>
             <i class='bx bx-chevron-right text-gray-600'></i>
             <span class="text-white">Kontak</span>
         </nav>
@@ -168,7 +168,7 @@
             </div>
 
             <div class="grid sm:grid-cols-3 gap-4">
-                <a href="{{ url_for('company', slug='nur-putra-mandiri') }}" class="glass rounded-2xl p-6 card-hover group border border-white/5 hover:border-white/10 flex items-center space-x-4">
+                <a href="{{ url_for('public.company', slug='nur-putra-mandiri') }}" class="glass rounded-2xl p-6 card-hover group border border-white/5 hover:border-white/10 flex items-center space-x-4">
                     <div class="w-12 h-12 bg-gradient-to-br from-red-500 to-green-500 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
                         <i class='bx bx-buildings text-white text-xl'></i>
                     </div>
@@ -178,7 +178,7 @@
                     </div>
                 </a>
 
-                <a href="{{ url_for('company', slug='putra-syam-jaya') }}" class="glass rounded-2xl p-6 card-hover group border border-white/5 hover:border-white/10 flex items-center space-x-4">
+                <a href="{{ url_for('public.company', slug='putra-syam-jaya') }}" class="glass rounded-2xl p-6 card-hover group border border-white/5 hover:border-white/10 flex items-center space-x-4">
                     <div class="w-12 h-12 bg-gradient-to-br from-violet-500 to-blue-500 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
                         <i class='bx bx-cube-alt text-white text-xl'></i>
                     </div>
@@ -188,7 +188,7 @@
                     </div>
                 </a>
 
-                <a href="{{ url_for('company', slug='asa-bangun-mandiri') }}" class="glass rounded-2xl p-6 card-hover group border border-white/5 hover:border-white/10 flex items-center space-x-4">
+                <a href="{{ url_for('public.company', slug='asa-bangun-mandiri') }}" class="glass rounded-2xl p-6 card-hover group border border-white/5 hover:border-white/10 flex items-center space-x-4">
                     <div class="w-12 h-12 bg-gradient-to-br from-red-500 to-yellow-500 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
                         <i class='bx bx-hard-hat text-white text-xl'></i>
                     </div>

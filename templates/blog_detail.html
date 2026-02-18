@@ -14,9 +14,9 @@
 
     <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-32 w-full">
         <nav class="flex items-center space-x-2 text-sm text-gray-400 mb-8 animate-fade-in">
-            <a href="{{ url_for('index') }}" class="hover:text-white transition-colors"><i class='bx bx-home'></i> Beranda</a>
+            <a href="{{ url_for('public.index') }}" class="hover:text-white transition-colors"><i class='bx bx-home'></i> Beranda</a>
             <i class='bx bx-chevron-right text-gray-600'></i>
-            <a href="{{ url_for('blog_list') }}" class="hover:text-white transition-colors">Blog</a>
+            <a href="{{ url_for('public.blog_list') }}" class="hover:text-white transition-colors">Blog</a>
             <i class='bx bx-chevron-right text-gray-600'></i>
             <span class="text-white line-clamp-1">{{ post.title }}</span>
         </nav>
@@ -75,7 +75,7 @@
 
                 <!-- Back to blog -->
                 <div class="mt-8">
-                    <a href="{{ url_for('blog_list') }}" class="inline-flex items-center px-6 py-3 glass rounded-xl text-white text-sm font-semibold hover:bg-white/10 transition-all duration-300 border border-white/5 hover:border-white/10">
+                    <a href="{{ url_for('public.blog_list') }}" class="inline-flex items-center px-6 py-3 glass rounded-xl text-white text-sm font-semibold hover:bg-white/10 transition-all duration-300 border border-white/5 hover:border-white/10">
                         <i class='bx bx-arrow-back mr-2'></i>
                         Kembali ke Blog
                     </a>
@@ -93,7 +93,7 @@
                         </h3>
                         <div class="space-y-4">
                             {% for rpost in recent_posts %}
-                            <a href="{{ url_for('blog_detail', slug=rpost.slug) }}" class="flex items-start space-x-4 group p-3 rounded-xl hover:bg-white/5 transition-all">
+                            <a href="{{ url_for('public.blog_detail', slug=rpost.slug) }}" class="flex items-start space-x-4 group p-3 rounded-xl hover:bg-white/5 transition-all">
                                 <div class="w-16 h-16 bg-gradient-to-br {{ rpost.cover_gradient }} rounded-xl flex items-center justify-center flex-shrink-0">
                                     <i class='bx {{ rpost.cover_icon }} text-white/40 text-2xl group-hover:scale-110 transition-transform'></i>
                                 </div>
@@ -118,7 +118,7 @@
                             </div>
                             <h4 class="font-display font-bold text-white mb-2">Butuh Bantuan?</h4>
                             <p class="text-white/70 text-sm mb-4">Hubungi kami untuk informasi lebih lanjut</p>
-                            <a href="{{ url_for('contact_page') }}" class="inline-flex items-center px-5 py-2.5 bg-white text-purple-700 rounded-xl text-sm font-bold hover:bg-gray-100 transition-all">
+                            <a href="{{ url_for('public.contact_page') }}" class="inline-flex items-center px-5 py-2.5 bg-white text-purple-700 rounded-xl text-sm font-bold hover:bg-gray-100 transition-all">
                                 <i class='bx bx-phone mr-2'></i>Kontak Kami
                             </a>
                         </div>

@@ -144,7 +144,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
                 <!-- Logo -->
-                <a href="{{ url_for('index') }}" class="flex items-center space-x-3 logo-glow">
+                <a href="{{ url_for('public.index') }}" class="flex items-center space-x-3 logo-glow">
                     <div class="relative w-12 h-12">
                         <div class="absolute inset-0 bg-gradient-to-br from-red-500 via-purple-500 to-yellow-500 rounded-xl rotate-6 opacity-80"></div>
                         <div class="absolute inset-0 bg-slate-950 rounded-xl flex items-center justify-center">
@@ -160,9 +160,9 @@
 
                 <!-- Desktop Nav -->
                 <div class="hidden lg:flex items-center space-x-1">
-                    <a href="{{ url_for('index') }}" class="nav-link px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all">Beranda</a>
-                    <a href="{{ url_for('about') }}" class="nav-link px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all">Tentang</a>
-                    <a href="{{ url_for('services_page') }}" class="nav-link px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all">Layanan</a>
+                    <a href="{{ url_for('public.index') }}" class="nav-link px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all">Beranda</a>
+                    <a href="{{ url_for('public.about') }}" class="nav-link px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all">Tentang</a>
+                    <a href="{{ url_for('public.services_page') }}" class="nav-link px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all">Layanan</a>
 
                     <!-- Perusahaan Dropdown -->
                     <div class="dropdown relative">
@@ -171,7 +171,7 @@
                             <i class='bx bx-chevron-down ml-1 text-xs transition-transform'></i>
                         </button>
                         <div class="dropdown-menu absolute top-full left-0 mt-1 w-64 glass rounded-xl overflow-hidden shadow-2xl shadow-black/40">
-                            <a href="{{ url_for('company', slug='nur-putra-mandiri') }}" class="flex items-center space-x-3 px-4 py-3 hover:bg-white/5 transition-colors">
+                            <a href="{{ url_for('public.company', slug='nur-putra-mandiri') }}" class="flex items-center space-x-3 px-4 py-3 hover:bg-white/5 transition-colors">
                                 <div class="w-8 h-8 bg-gradient-to-br from-red-500 to-green-500 rounded-lg flex items-center justify-center flex-shrink-0">
                                     <i class='bx bx-buildings text-white text-sm'></i>
                                 </div>
@@ -180,7 +180,7 @@
                                     <p class="text-[10px] text-gray-400">General Supplier</p>
                                 </div>
                             </a>
-                            <a href="{{ url_for('company', slug='putra-syam-jaya') }}" class="flex items-center space-x-3 px-4 py-3 hover:bg-white/5 transition-colors">
+                            <a href="{{ url_for('public.company', slug='putra-syam-jaya') }}" class="flex items-center space-x-3 px-4 py-3 hover:bg-white/5 transition-colors">
                                 <div class="w-8 h-8 bg-gradient-to-br from-violet-500 to-blue-500 rounded-lg flex items-center justify-center flex-shrink-0">
                                     <i class='bx bx-cube-alt text-white text-sm'></i>
                                 </div>
@@ -189,7 +189,7 @@
                                     <p class="text-[10px] text-gray-400">Supplier & Kontraktor</p>
                                 </div>
                             </a>
-                            <a href="{{ url_for('company', slug='asa-bangun-mandiri') }}" class="flex items-center space-x-3 px-4 py-3 hover:bg-white/5 transition-colors">
+                            <a href="{{ url_for('public.company', slug='asa-bangun-mandiri') }}" class="flex items-center space-x-3 px-4 py-3 hover:bg-white/5 transition-colors">
                                 <div class="w-8 h-8 bg-gradient-to-br from-red-500 to-yellow-500 rounded-lg flex items-center justify-center flex-shrink-0">
                                     <i class='bx bx-hard-hat text-white text-sm'></i>
                                 </div>
@@ -201,10 +201,10 @@
                         </div>
                     </div>
 
-                    <a href="{{ url_for('gallery_page') }}" class="nav-link px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all">Galeri</a>
-                    <a href="{{ url_for('blog_list') }}" class="nav-link px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all">Blog</a>
-                    <a href="{{ url_for('contact_page') }}" class="nav-link px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all">Kontak</a>
-                    <a href="{{ url_for('contact_page') }}" class="ml-4 px-6 py-2.5 bg-gradient-to-r from-red-600 via-purple-600 to-yellow-500 rounded-full text-sm font-semibold text-white hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300 hover:scale-105">Hubungi Kami</a>
+                    <a href="{{ url_for('public.gallery_page') }}" class="nav-link px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all">Galeri</a>
+                    <a href="{{ url_for('public.blog_list') }}" class="nav-link px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all">Blog</a>
+                    <a href="{{ url_for('public.contact_page') }}" class="nav-link px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all">Kontak</a>
+                    <a href="{{ url_for('public.contact_page') }}" class="ml-4 px-6 py-2.5 bg-gradient-to-r from-red-600 via-purple-600 to-yellow-500 rounded-full text-sm font-semibold text-white hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300 hover:scale-105">Hubungi Kami</a>
                 </div>
 
                 <!-- Mobile Menu Button -->
@@ -217,22 +217,22 @@
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="lg:hidden hidden border-t border-white/10">
             <div class="px-4 py-4 space-y-1">
-                <a href="{{ url_for('index') }}" class="mobile-link block px-4 py-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-all">Beranda</a>
-                <a href="{{ url_for('about') }}" class="mobile-link block px-4 py-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-all">Tentang</a>
-                <a href="{{ url_for('services_page') }}" class="mobile-link block px-4 py-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-all">Layanan</a>
+                <a href="{{ url_for('public.index') }}" class="mobile-link block px-4 py-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-all">Beranda</a>
+                <a href="{{ url_for('public.about') }}" class="mobile-link block px-4 py-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-all">Tentang</a>
+                <a href="{{ url_for('public.services_page') }}" class="mobile-link block px-4 py-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-all">Layanan</a>
 
                 <!-- Mobile Perusahaan sub-links -->
                 <div class="px-4 py-2">
                     <p class="text-xs text-gray-500 uppercase tracking-wider mb-2">Perusahaan</p>
-                    <a href="{{ url_for('company', slug='nur-putra-mandiri') }}" class="mobile-link block px-4 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-all text-sm">PT. Nur Putra Mandiri</a>
-                    <a href="{{ url_for('company', slug='putra-syam-jaya') }}" class="mobile-link block px-4 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-all text-sm">PT. Putra Syam Jaya</a>
-                    <a href="{{ url_for('company', slug='asa-bangun-mandiri') }}" class="mobile-link block px-4 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-all text-sm">CV. Asa Bangun Mandiri</a>
+                    <a href="{{ url_for('public.company', slug='nur-putra-mandiri') }}" class="mobile-link block px-4 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-all text-sm">PT. Nur Putra Mandiri</a>
+                    <a href="{{ url_for('public.company', slug='putra-syam-jaya') }}" class="mobile-link block px-4 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-all text-sm">PT. Putra Syam Jaya</a>
+                    <a href="{{ url_for('public.company', slug='asa-bangun-mandiri') }}" class="mobile-link block px-4 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-all text-sm">CV. Asa Bangun Mandiri</a>
                 </div>
 
-                <a href="{{ url_for('gallery_page') }}" class="mobile-link block px-4 py-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-all">Galeri</a>
-                <a href="{{ url_for('blog_list') }}" class="mobile-link block px-4 py-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-all">Blog</a>
-                <a href="{{ url_for('contact_page') }}" class="mobile-link block px-4 py-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-all">Kontak</a>
-                <a href="{{ url_for('contact_page') }}" class="block px-4 py-3 mt-2 bg-gradient-to-r from-red-600 via-purple-600 to-yellow-500 rounded-lg text-white text-center font-semibold">Hubungi Kami</a>
+                <a href="{{ url_for('public.gallery_page') }}" class="mobile-link block px-4 py-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-all">Galeri</a>
+                <a href="{{ url_for('public.blog_list') }}" class="mobile-link block px-4 py-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-all">Blog</a>
+                <a href="{{ url_for('public.contact_page') }}" class="mobile-link block px-4 py-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-all">Kontak</a>
+                <a href="{{ url_for('public.contact_page') }}" class="block px-4 py-3 mt-2 bg-gradient-to-r from-red-600 via-purple-600 to-yellow-500 rounded-lg text-white text-center font-semibold">Hubungi Kami</a>
             </div>
         </div>
     </nav>
@@ -275,9 +275,9 @@
                         <i class='bx bx-buildings mr-2 text-purple-400'></i>Perusahaan Kami
                     </h4>
                     <ul class="space-y-3">
-                        <li><a href="{{ url_for('company', slug='nur-putra-mandiri') }}" class="text-gray-400 hover:text-red-400 transition-colors text-sm flex items-center"><i class='bx bx-chevron-right mr-1'></i>PT. Nur Putra Mandiri</a></li>
-                        <li><a href="{{ url_for('company', slug='putra-syam-jaya') }}" class="text-gray-400 hover:text-violet-400 transition-colors text-sm flex items-center"><i class='bx bx-chevron-right mr-1'></i>PT. Putra Syam Jaya</a></li>
-                        <li><a href="{{ url_for('company', slug='asa-bangun-mandiri') }}" class="text-gray-400 hover:text-yellow-400 transition-colors text-sm flex items-center"><i class='bx bx-chevron-right mr-1'></i>CV. Asa Bangun Mandiri</a></li>
+                        <li><a href="{{ url_for('public.company', slug='nur-putra-mandiri') }}" class="text-gray-400 hover:text-red-400 transition-colors text-sm flex items-center"><i class='bx bx-chevron-right mr-1'></i>PT. Nur Putra Mandiri</a></li>
+                        <li><a href="{{ url_for('public.company', slug='putra-syam-jaya') }}" class="text-gray-400 hover:text-violet-400 transition-colors text-sm flex items-center"><i class='bx bx-chevron-right mr-1'></i>PT. Putra Syam Jaya</a></li>
+                        <li><a href="{{ url_for('public.company', slug='asa-bangun-mandiri') }}" class="text-gray-400 hover:text-yellow-400 transition-colors text-sm flex items-center"><i class='bx bx-chevron-right mr-1'></i>CV. Asa Bangun Mandiri</a></li>
                     </ul>
                 </div>
 
@@ -287,11 +287,11 @@
                         <i class='bx bx-cog mr-2 text-purple-400'></i>Layanan & Halaman
                     </h4>
                     <ul class="space-y-3">
-                        <li><a href="{{ url_for('services_page') }}" class="text-gray-400 hover:text-white transition-colors text-sm flex items-center"><i class='bx bx-check-circle mr-2 text-green-400 text-xs'></i>Layanan Kami</a></li>
-                        <li><a href="{{ url_for('gallery_page') }}" class="text-gray-400 hover:text-white transition-colors text-sm flex items-center"><i class='bx bx-check-circle mr-2 text-green-400 text-xs'></i>Galeri Proyek</a></li>
-                        <li><a href="{{ url_for('blog_list') }}" class="text-gray-400 hover:text-white transition-colors text-sm flex items-center"><i class='bx bx-check-circle mr-2 text-green-400 text-xs'></i>Blog & Artikel</a></li>
-                        <li><a href="{{ url_for('about') }}" class="text-gray-400 hover:text-white transition-colors text-sm flex items-center"><i class='bx bx-check-circle mr-2 text-green-400 text-xs'></i>Tentang Kami</a></li>
-                        <li><a href="{{ url_for('contact_page') }}" class="text-gray-400 hover:text-white transition-colors text-sm flex items-center"><i class='bx bx-check-circle mr-2 text-green-400 text-xs'></i>Kontak</a></li>
+                        <li><a href="{{ url_for('public.services_page') }}" class="text-gray-400 hover:text-white transition-colors text-sm flex items-center"><i class='bx bx-check-circle mr-2 text-green-400 text-xs'></i>Layanan Kami</a></li>
+                        <li><a href="{{ url_for('public.gallery_page') }}" class="text-gray-400 hover:text-white transition-colors text-sm flex items-center"><i class='bx bx-check-circle mr-2 text-green-400 text-xs'></i>Galeri Proyek</a></li>
+                        <li><a href="{{ url_for('public.blog_list') }}" class="text-gray-400 hover:text-white transition-colors text-sm flex items-center"><i class='bx bx-check-circle mr-2 text-green-400 text-xs'></i>Blog & Artikel</a></li>
+                        <li><a href="{{ url_for('public.about') }}" class="text-gray-400 hover:text-white transition-colors text-sm flex items-center"><i class='bx bx-check-circle mr-2 text-green-400 text-xs'></i>Tentang Kami</a></li>
+                        <li><a href="{{ url_for('public.contact_page') }}" class="text-gray-400 hover:text-white transition-colors text-sm flex items-center"><i class='bx bx-check-circle mr-2 text-green-400 text-xs'></i>Kontak</a></li>
                     </ul>
                 </div>
 

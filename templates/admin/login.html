@@ -32,7 +32,7 @@
             {% endwith %}
 
             <!-- Login Form -->
-            <form method="POST" action="{{ url_for('admin_login') }}" class="space-y-5">
+            <form method="POST" action="{{ url_for('auth.login') }}" class="space-y-5">
                 <div>
                     <label for="username" class="block text-sm font-medium text-gray-300 mb-2">Username</label>
                     <input type="text" id="username" name="username" required

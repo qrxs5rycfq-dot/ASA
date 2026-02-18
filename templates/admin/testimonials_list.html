@@ -6,7 +6,7 @@
 {% block admin_content %}
 <div class="flex items-center justify-between mb-6">
     <h3 class="text-xl font-semibold font-['Poppins']">Daftar Testimoni</h3>
-    <a href="{{ url_for('admin_testimonial_create') }}" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg text-sm font-medium transition-colors">
+    <a href="{{ url_for('admin.testimonial_create') }}" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg text-sm font-medium transition-colors">
         <i class='bx bx-plus mr-1'></i> Tambah Testimoni
     </a>
 </div>
@@ -36,10 +36,10 @@
                     </td>
                     <td class="px-6 py-4 text-sm">
                         <div class="flex items-center space-x-3">
-                            <a href="{{ url_for('admin_testimonial_edit', tid=item.id) }}" class="text-blue-400 hover:text-blue-300 transition-colors">
+                            <a href="{{ url_for('admin.testimonial_edit', tid=item.id) }}" class="text-blue-400 hover:text-blue-300 transition-colors">
                                 <i class='bx bx-edit'></i> Edit
                             </a>
-                            <form method="POST" action="{{ url_for('admin_testimonial_delete', tid=item.id) }}" onsubmit="return confirm('Yakin ingin menghapus?')" class="inline">
+                            <form method="POST" action="{{ url_for('admin.testimonial_delete', tid=item.id) }}" onsubmit="return confirm('Yakin ingin menghapus?')" class="inline">
                                 <button type="submit" class="text-red-400 hover:text-red-300 transition-colors">
                                     <i class='bx bx-trash'></i> Hapus
                                 </button>

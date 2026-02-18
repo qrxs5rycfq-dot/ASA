@@ -23,37 +23,37 @@
         </div>
 
         <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
-            <a href="{{ url_for('admin_dashboard') }}" class="flex items-center px-4 py-3 text-sm rounded-lg {{ 'bg-purple-600 text-white' if active_path == '/admin' else 'text-gray-400 hover:bg-gray-700 hover:text-white' }} transition-all">
+            <a href="{{ url_for('admin.dashboard') }}" class="flex items-center px-4 py-3 text-sm rounded-lg {{ 'bg-purple-600 text-white' if active_path == '/admin' else 'text-gray-400 hover:bg-gray-700 hover:text-white' }} transition-all">
                 <i class='bx bxs-dashboard mr-3 text-lg'></i> Dashboard
             </a>
-            <a href="{{ url_for('admin_blog_list') }}" class="flex items-center px-4 py-3 text-sm rounded-lg {{ 'bg-purple-600 text-white' if active_path.startswith('/admin/blog') else 'text-gray-400 hover:bg-gray-700 hover:text-white' }} transition-all">
+            <a href="{{ url_for('admin.blog_list') }}" class="flex items-center px-4 py-3 text-sm rounded-lg {{ 'bg-purple-600 text-white' if active_path.startswith('/admin/blog') else 'text-gray-400 hover:bg-gray-700 hover:text-white' }} transition-all">
                 <i class='bx bxs-edit mr-3 text-lg'></i> Blog
             </a>
-            <a href="{{ url_for('admin_services_list') }}" class="flex items-center px-4 py-3 text-sm rounded-lg {{ 'bg-purple-600 text-white' if active_path.startswith('/admin/services') else 'text-gray-400 hover:bg-gray-700 hover:text-white' }} transition-all">
+            <a href="{{ url_for('admin.services_list') }}" class="flex items-center px-4 py-3 text-sm rounded-lg {{ 'bg-purple-600 text-white' if active_path.startswith('/admin/services') else 'text-gray-400 hover:bg-gray-700 hover:text-white' }} transition-all">
                 <i class='bx bxs-briefcase mr-3 text-lg'></i> Layanan
             </a>
-            <a href="{{ url_for('admin_gallery') }}" class="flex items-center px-4 py-3 text-sm rounded-lg {{ 'bg-purple-600 text-white' if active_path.startswith('/admin/gallery') else 'text-gray-400 hover:bg-gray-700 hover:text-white' }} transition-all">
+            <a href="{{ url_for('admin.gallery') }}" class="flex items-center px-4 py-3 text-sm rounded-lg {{ 'bg-purple-600 text-white' if active_path.startswith('/admin/gallery') else 'text-gray-400 hover:bg-gray-700 hover:text-white' }} transition-all">
                 <i class='bx bxs-image mr-3 text-lg'></i> Galeri
             </a>
-            <a href="{{ url_for('admin_testimonials') }}" class="flex items-center px-4 py-3 text-sm rounded-lg {{ 'bg-purple-600 text-white' if active_path.startswith('/admin/testimonials') else 'text-gray-400 hover:bg-gray-700 hover:text-white' }} transition-all">
+            <a href="{{ url_for('admin.testimonials') }}" class="flex items-center px-4 py-3 text-sm rounded-lg {{ 'bg-purple-600 text-white' if active_path.startswith('/admin/testimonials') else 'text-gray-400 hover:bg-gray-700 hover:text-white' }} transition-all">
                 <i class='bx bxs-star mr-3 text-lg'></i> Testimoni
             </a>
-            <a href="{{ url_for('admin_team') }}" class="flex items-center px-4 py-3 text-sm rounded-lg {{ 'bg-purple-600 text-white' if active_path.startswith('/admin/team') else 'text-gray-400 hover:bg-gray-700 hover:text-white' }} transition-all">
+            <a href="{{ url_for('admin.team') }}" class="flex items-center px-4 py-3 text-sm rounded-lg {{ 'bg-purple-600 text-white' if active_path.startswith('/admin/team') else 'text-gray-400 hover:bg-gray-700 hover:text-white' }} transition-all">
                 <i class='bx bxs-group mr-3 text-lg'></i> Tim
             </a>
-            <a href="{{ url_for('admin_faqs') }}" class="flex items-center px-4 py-3 text-sm rounded-lg {{ 'bg-purple-600 text-white' if active_path.startswith('/admin/faqs') else 'text-gray-400 hover:bg-gray-700 hover:text-white' }} transition-all">
+            <a href="{{ url_for('admin.faqs') }}" class="flex items-center px-4 py-3 text-sm rounded-lg {{ 'bg-purple-600 text-white' if active_path.startswith('/admin/faqs') else 'text-gray-400 hover:bg-gray-700 hover:text-white' }} transition-all">
                 <i class='bx bxs-help-circle mr-3 text-lg'></i> FAQ
             </a>
-            <a href="{{ url_for('admin_clients') }}" class="flex items-center px-4 py-3 text-sm rounded-lg {{ 'bg-purple-600 text-white' if active_path.startswith('/admin/clients') else 'text-gray-400 hover:bg-gray-700 hover:text-white' }} transition-all">
+            <a href="{{ url_for('admin.clients') }}" class="flex items-center px-4 py-3 text-sm rounded-lg {{ 'bg-purple-600 text-white' if active_path.startswith('/admin/clients') else 'text-gray-400 hover:bg-gray-700 hover:text-white' }} transition-all">
                 <i class='bx bxs-building mr-3 text-lg'></i> Klien
             </a>
 
             <div class="border-t border-gray-700 my-4"></div>
 
-            <a href="{{ url_for('admin_change_password') }}" class="flex items-center px-4 py-3 text-sm rounded-lg {{ 'bg-purple-600 text-white' if active_path == '/admin/change-password' else 'text-gray-400 hover:bg-gray-700 hover:text-white' }} transition-all">
+            <a href="{{ url_for('admin.change_password') }}" class="flex items-center px-4 py-3 text-sm rounded-lg {{ 'bg-purple-600 text-white' if active_path == '/admin/change-password' else 'text-gray-400 hover:bg-gray-700 hover:text-white' }} transition-all">
                 <i class='bx bxs-lock mr-3 text-lg'></i> Ubah Password
             </a>
-            <a href="{{ url_for('admin_logout') }}" class="flex items-center px-4 py-3 text-sm rounded-lg text-gray-400 hover:bg-red-600/20 hover:text-red-400 transition-all">
+            <a href="{{ url_for('auth.logout') }}" class="flex items-center px-4 py-3 text-sm rounded-lg text-gray-400 hover:bg-red-600/20 hover:text-red-400 transition-all">
                 <i class='bx bx-log-out mr-3 text-lg'></i> Logout
             </a>
         </nav>
@@ -65,7 +65,7 @@
         <header class="bg-gray-800 border-b border-gray-700 px-8 py-4 flex items-center justify-between sticky top-0 z-40">
             <h2 class="text-lg font-semibold font-['Poppins']">{% block admin_title_header %}{% endblock %}</h2>
             <div class="flex items-center space-x-4">
-                <a href="{{ url_for('index') }}" target="_blank" class="text-sm text-gray-400 hover:text-white transition-colors">
+                <a href="{{ url_for('public.index') }}" target="_blank" class="text-sm text-gray-400 hover:text-white transition-colors">
                     <i class='bx bx-link-external mr-1'></i> Lihat Situs
                 </a>
                 <span class="text-sm text-gray-400">Halo, <span class="text-white font-medium">{{ session.username }}</span></span>
