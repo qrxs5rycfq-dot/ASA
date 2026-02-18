@@ -243,10 +243,7 @@
     // ---- Custom Blots ----
     var BlockEmbed = Quill.import('blots/block/embed');
     // Horizontal rule blot
-    var DividerBlot = function() {};
-    DividerBlot = function() { return Reflect.construct(BlockEmbed, arguments, DividerBlot); };
-    Object.setPrototypeOf(DividerBlot.prototype, BlockEmbed.prototype);
-    Object.setPrototypeOf(DividerBlot, BlockEmbed);
+    class DividerBlot extends BlockEmbed {}
     DividerBlot.blotName = 'divider';
     DividerBlot.tagName = 'hr';
     Quill.register(DividerBlot);
@@ -461,7 +458,8 @@
     document.getElementById('title').addEventListener('input', function() {
         var slugField = document.getElementById('slug');
         if (!slugField.dataset.manual) {
-            slugField.value = this.value.toLowerCase()
+            slugField.value = this.value.toLowerCase().normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
                 .replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-')
                 .replace(/^-|-$/g, '');
         }
