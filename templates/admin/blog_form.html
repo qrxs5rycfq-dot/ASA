@@ -116,37 +116,6 @@
 <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>
-    // Custom image handler to upload files
-    function imageHandler() {
-        const input = document.createElement('input');
-        input.setAttribute('type', 'file');
-        input.setAttribute('accept', 'image/*');
-        input.click();
-        input.onchange = async () => {
-            const file = input.files[0];
-            if (file) {
-                const formData = new FormData();
-                formData.append('image', file);
-                try {
-                    const res = await fetch('{{ url_for("admin.upload_image") }}', {
-                        method: 'POST',
-                        body: formData
-                    });
-                    const data = await res.json();
-                    if (data.success) {
-                        const range = quill.getSelection(true);
-                        quill.insertEmbed(range.index, 'image', data.url);
-                        quill.setSelection(range.index + 1);
-                    } else {
-                        alert(data.error || 'Upload gagal');
-                    }
-                } catch (e) {
-                    alert('Upload gagal: ' + e.message);
-                }
-            }
-        };
-    }
-
     var quill = new Quill('#editor', {
         theme: 'snow',
         modules: {
@@ -166,7 +135,39 @@
                     ['clean']
                 ],
                 handlers: {
-                    image: imageHandler
+                    image: function() {
+                        var editor = this.quill;
+                        var input = document.createElement('input');
+                        input.setAttribute('type', 'file');
+                        input.setAttribute('accept', 'image/*');
+                        input.click();
+                        input.onchange = async function() {
+                            var file = input.files[0];
+                            if (file) {
+                                var formData = new FormData();
+                                formData.append('image', file);
+                                try {
+                                    var res = await fetch('{{ url_for("admin.upload_image") }}', {
+                                        method: 'POST',
+                                        body: formData
+                                    });
+                                    var data = await res.json();
+                                    if (data.success) {
+                                        var range = editor.getSelection(true);
+                                        if (!range) {
+                                            range = { index: editor.getLength() - 1, length: 0 };
+                                        }
+                                        editor.insertEmbed(range.index, 'image', data.url);
+                                        editor.setSelection(range.index + 1);
+                                    } else {
+                                        alert(data.error || 'Upload gagal');
+                                    }
+                                } catch (e) {
+                                    alert('Upload gagal: ' + e.message);
+                                }
+                            }
+                        };
+                    }
                 }
             }
         }
