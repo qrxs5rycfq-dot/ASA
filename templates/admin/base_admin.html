@@ -50,6 +50,9 @@
 
             <div class="border-t border-gray-700 my-4"></div>
 
+            <a href="{{ url_for('admin.settings') }}" class="flex items-center px-4 py-3 text-sm rounded-lg {{ 'bg-purple-600 text-white' if active_path == '/admin/settings' else 'text-gray-400 hover:bg-gray-700 hover:text-white' }} transition-all">
+                <i class='bx bxs-cog mr-3 text-lg'></i> Pengaturan
+            </a>
             <a href="{{ url_for('admin.change_password') }}" class="flex items-center px-4 py-3 text-sm rounded-lg {{ 'bg-purple-600 text-white' if active_path == '/admin/change-password' else 'text-gray-400 hover:bg-gray-700 hover:text-white' }} transition-all">
                 <i class='bx bxs-lock mr-3 text-lg'></i> Ubah Password
             </a>

@@ -33,9 +33,16 @@
             </div>
 
             <div>
-                <label for="content" class="block text-sm font-medium text-gray-300 mb-2">Konten</label>
-                <textarea id="content" name="content" rows="15"
-                          class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">{{ post.content if post else '' }}</textarea>
+                <label for="image_url" class="block text-sm font-medium text-gray-300 mb-2">Image URL</label>
+                <input type="url" id="image_url" name="image_url" value="{{ post.image_url if post and post.image_url else '' }}"
+                       class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                       placeholder="https://example.com/image.jpg">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Konten</label>
+                <div id="editor" style="height: 400px; background: #374151; color: white; border-radius: 0 0 0.5rem 0.5rem;"></div>
+                <textarea id="content" name="content" class="hidden">{{ post.content if post else '' }}</textarea>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -78,4 +85,30 @@
         </form>
     </div>
 </div>
+<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+<script>
+    var quill = new Quill('#editor', {
+        theme: 'snow',
+        modules: {
+            toolbar: [
+                [{ 'header': [1, 2, 3, false] }],
+                ['bold', 'italic', 'underline', 'strike'],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                ['blockquote', 'code-block'],
+                ['link', 'image'],
+                ['clean']
+            ]
+        }
+    });
+    // Load existing content
+    var existingContent = document.getElementById('content').value;
+    if (existingContent) {
+        quill.root.innerHTML = existingContent;
+    }
+    // Sync on submit
+    document.querySelector('form').addEventListener('submit', function() {
+        document.getElementById('content').value = quill.root.innerHTML;
+    });
+</script>
 {% endblock %}

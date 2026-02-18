@@ -4,28 +4,24 @@
 
 {% block content %}
 
-<!-- ===== HERO BANNER ===== -->
-<section class="relative min-h-[60vh] flex items-center overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-br from-purple-900/40 to-blue-900/40"></div>
-    <div class="absolute inset-0 bg-slate-950/70"></div>
-    <div class="absolute inset-0 mesh-gradient"></div>
-    <div class="absolute top-20 right-20 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse-slow"></div>
-    <div class="absolute bottom-10 left-10 w-72 h-72 bg-red-500/10 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 2s;"></div>
-
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 w-full">
-        <nav class="flex items-center space-x-2 text-sm text-gray-400 mb-8 animate-fade-in">
-            <a href="{{ url_for('public.index') }}" class="hover:text-white transition-colors"><i class='bx bx-home'></i> Beranda</a>
-            <i class='bx bx-chevron-right text-gray-600'></i>
-            <span class="text-white">Tentang Kami</span>
+<!-- ===== HERO / HEADER ===== -->
+<section class="relative bg-gray-50 overflow-hidden pt-28 pb-20">
+    <div class="absolute top-20 right-20 w-96 h-96 bg-purple-100 rounded-full blur-3xl opacity-50 animate-pulse-slow"></div>
+    <div class="absolute bottom-10 left-10 w-72 h-72 bg-red-100 rounded-full blur-3xl opacity-50 animate-pulse-slow" style="animation-delay: 2s;"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <nav class="flex items-center space-x-2 text-sm text-gray-500 mb-8 animate-fade-in">
+            <a href="{{ url_for('public.index') }}" class="hover:text-gray-900 transition-colors"><i class='bx bx-home'></i> Beranda</a>
+            <i class='bx bx-chevron-right text-gray-400'></i>
+            <span class="text-gray-900 font-medium">Tentang Kami</span>
         </nav>
-        <div class="inline-flex items-center px-4 py-2 rounded-full glass text-sm mb-6 animate-fade-in" style="animation-delay: 0.1s;">
-            <span class="w-2 h-2 bg-purple-400 rounded-full mr-2 animate-pulse"></span>
-            <span class="text-gray-300">Mengenal ASA Group Lebih Dekat</span>
+        <div class="inline-flex items-center px-4 py-2 rounded-full bg-white shadow-sm text-sm mb-6 animate-fade-in" style="animation-delay: 0.1s;">
+            <span class="w-2 h-2 bg-purple-500 rounded-full mr-2 animate-pulse"></span>
+            <span class="text-gray-600">Mengenal ASA Group Lebih Dekat</span>
         </div>
-        <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-6 animate-slide-up" style="animation-delay: 0.2s;">
+        <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 mb-6 animate-slide-up" style="animation-delay: 0.2s;">
             Tentang <span class="gradient-text">ASA Group</span>
         </h1>
-        <p class="text-gray-400 text-lg max-w-2xl leading-relaxed animate-slide-up" style="animation-delay: 0.3s;">
+        <p class="text-gray-500 text-lg max-w-2xl leading-relaxed animate-slide-up" style="animation-delay: 0.3s;">
             Kelompok perusahaan yang berdedikasi dalam bidang perdagangan umum dan jasa konstruksi
         </p>
     </div>
@@ -33,29 +29,28 @@
 
 
 <!-- ===== SIAPA KAMI ===== -->
-<section class="relative py-24">
-    <div class="absolute inset-0 mesh-gradient opacity-20"></div>
+<section class="relative py-24 bg-white">
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid lg:grid-cols-2 gap-16 items-center">
             <div class="reveal">
-                <span class="inline-flex items-center px-4 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-sm font-medium mb-6">
+                <span class="inline-flex items-center px-4 py-1.5 rounded-full bg-purple-50 border border-purple-100 text-purple-600 text-sm font-medium mb-6">
                     <i class='bx bx-building-house mr-2'></i>Profil Perusahaan
                 </span>
-                <h2 class="font-display text-3xl sm:text-4xl font-black text-white mb-6">Siapa Kami?</h2>
-                <p class="text-gray-400 leading-relaxed mb-6">
-                    <strong class="text-white">ASA Group</strong> merupakan kumpulan perusahaan swasta yang bergerak dalam
-                    bidang perdagangan umum dan jasa sebagai <strong class="text-purple-400">General Supplier & Kontraktor</strong>.
+                <h2 class="font-display text-3xl sm:text-4xl font-black text-gray-900 mb-6">Siapa Kami?</h2>
+                <p class="text-gray-600 leading-relaxed mb-6">
+                    <strong class="text-gray-900">ASA Group</strong> merupakan kumpulan perusahaan swasta yang bergerak dalam
+                    bidang perdagangan umum dan jasa sebagai <strong class="text-purple-600">General Supplier & Kontraktor</strong>.
                     Kami selalu menekankan pada aspek profesionalitas, berorientasi pada kualitas dan ketepatan waktu
                     dalam melayani kebutuhan pelanggan yang semakin berkembang.
                 </p>
-                <p class="text-gray-400 leading-relaxed mb-6">
+                <p class="text-gray-600 leading-relaxed mb-6">
                     Dalam usianya yang cukup muda, kami tampil sebagai perusahaan yang siap bersaing dalam
                     menghadapi tantangan global dengan segala dinamika. Didukung oleh
-                    <strong class="text-yellow-400">tenaga muda terampil dan profesional</strong>
+                    <strong class="text-yellow-600">tenaga muda terampil dan profesional</strong>
                     yang memiliki pengalaman di bidangnya untuk melayani dalam lingkup industri dan niaga.
                 </p>
-                <p class="text-gray-400 leading-relaxed">
-                    Kami berkomitmen mengutamakan <strong class="text-green-400">mutu dan pelayanan</strong>
+                <p class="text-gray-600 leading-relaxed">
+                    Kami berkomitmen mengutamakan <strong class="text-green-600">mutu dan pelayanan</strong>
                     demi kepuasan pelanggan, menjadi mitra usaha yang andal dan terpercaya, serta
                     menjadi aset yang berharga bagi masyarakat, bangsa, dan negara.
                 </p>
@@ -63,33 +58,33 @@
 
             <div class="reveal" style="animation-delay: 0.2s;">
                 <div class="grid grid-cols-2 gap-4">
-                    <div class="glass rounded-xl p-6 card-hover border border-white/5 hover:border-white/10 text-center">
+                    <div class="bg-white rounded-2xl shadow-sm p-6 card-hover border border-gray-100 text-center">
                         <div class="w-14 h-14 mx-auto bg-gradient-to-br from-red-500 to-pink-500 rounded-2xl flex items-center justify-center mb-4">
                             <i class='bx bx-briefcase text-white text-2xl'></i>
                         </div>
-                        <div class="font-display text-3xl font-black text-white mb-1"><span class="count-up" data-target="50" data-suffix="+">0</span></div>
-                        <p class="text-gray-400 text-sm">Proyek Selesai</p>
+                        <div class="font-display text-3xl font-black text-gray-900 mb-1"><span class="count-up" data-target="50" data-suffix="+">0</span></div>
+                        <p class="text-gray-500 text-sm">Proyek Selesai</p>
                     </div>
-                    <div class="glass rounded-xl p-6 card-hover border border-white/5 hover:border-white/10 text-center">
+                    <div class="bg-white rounded-2xl shadow-sm p-6 card-hover border border-gray-100 text-center">
                         <div class="w-14 h-14 mx-auto bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mb-4">
                             <i class='bx bx-group text-white text-2xl'></i>
                         </div>
-                        <div class="font-display text-3xl font-black text-white mb-1"><span class="count-up" data-target="30" data-suffix="+">0</span></div>
-                        <p class="text-gray-400 text-sm">Tenaga Profesional</p>
+                        <div class="font-display text-3xl font-black text-gray-900 mb-1"><span class="count-up" data-target="30" data-suffix="+">0</span></div>
+                        <p class="text-gray-500 text-sm">Tenaga Profesional</p>
                     </div>
-                    <div class="glass rounded-xl p-6 card-hover border border-white/5 hover:border-white/10 text-center">
+                    <div class="bg-white rounded-2xl shadow-sm p-6 card-hover border border-gray-100 text-center">
                         <div class="w-14 h-14 mx-auto bg-gradient-to-br from-purple-500 to-violet-500 rounded-2xl flex items-center justify-center mb-4">
                             <i class='bx bx-buildings text-white text-2xl'></i>
                         </div>
-                        <div class="font-display text-3xl font-black text-white mb-1"><span class="count-up" data-target="3" data-suffix="">0</span></div>
-                        <p class="text-gray-400 text-sm">Perusahaan Aktif</p>
+                        <div class="font-display text-3xl font-black text-gray-900 mb-1"><span class="count-up" data-target="3" data-suffix="">0</span></div>
+                        <p class="text-gray-500 text-sm">Perusahaan Aktif</p>
                     </div>
-                    <div class="glass rounded-xl p-6 card-hover border border-white/5 hover:border-white/10 text-center">
+                    <div class="bg-white rounded-2xl shadow-sm p-6 card-hover border border-gray-100 text-center">
                         <div class="w-14 h-14 mx-auto bg-gradient-to-br from-yellow-500 to-orange-500 rounded-2xl flex items-center justify-center mb-4">
                             <i class='bx bx-happy-heart-eyes text-white text-2xl'></i>
                         </div>
-                        <div class="font-display text-3xl font-black text-white mb-1"><span class="count-up" data-target="100" data-suffix="%">0</span></div>
-                        <p class="text-gray-400 text-sm">Kepuasan Client</p>
+                        <div class="font-display text-3xl font-black text-gray-900 mb-1"><span class="count-up" data-target="100" data-suffix="%">0</span></div>
+                        <p class="text-gray-500 text-sm">Kepuasan Client</p>
                     </div>
                 </div>
             </div>
@@ -99,33 +94,32 @@
 
 
 <!-- ===== VISI & MISI ===== -->
-<section class="relative py-24 bg-slate-900/30">
-    <div class="absolute inset-0 mesh-gradient opacity-10"></div>
+<section class="relative py-24 bg-gray-50">
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16 reveal">
-            <span class="inline-flex items-center px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-sm font-medium mb-4">
+            <span class="inline-flex items-center px-4 py-1.5 rounded-full bg-cyan-50 border border-cyan-100 text-cyan-600 text-sm font-medium mb-4">
                 <i class='bx bx-target-lock mr-2'></i>Arah & Tujuan
             </span>
-            <h2 class="font-display text-3xl sm:text-4xl font-black text-white mb-4">Visi & Misi</h2>
-            <p class="text-gray-400 max-w-xl mx-auto">Arah dan tujuan ASA Group dalam membangun masa depan</p>
+            <h2 class="font-display text-3xl sm:text-4xl font-black text-gray-900 mb-4">Visi & Misi</h2>
+            <p class="text-gray-500 max-w-xl mx-auto">Arah dan tujuan ASA Group dalam membangun masa depan</p>
         </div>
 
         <div class="grid md:grid-cols-2 gap-8">
             <!-- Visi -->
             <div class="reveal">
                 <div class="relative group h-full">
-                    <div class="absolute -inset-1 bg-gradient-to-r from-red-600 via-purple-600 to-yellow-500 rounded-3xl opacity-20 group-hover:opacity-40 blur transition-all duration-500"></div>
-                    <div class="relative glass rounded-2xl p-8 h-full">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-red-500 via-purple-500 to-yellow-500 rounded-3xl opacity-10 group-hover:opacity-20 blur transition-all duration-500"></div>
+                    <div class="relative bg-white rounded-2xl shadow-sm p-8 h-full border border-gray-100">
                         <div class="flex items-center space-x-3 mb-6">
                             <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
                                 <i class='bx bx-bullseye text-white text-xl'></i>
                             </div>
-                            <h3 class="font-display font-bold text-2xl text-white">Visi</h3>
+                            <h3 class="font-display font-bold text-2xl text-gray-900">Visi</h3>
                         </div>
-                        <p class="text-gray-300 leading-relaxed">
-                            Menjadi perusahaan yang <strong class="text-purple-400">unggul dan tangguh</strong> dalam bidang perdagangan bahan
+                        <p class="text-gray-600 leading-relaxed">
+                            Menjadi perusahaan yang <strong class="text-purple-600">unggul dan tangguh</strong> dalam bidang perdagangan bahan
                             dan peralatan yang dibutuhkan dalam industri dan pembangunan di Indonesia serta mampu
-                            menghadapi <strong class="text-purple-400">persaingan global</strong> berbasis kinerja.
+                            menghadapi <strong class="text-purple-600">persaingan global</strong> berbasis kinerja.
                         </p>
                     </div>
                 </div>
@@ -134,33 +128,33 @@
             <!-- Misi -->
             <div class="reveal" style="animation-delay: 0.15s;">
                 <div class="relative group h-full">
-                    <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 via-cyan-600 to-green-500 rounded-3xl opacity-20 group-hover:opacity-40 blur transition-all duration-500"></div>
-                    <div class="relative glass rounded-2xl p-8 h-full">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-blue-500 via-cyan-500 to-green-500 rounded-3xl opacity-10 group-hover:opacity-20 blur transition-all duration-500"></div>
+                    <div class="relative bg-white rounded-2xl shadow-sm p-8 h-full border border-gray-100">
                         <div class="flex items-center space-x-3 mb-6">
                             <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
                                 <i class='bx bx-flag text-white text-xl'></i>
                             </div>
-                            <h3 class="font-display font-bold text-2xl text-white">Misi</h3>
+                            <h3 class="font-display font-bold text-2xl text-gray-900">Misi</h3>
                         </div>
                         <ul class="space-y-3">
-                            <li class="flex items-start text-gray-300">
-                                <i class='bx bx-check-circle text-cyan-400 mr-3 mt-1 flex-shrink-0'></i>
+                            <li class="flex items-start text-gray-600">
+                                <i class='bx bx-check-circle text-cyan-500 mr-3 mt-1 flex-shrink-0'></i>
                                 <span>Bekerja keras menciptakan peluang dan pertumbuhan untuk menjadi perusahaan yang terbaik</span>
                             </li>
-                            <li class="flex items-start text-gray-300">
-                                <i class='bx bx-check-circle text-cyan-400 mr-3 mt-1 flex-shrink-0'></i>
+                            <li class="flex items-start text-gray-600">
+                                <i class='bx bx-check-circle text-cyan-500 mr-3 mt-1 flex-shrink-0'></i>
                                 <span>Mengutamakan mutu dan pelayanan demi kepuasan pelanggan</span>
                             </li>
-                            <li class="flex items-start text-gray-300">
-                                <i class='bx bx-check-circle text-cyan-400 mr-3 mt-1 flex-shrink-0'></i>
+                            <li class="flex items-start text-gray-600">
+                                <i class='bx bx-check-circle text-cyan-500 mr-3 mt-1 flex-shrink-0'></i>
                                 <span>Menjadi mitra usaha yang andal dan terpercaya</span>
                             </li>
-                            <li class="flex items-start text-gray-300">
-                                <i class='bx bx-check-circle text-cyan-400 mr-3 mt-1 flex-shrink-0'></i>
+                            <li class="flex items-start text-gray-600">
+                                <i class='bx bx-check-circle text-cyan-500 mr-3 mt-1 flex-shrink-0'></i>
                                 <span>Meningkatkan kepedulian dan tanggung jawab sosial terhadap lingkungan sekitar</span>
                             </li>
-                            <li class="flex items-start text-gray-300">
-                                <i class='bx bx-check-circle text-cyan-400 mr-3 mt-1 flex-shrink-0'></i>
+                            <li class="flex items-start text-gray-600">
+                                <i class='bx bx-check-circle text-cyan-500 mr-3 mt-1 flex-shrink-0'></i>
                                 <span>Menjadi aset yang berharga dan membanggakan bagi masyarakat, bangsa, dan negara</span>
                             </li>
                         </ul>
@@ -173,15 +167,14 @@
 
 
 <!-- ===== BUDAYA ORGANISASI ===== -->
-<section class="relative py-24">
-    <div class="absolute inset-0 mesh-gradient opacity-10"></div>
+<section class="relative py-24 bg-white">
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16 reveal">
-            <span class="inline-flex items-center px-4 py-1.5 rounded-full bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 text-sm font-medium mb-4">
+            <span class="inline-flex items-center px-4 py-1.5 rounded-full bg-yellow-50 border border-yellow-100 text-yellow-600 text-sm font-medium mb-4">
                 <i class='bx bx-star mr-2'></i>Nilai-Nilai Kami
             </span>
-            <h2 class="font-display text-3xl sm:text-4xl font-black text-white mb-4">Budaya Organisasi</h2>
-            <p class="text-gray-400 max-w-xl mx-auto">Nilai-nilai yang menjadi fondasi dalam setiap aktivitas kami</p>
+            <h2 class="font-display text-3xl sm:text-4xl font-black text-gray-900 mb-4">Budaya Organisasi</h2>
+            <p class="text-gray-500 max-w-xl mx-auto">Nilai-nilai yang menjadi fondasi dalam setiap aktivitas kami</p>
         </div>
 
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 reveal">
@@ -189,11 +182,11 @@
             {% set icons = ['bx-heart', 'bx-brain', 'bx-dumbbell', 'bx-shield', 'bx-diamond', 'bx-medal'] %}
             {% set colors = ['from-red-500 to-pink-500', 'from-blue-500 to-cyan-500', 'from-yellow-500 to-orange-500', 'from-purple-500 to-violet-500', 'from-green-500 to-emerald-500', 'from-indigo-500 to-blue-500'] %}
             {% for value in values %}
-            <div class="glass rounded-2xl p-6 text-center card-hover group border border-white/5 hover:border-white/10">
+            <div class="bg-white rounded-2xl shadow-sm p-6 text-center card-hover group border border-gray-100">
                 <div class="w-16 h-16 mx-auto bg-gradient-to-br {{ colors[loop.index0] }} rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-lg">
                     <i class='bx {{ icons[loop.index0] }} text-white text-2xl'></i>
                 </div>
-                <p class="text-sm text-white font-semibold">{{ value }}</p>
+                <p class="text-sm text-gray-900 font-semibold">{{ value }}</p>
             </div>
             {% endfor %}
         </div>
@@ -202,23 +195,22 @@
 
 
 <!-- ===== CSR ===== -->
-<section class="relative py-24 bg-slate-900/30">
-    <div class="absolute inset-0 mesh-gradient opacity-10"></div>
+<section class="relative py-24 bg-gray-50">
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid lg:grid-cols-2 gap-16 items-center">
             <div class="reveal">
-                <span class="inline-flex items-center px-4 py-1.5 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-sm font-medium mb-6">
+                <span class="inline-flex items-center px-4 py-1.5 rounded-full bg-green-50 border border-green-100 text-green-600 text-sm font-medium mb-6">
                     <i class='bx bx-leaf mr-2'></i>Tanggung Jawab Sosial
                 </span>
-                <h2 class="font-display text-3xl sm:text-4xl font-black text-white mb-6">
+                <h2 class="font-display text-3xl sm:text-4xl font-black text-gray-900 mb-6">
                     Corporate Social <span class="gradient-text">Responsibility</span>
                 </h2>
-                <p class="text-gray-400 leading-relaxed mb-6">
+                <p class="text-gray-600 leading-relaxed mb-6">
                     ASA Group berkomitmen untuk meningkatkan kepedulian dan tanggung jawab sosial terhadap lingkungan sekitar.
                     Kami percaya bahwa keberhasilan perusahaan tidak hanya diukur dari pencapaian bisnis, tetapi juga dari
                     kontribusi nyata kepada masyarakat dan lingkungan.
                 </p>
-                <p class="text-gray-400 leading-relaxed">
+                <p class="text-gray-600 leading-relaxed">
                     Melalui berbagai program CSR, kami berupaya menjadi aset yang berharga dan membanggakan bagi masyarakat,
                     bangsa, dan negara. Kami aktif dalam kegiatan sosial, pemberdayaan masyarakat, dan pelestarian lingkungan
                     sebagai wujud nyata komitmen kami.
@@ -226,32 +218,32 @@
             </div>
             <div class="reveal" style="animation-delay: 0.2s;">
                 <div class="grid grid-cols-2 gap-4">
-                    <div class="glass rounded-xl p-6 card-hover border border-white/5 hover:border-white/10 group">
+                    <div class="bg-white rounded-2xl shadow-sm p-6 card-hover border border-gray-100 group">
                         <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                             <i class='bx bx-world text-white text-xl'></i>
                         </div>
-                        <h4 class="font-display font-bold text-white text-sm mb-1">Lingkungan</h4>
+                        <h4 class="font-display font-bold text-gray-900 text-sm mb-1">Lingkungan</h4>
                         <p class="text-gray-500 text-xs">Pelestarian lingkungan hidup</p>
                     </div>
-                    <div class="glass rounded-xl p-6 card-hover border border-white/5 hover:border-white/10 group">
+                    <div class="bg-white rounded-2xl shadow-sm p-6 card-hover border border-gray-100 group">
                         <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                             <i class='bx bx-donate-heart text-white text-xl'></i>
                         </div>
-                        <h4 class="font-display font-bold text-white text-sm mb-1">Sosial</h4>
+                        <h4 class="font-display font-bold text-gray-900 text-sm mb-1">Sosial</h4>
                         <p class="text-gray-500 text-xs">Pemberdayaan masyarakat</p>
                     </div>
-                    <div class="glass rounded-xl p-6 card-hover border border-white/5 hover:border-white/10 group">
+                    <div class="bg-white rounded-2xl shadow-sm p-6 card-hover border border-gray-100 group">
                         <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-violet-500 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                             <i class='bx bx-book-reader text-white text-xl'></i>
                         </div>
-                        <h4 class="font-display font-bold text-white text-sm mb-1">Pendidikan</h4>
+                        <h4 class="font-display font-bold text-gray-900 text-sm mb-1">Pendidikan</h4>
                         <p class="text-gray-500 text-xs">Dukungan pendidikan</p>
                     </div>
-                    <div class="glass rounded-xl p-6 card-hover border border-white/5 hover:border-white/10 group">
+                    <div class="bg-white rounded-2xl shadow-sm p-6 card-hover border border-gray-100 group">
                         <div class="w-12 h-12 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                             <i class='bx bx-heart text-white text-xl'></i>
                         </div>
-                        <h4 class="font-display font-bold text-white text-sm mb-1">Kesehatan</h4>
+                        <h4 class="font-display font-bold text-gray-900 text-sm mb-1">Kesehatan</h4>
                         <p class="text-gray-500 text-xs">Kepedulian kesehatan</p>
                     </div>
                 </div>
@@ -263,27 +255,30 @@
 
 <!-- ===== TEAM ===== -->
 {% if team %}
-<section class="relative py-24">
-    <div class="absolute inset-0 mesh-gradient opacity-20"></div>
+<section class="relative py-24 bg-white">
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16 reveal">
-            <span class="inline-flex items-center px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-sm font-medium mb-4">
+            <span class="inline-flex items-center px-4 py-1.5 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-600 text-sm font-medium mb-4">
                 <i class='bx bx-group mr-2'></i>Tim Kami
             </span>
-            <h2 class="font-display text-3xl sm:text-4xl font-black text-white mb-4">Tim <span class="gradient-text">Profesional</span></h2>
-            <p class="text-gray-400 max-w-xl mx-auto">Orang-orang hebat di balik kesuksesan ASA Group</p>
+            <h2 class="font-display text-3xl sm:text-4xl font-black text-gray-900 mb-4">Tim <span class="gradient-text">Profesional</span></h2>
+            <p class="text-gray-500 max-w-xl mx-auto">Orang-orang hebat di balik kesuksesan ASA Group</p>
         </div>
 
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {% for member in team %}
             <div class="reveal" style="animation-delay: {{ loop.index0 * 0.1 }}s;">
-                <div class="glass rounded-2xl p-8 card-hover group border border-white/5 hover:border-white/10 text-center h-full">
+                <div class="bg-white rounded-2xl shadow-sm p-8 card-hover group border border-gray-100 text-center h-full">
+                    {% if member.image_url %}
+                    <img src="{{ member.image_url }}" alt="{{ member.name }}" class="w-20 h-20 mx-auto rounded-2xl object-cover mb-6 group-hover:scale-110 transition-transform shadow-lg">
+                    {% else %}
                     <div class="w-20 h-20 mx-auto bg-gradient-to-br {{ member.gradient }} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg">
                         <i class='bx {{ member.icon }} text-white text-3xl'></i>
                     </div>
-                    <h4 class="font-display font-bold text-xl text-white mb-1">{{ member.name }}</h4>
-                    <p class="text-purple-400 text-sm font-medium mb-4">{{ member.position }}</p>
-                    <p class="text-gray-400 text-sm leading-relaxed">{{ member.bio }}</p>
+                    {% endif %}
+                    <h4 class="font-display font-bold text-xl text-gray-900 mb-1">{{ member.name }}</h4>
+                    <p class="text-purple-600 text-sm font-medium mb-4">{{ member.position }}</p>
+                    <p class="text-gray-500 text-sm leading-relaxed">{{ member.bio }}</p>
                 </div>
             </div>
             {% endfor %}
@@ -295,26 +290,25 @@
 
 <!-- ===== FAQ ===== -->
 {% if faqs %}
-<section class="relative py-24 bg-slate-900/30">
-    <div class="absolute inset-0 mesh-gradient opacity-10"></div>
+<section class="relative py-24 bg-gray-50">
     <div class="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16 reveal">
-            <span class="inline-flex items-center px-4 py-1.5 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 text-sm font-medium mb-4">
+            <span class="inline-flex items-center px-4 py-1.5 rounded-full bg-red-50 border border-red-100 text-red-600 text-sm font-medium mb-4">
                 <i class='bx bx-question-mark mr-2'></i>FAQ
             </span>
-            <h2 class="font-display text-3xl sm:text-4xl font-black text-white mb-4">Pertanyaan <span class="gradient-text">Umum</span></h2>
-            <p class="text-gray-400 max-w-xl mx-auto">Temukan jawaban untuk pertanyaan yang sering diajukan</p>
+            <h2 class="font-display text-3xl sm:text-4xl font-black text-gray-900 mb-4">Pertanyaan <span class="gradient-text">Umum</span></h2>
+            <p class="text-gray-500 max-w-xl mx-auto">Temukan jawaban untuk pertanyaan yang sering diajukan</p>
         </div>
 
         <div class="space-y-4 reveal">
             {% for faq in faqs %}
-            <div class="glass rounded-2xl border border-white/5 hover:border-white/10 overflow-hidden transition-all">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-all">
                 <button class="faq-toggle w-full flex items-center justify-between p-6 text-left">
-                    <span class="font-display font-semibold text-white pr-4">{{ faq.question }}</span>
-                    <i class='bx bx-chevron-down faq-icon text-purple-400 text-2xl transition-transform duration-300 flex-shrink-0'></i>
+                    <span class="font-display font-semibold text-gray-900 pr-4">{{ faq.question }}</span>
+                    <i class='bx bx-chevron-down faq-icon text-purple-500 text-2xl transition-transform duration-300 flex-shrink-0'></i>
                 </button>
                 <div class="hidden px-6 pb-6">
-                    <p class="text-gray-400 leading-relaxed">{{ faq.answer }}</p>
+                    <p class="text-gray-600 leading-relaxed">{{ faq.answer }}</p>
                 </div>
             </div>
             {% endfor %}
@@ -325,7 +319,7 @@
 
 
 <!-- ===== CTA ===== -->
-<section class="relative py-20">
+<section class="relative py-20 bg-white">
     <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="relative overflow-hidden rounded-3xl reveal">
             <div class="absolute inset-0 bg-gradient-to-r from-red-600 via-purple-600 to-yellow-500 opacity-90"></div>
@@ -342,9 +336,9 @@
                         <i class='bx bx-phone mr-2 text-2xl text-purple-600'></i>
                         Hubungi Kami
                     </a>
-                    <a href="{{ url_for('public.index') }}" class="inline-flex items-center px-8 py-4 bg-white/10 text-white rounded-2xl font-bold border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105">
-                        <i class='bx bx-home mr-2 text-xl'></i>
-                        Kembali ke Beranda
+                    <a href="{{ url_for('public.services_page') }}" class="inline-flex items-center px-8 py-4 bg-white/10 text-white rounded-2xl font-bold border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105">
+                        <i class='bx bx-cog mr-2 text-xl'></i>
+                        Layanan Kami
                     </a>
                 </div>
             </div>

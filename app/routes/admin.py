@@ -74,6 +74,7 @@ def blog_create():
         excerpt = request.form.get("excerpt", "").strip()
         content = request.form.get("content", "").strip()
         category = request.form.get("category", "Umum").strip()
+        image_url = request.form.get("image_url", "").strip()
         cover_icon = request.form.get("cover_icon", "bx-news").strip()
         cover_gradient = request.form.get("cover_gradient", "from-purple-600 to-blue-600").strip()
         status = request.form.get("status", "published")
@@ -82,8 +83,8 @@ def blog_create():
         cur = db.cursor()
         try:
             cur.execute(
-                "INSERT INTO blog_posts (title, slug, excerpt, content, cover_icon, cover_gradient, category, author, status) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)",
-                (title, slug, excerpt, content, cover_icon, cover_gradient, category, author, status),
+                "INSERT INTO blog_posts (title, slug, excerpt, content, image_url, cover_icon, cover_gradient, category, author, status) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+                (title, slug, excerpt, content, image_url, cover_icon, cover_gradient, category, author, status),
             )
             db.commit()
             flash("Blog post berhasil dibuat!", "success")
@@ -110,12 +111,13 @@ def blog_edit(post_id):
     if request.method == "POST":
         try:
             cur.execute(
-                "UPDATE blog_posts SET title=%s, slug=%s, excerpt=%s, content=%s, cover_icon=%s, cover_gradient=%s, category=%s, status=%s WHERE id=%s",
+                "UPDATE blog_posts SET title=%s, slug=%s, excerpt=%s, content=%s, image_url=%s, cover_icon=%s, cover_gradient=%s, category=%s, status=%s WHERE id=%s",
                 (
                     request.form["title"].strip(),
                     request.form["slug"].strip(),
                     request.form.get("excerpt", "").strip(),
                     request.form["content"].strip(),
+                    request.form.get("image_url", "").strip(),
                     request.form.get("cover_icon", "bx-news").strip(),
                     request.form.get("cover_gradient", "from-purple-600 to-blue-600").strip(),
                     request.form.get("category", "Umum").strip(),
@@ -167,8 +169,8 @@ def service_create():
         db = get_db()
         cur = db.cursor()
         cur.execute(
-            "INSERT INTO services (icon, title, description, gradient, sort_order) VALUES (%s,%s,%s,%s,%s)",
-            (request.form["icon"], request.form["title"], request.form["description"], request.form["gradient"], request.form.get("sort_order", 0, type=int)),
+            "INSERT INTO services (icon, title, description, image_url, gradient, sort_order) VALUES (%s,%s,%s,%s,%s,%s)",
+            (request.form["icon"], request.form["title"], request.form["description"], request.form.get("image_url", ""), request.form["gradient"], request.form.get("sort_order", 0, type=int)),
         )
         db.commit()
         cur.close()
@@ -190,8 +192,8 @@ def service_edit(sid):
         return redirect(url_for("admin.services_list"))
     if request.method == "POST":
         cur.execute(
-            "UPDATE services SET icon=%s, title=%s, description=%s, gradient=%s, sort_order=%s WHERE id=%s",
-            (request.form["icon"], request.form["title"], request.form["description"], request.form["gradient"], request.form.get("sort_order", 0, type=int), sid),
+            "UPDATE services SET icon=%s, title=%s, description=%s, image_url=%s, gradient=%s, sort_order=%s WHERE id=%s",
+            (request.form["icon"], request.form["title"], request.form["description"], request.form.get("image_url", ""), request.form["gradient"], request.form.get("sort_order", 0, type=int), sid),
         )
         db.commit()
         flash("Layanan berhasil diperbarui!", "success")
@@ -305,8 +307,8 @@ def gallery_create():
         db = get_db()
         cur = db.cursor()
         cur.execute(
-            "INSERT INTO gallery_items (title, company, category, icon, gradient, sort_order) VALUES (%s,%s,%s,%s,%s,%s)",
-            (request.form["title"], request.form["company"], request.form["category"], request.form.get("icon", "bx-building"), request.form.get("gradient", "from-purple-600 to-blue-600"), request.form.get("sort_order", 0, type=int)),
+            "INSERT INTO gallery_items (title, company, category, image_url, icon, gradient, sort_order) VALUES (%s,%s,%s,%s,%s,%s,%s)",
+            (request.form["title"], request.form["company"], request.form["category"], request.form.get("image_url", ""), request.form.get("icon", "bx-building"), request.form.get("gradient", "from-purple-600 to-blue-600"), request.form.get("sort_order", 0, type=int)),
         )
         db.commit()
         cur.close()
@@ -328,8 +330,8 @@ def gallery_edit(gid):
         return redirect(url_for("admin.gallery"))
     if request.method == "POST":
         cur.execute(
-            "UPDATE gallery_items SET title=%s, company=%s, category=%s, icon=%s, gradient=%s, sort_order=%s WHERE id=%s",
-            (request.form["title"], request.form["company"], request.form["category"], request.form.get("icon", "bx-building"), request.form.get("gradient", "from-purple-600 to-blue-600"), request.form.get("sort_order", 0, type=int), gid),
+            "UPDATE gallery_items SET title=%s, company=%s, category=%s, image_url=%s, icon=%s, gradient=%s, sort_order=%s WHERE id=%s",
+            (request.form["title"], request.form["company"], request.form["category"], request.form.get("image_url", ""), request.form.get("icon", "bx-building"), request.form.get("gradient", "from-purple-600 to-blue-600"), request.form.get("sort_order", 0, type=int), gid),
         )
         db.commit()
         flash("Item galeri berhasil diperbarui!", "success")
@@ -373,8 +375,8 @@ def team_create():
         db = get_db()
         cur = db.cursor()
         cur.execute(
-            "INSERT INTO team_members (name, position, bio, icon, gradient, sort_order) VALUES (%s,%s,%s,%s,%s,%s)",
-            (request.form["name"], request.form["position"], request.form["bio"], request.form.get("icon", "bx-user-circle"), request.form.get("gradient", "from-purple-500 to-blue-500"), request.form.get("sort_order", 0, type=int)),
+            "INSERT INTO team_members (name, position, bio, image_url, icon, gradient, sort_order) VALUES (%s,%s,%s,%s,%s,%s,%s)",
+            (request.form["name"], request.form["position"], request.form["bio"], request.form.get("image_url", ""), request.form.get("icon", "bx-user-circle"), request.form.get("gradient", "from-purple-500 to-blue-500"), request.form.get("sort_order", 0, type=int)),
         )
         db.commit()
         cur.close()
@@ -396,8 +398,8 @@ def team_edit(tid):
         return redirect(url_for("admin.team"))
     if request.method == "POST":
         cur.execute(
-            "UPDATE team_members SET name=%s, position=%s, bio=%s, icon=%s, gradient=%s, sort_order=%s WHERE id=%s",
-            (request.form["name"], request.form["position"], request.form["bio"], request.form.get("icon", "bx-user-circle"), request.form.get("gradient", "from-purple-500 to-blue-500"), request.form.get("sort_order", 0, type=int), tid),
+            "UPDATE team_members SET name=%s, position=%s, bio=%s, image_url=%s, icon=%s, gradient=%s, sort_order=%s WHERE id=%s",
+            (request.form["name"], request.form["position"], request.form["bio"], request.form.get("image_url", ""), request.form.get("icon", "bx-user-circle"), request.form.get("gradient", "from-purple-500 to-blue-500"), request.form.get("sort_order", 0, type=int), tid),
         )
         db.commit()
         flash("Anggota tim berhasil diperbarui!", "success")
@@ -590,3 +592,30 @@ def change_password():
                 return redirect(url_for("admin.dashboard"))
             cur.close()
     return render_template("admin/change_password.html")
+
+
+# ---------------------------------------------------------------------------
+# Site Settings
+# ---------------------------------------------------------------------------
+
+@admin_bp.route("/settings", methods=["GET", "POST"])
+@login_required
+def settings():
+    db = get_db()
+    cur = db.cursor()
+    if request.method == "POST":
+        for key in ("app_name", "logo_url", "tagline"):
+            val = request.form.get(key, "").strip()
+            cur.execute(
+                "INSERT INTO site_settings (setting_key, setting_value) VALUES (%s, %s) "
+                "ON DUPLICATE KEY UPDATE setting_value=%s",
+                (key, val, val),
+            )
+        db.commit()
+        flash("Pengaturan berhasil disimpan!", "success")
+        return redirect(url_for("admin.settings"))
+    cur.execute("SELECT setting_key, setting_value FROM site_settings")
+    rows = cur.fetchall()
+    cur.close()
+    current = {r["setting_key"]: r["setting_value"] for r in rows}
+    return render_template("admin/settings.html", current=current)

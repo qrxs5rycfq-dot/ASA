@@ -18,12 +18,21 @@ def init_tables():
     """)
 
     cursor.execute("""
+    CREATE TABLE IF NOT EXISTS site_settings (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        setting_key VARCHAR(100) UNIQUE NOT NULL,
+        setting_value TEXT
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+    """)
+
+    cursor.execute("""
     CREATE TABLE IF NOT EXISTS blog_posts (
         id INT AUTO_INCREMENT PRIMARY KEY,
         title VARCHAR(255) NOT NULL,
         slug VARCHAR(255) UNIQUE NOT NULL,
         excerpt TEXT,
         content LONGTEXT NOT NULL,
+        image_url VARCHAR(500) DEFAULT '',
         cover_icon VARCHAR(100) DEFAULT 'bx-news',
         cover_gradient VARCHAR(100) DEFAULT 'from-purple-600 to-blue-600',
         category VARCHAR(100) DEFAULT 'Umum',
@@ -40,6 +49,7 @@ def init_tables():
         icon VARCHAR(100) DEFAULT 'bx-cog',
         title VARCHAR(255) NOT NULL,
         description TEXT,
+        image_url VARCHAR(500) DEFAULT '',
         gradient VARCHAR(100) DEFAULT 'from-purple-500 to-blue-500',
         sort_order INT DEFAULT 0
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
@@ -51,6 +61,7 @@ def init_tables():
         title VARCHAR(255) NOT NULL,
         company VARCHAR(255),
         category VARCHAR(100),
+        image_url VARCHAR(500) DEFAULT '',
         icon VARCHAR(100) DEFAULT 'bx-building',
         gradient VARCHAR(100) DEFAULT 'from-purple-600 to-blue-600',
         sort_order INT DEFAULT 0
@@ -64,6 +75,7 @@ def init_tables():
         position VARCHAR(255),
         company VARCHAR(255),
         content TEXT NOT NULL,
+        image_url VARCHAR(500) DEFAULT '',
         rating INT DEFAULT 5,
         avatar_gradient VARCHAR(100) DEFAULT 'from-purple-500 to-blue-500',
         sort_order INT DEFAULT 0
@@ -74,6 +86,7 @@ def init_tables():
     CREATE TABLE IF NOT EXISTS clients (
         id INT AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
+        image_url VARCHAR(500) DEFAULT '',
         icon VARCHAR(100) DEFAULT 'bx-building',
         sort_order INT DEFAULT 0
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
@@ -85,6 +98,7 @@ def init_tables():
         name VARCHAR(255) NOT NULL,
         position VARCHAR(255),
         bio TEXT,
+        image_url VARCHAR(500) DEFAULT '',
         icon VARCHAR(100) DEFAULT 'bx-user',
         gradient VARCHAR(100) DEFAULT 'from-purple-500 to-blue-500',
         sort_order INT DEFAULT 0
@@ -100,5 +114,24 @@ def init_tables():
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
     """)
 
+    # Add image_url columns if they don't exist (migration for existing DBs)
+    _add_column_if_missing(cursor, "blog_posts", "image_url", "VARCHAR(500) DEFAULT ''")
+    _add_column_if_missing(cursor, "services", "image_url", "VARCHAR(500) DEFAULT ''")
+    _add_column_if_missing(cursor, "gallery_items", "image_url", "VARCHAR(500) DEFAULT ''")
+    _add_column_if_missing(cursor, "testimonials", "image_url", "VARCHAR(500) DEFAULT ''")
+    _add_column_if_missing(cursor, "clients", "image_url", "VARCHAR(500) DEFAULT ''")
+    _add_column_if_missing(cursor, "team_members", "image_url", "VARCHAR(500) DEFAULT ''")
+
     db.commit()
     cursor.close()
+
+
+def _add_column_if_missing(cursor, table, column, col_def):
+    """Add a column to a table if it doesn't already exist."""
+    cursor.execute(
+        "SELECT COUNT(*) AS c FROM information_schema.COLUMNS "
+        "WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME=%s AND COLUMN_NAME=%s",
+        (table, column),
+    )
+    if cursor.fetchone()["c"] == 0:
+        cursor.execute(f"ALTER TABLE {table} ADD COLUMN {column} {col_def}")

@@ -24,6 +24,21 @@ def create_app():
             seed_all()
             app._db_initialized = True
 
+    # Context processor to inject site settings into all templates
+    @app.context_processor
+    def inject_site_settings():
+        try:
+            from app.extensions import get_db
+            db = get_db()
+            cur = db.cursor()
+            cur.execute("SELECT setting_key, setting_value FROM site_settings")
+            rows = cur.fetchall()
+            cur.close()
+            settings = {r["setting_key"]: r["setting_value"] for r in rows}
+            return {"site": settings}
+        except Exception:
+            return {"site": {"app_name": "ASA Group", "logo_url": "", "tagline": "General Supplier & Kontraktor"}}
+
     # Register blueprints
     from app.routes.public import public_bp
     from app.routes.auth import auth_bp
