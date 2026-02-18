@@ -6,6 +6,8 @@ import re
 import uuid
 from functools import wraps
 
+import pymysql
+
 from flask import (
     Blueprint,
     render_template,
@@ -756,9 +758,12 @@ def company_create():
             db.commit()
             flash("Perusahaan berhasil ditambahkan!", "success")
             return redirect(url_for("admin.companies"))
-        except Exception:
+        except pymysql.err.IntegrityError:
             db.rollback()
             flash("Slug sudah digunakan.", "error")
+        except Exception:
+            db.rollback()
+            flash("Gagal menyimpan perusahaan.", "error")
         finally:
             cur.close()
     return render_template("admin/company_form.html", item=None)
@@ -812,9 +817,12 @@ def company_edit(cid):
             db.commit()
             flash("Perusahaan berhasil diperbarui!", "success")
             return redirect(url_for("admin.companies"))
-        except Exception:
+        except pymysql.err.IntegrityError:
             db.rollback()
             flash("Slug sudah digunakan.", "error")
+        except Exception:
+            db.rollback()
+            flash("Gagal memperbarui perusahaan.", "error")
         finally:
             cur.close()
     else:

@@ -200,7 +200,7 @@
 <script>
 // Sync color pickers with text display
 document.querySelectorAll('input[type="color"]').forEach(function(picker) {
-    var display = picker.nextElementSibling;
+    const display = picker.nextElementSibling;
     picker.addEventListener('input', function() {
         display.value = picker.value;
     });
