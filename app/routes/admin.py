@@ -2,6 +2,7 @@
 
 import hashlib
 import os
+import re
 import uuid
 from functools import wraps
 
@@ -53,6 +54,14 @@ def _resolve_image():
     if uploaded:
         return uploaded
     return request.form.get("image_url", "").strip()
+
+
+def _extract_first_image(html_content):
+    """Extract the first <img src="..."> URL from HTML content."""
+    if not html_content:
+        return ""
+    match = re.search(r'<img[^>]+src=["\']([^"\']+)["\']', html_content)
+    return match.group(1) if match else ""
 
 
 def login_required(f):
@@ -111,7 +120,7 @@ def blog_create():
         excerpt = request.form.get("excerpt", "").strip()
         content = request.form.get("content", "").strip()
         category = request.form.get("category", "Umum").strip()
-        image_url = _resolve_image()
+        image_url = _extract_first_image(content)
         cover_icon = request.form.get("cover_icon", "bx-news").strip()
         cover_gradient = request.form.get("cover_gradient", "from-purple-600 to-blue-600").strip()
         status = request.form.get("status", "published")
@@ -146,8 +155,8 @@ def blog_edit(post_id):
         flash("Post tidak ditemukan.", "error")
         return redirect(url_for("admin.blog_list"))
     if request.method == "POST":
-        new_image = _resolve_image()
-        image_url = new_image if new_image else post.get("image_url", "")
+        content = request.form["content"].strip()
+        image_url = _extract_first_image(content)
         try:
             cur.execute(
                 "UPDATE blog_posts SET title=%s, slug=%s, excerpt=%s, content=%s, image_url=%s, cover_icon=%s, cover_gradient=%s, category=%s, status=%s WHERE id=%s",
@@ -155,7 +164,7 @@ def blog_edit(post_id):
                     request.form["title"].strip(),
                     request.form["slug"].strip(),
                     request.form.get("excerpt", "").strip(),
-                    request.form["content"].strip(),
+                    content,
                     image_url,
                     request.form.get("cover_icon", "bx-news").strip(),
                     request.form.get("cover_gradient", "from-purple-600 to-blue-600").strip(),
